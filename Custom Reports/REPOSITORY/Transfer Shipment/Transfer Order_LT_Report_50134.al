@@ -6,6 +6,7 @@ report 50134 "Transfer Order LT"
     PreviewMode = PrintLayout;
     ApplicationArea = All;
     UsageCategory = ReportsAndAnalysis;
+
     dataset
     {
         dataitem("Transfer Shipment Header"; "Transfer Shipment Header")
