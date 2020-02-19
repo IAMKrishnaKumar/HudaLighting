@@ -173,9 +173,13 @@ report 50116 GeneralVoucherGL_LT
                 // If not IsSameSource then begin
 
                 Clear(AccountNo);
-                if "Source No." <> '' then
-                    AccountNo := "Source No."
-                else
+                if "Source No." <> '' then begin
+                    if AccountNoTest = "Source No." then
+                        AccountNo := "Bal. Account No."
+                    else
+                        AccountNo := "Source No.";
+                    AccountNoTest := "Source No.";
+                end else
                     AccountNo := "G/L Account No.";
 
                 Clear(AccountName);
@@ -290,6 +294,7 @@ report 50116 GeneralVoucherGL_LT
         //CreditAmount: Text;
         //DebitAmount: Text;
         AccountNo: Text;
+        AccountNoTest: Text;
         AccountName: Text;
         RecBankAccount: Record "Bank Account";
         RecVendor: Record Vendor;

@@ -71,6 +71,8 @@ report 50107 "OA Daily Report"
         //EmailIDs := CopyStr(EmailIDs, 1, StrLen(EmailIDs) - 1);
         // SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailIDs, 'Order Acknowledgements Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '', true);
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Order Acknowledgements Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Order Acknowledgements From ' + FORMAT(CALCDATE('-1W', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ' To ' + Format(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        //FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>')
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
         SMTPMail.AddBCC(BccEmail);
         SMTPMail.AppendBody('</br>');
@@ -89,7 +91,6 @@ report 50107 "OA Daily Report"
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000"> Salesperson </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Status </font></th>');
         SMTPMail.AppendBody('</tr>');
-
         Clear(RecCompanies);
         Clear(GrandTotal1);
         Clear(GrandTotal2);
@@ -107,6 +108,7 @@ report 50107 "OA Daily Report"
                     RecSalesheader.ChangeCompany(RecCompanies.Name);
                     RecSalesheader.SetRange("Document Type", RecSalesheader."Document Type"::Order);
                     RecSalesheader.SetRange("Order Date", Workdate());//CalcDate('-1D', Workdate()));
+                    //RecSalesheader.SetFilter("Order Date", FORMAT(CALCDATE('-1W', WorkDate())) + '..' + Format(WorkDate()));//CalcDate('-1D', Workdate()));
                     if RecSalesheader.FindSet() then begin
                         repeat
                             RecSalesheader.CalcFields("Amount Including VAT");

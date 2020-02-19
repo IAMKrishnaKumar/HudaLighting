@@ -67,18 +67,15 @@ report 50139 "PO Backlog Report"
                 RecUserSetup.SetRange("User ID", RecAccessControl."User Name");
                 RecUserSetup.SetFilter("E-Mail", '<>%1', '');
                 if RecUserSetup.FindFirst() then begin
-                    // EmailIDs += RecUserSetup."E-Mail" + ';';
                     EmailList.Add(RecUserSetup."E-Mail");
                 end;
             until RecAccessControl.Next() = 0;
         end;
 
-        // if EmailIDs = '' then
-        //     exit;
+
         if EmailList.Count = 0 then
             exit;
-        //EmailIDs := CopyStr(EmailIDs, 1, StrLen(EmailIDs) - 1);
-        //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailIDs, '[Purchase Order Today] [Open Orders till ' + FORMAT(CalcDate('-1D', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ']', '', true);
+
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, '[Purchase Order Today] [Open Orders till ' + FORMAT(CalcDate('-1D', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ']', '');
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
         SMTPMail.AddBCC(BccEmail);
@@ -139,9 +136,7 @@ report 50139 "PO Backlog Report"
 
                                 RecPurchHeader.CalcFields("Amount Including VAT");
 
-                                //SMTPMail.AppendBody('<td align="right"   >  ' + FORMAT(Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '</th>');
                                 SMTPMail.AppendBody('<td align="right"   >  ' + FORMAT(Round(RecPurchHeader."Amount Including VAT", 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '</th>');
-                                //Total1 += Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '=');
                                 Total1 += Round(RecPurchHeader."Amount Including VAT", 0.01, '=');
                                 GrandTotal1 += Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '=');
 
@@ -149,7 +144,6 @@ report 50139 "PO Backlog Report"
                                 Clear(CurrencyExchangeRate);
                                 CurrencyExchangeRate.ChangeCompany(RecCompanies.Name);
                                 ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(LocalCurrency);
-                                ExchangeRateAmt := Round(ExchangeRateAmt, 0.01, '=');
 
                                 SMTPMail.AppendBody('<td align="right"   > ' + FORMAT(ROUND((RecPurchHeader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + ' </td>');
                                 Total2 += Round((RecPurchHeader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=');
@@ -256,22 +250,15 @@ report 50139 "PO Backlog Report"
                                     CurrencyFactor := 1;
 
                                 CurrencyFactor := Round(CurrencyFactor, 0.01, '=');
-                                //SMTPMail.AppendBody('<td align="right"   >  ' + FORMAT(ROUND(RecPheader."Amount Including VAT" / CurrencyFactor, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '</th>');
                                 SMTPMail.AppendBody('<td align="right"   >  ' + FORMAT(ROUND(RecPheader."Amount Including VAT", 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '</th>');
-
                                 Total1 += Round(RecPheader."Amount Including VAT", 0.01, '=');
                                 GrandTotal1 += Round(RecPheader."Amount Including VAT" / CurrencyFactor, 0.01, '=');
-
                                 SMTPMail.AppendBody('<td align="left"   > ' + RecPheader."Currency Code" + '</td>');
-                                Clear(CurrencyExchangeRate);
-                                CurrencyExchangeRate.ChangeCompany(RecCompanies.Name);
-                                ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(LocalCurrency);
 
                                 Clear(CurrencyExchangeRate);
                                 CurrencyExchangeRate.ChangeCompany(RecCompanies.Name);
                                 ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(LocalCurrency);//ExchCurrency
-                                ExchangeRateAmt := Round(ExchangeRateAmt, 0.01, '=');
-
+                                //ExchangeRateAmt := Round(ExchangeRateAmt, 0.01, '=');
 
                                 SMTPMail.AppendBody('<td align="right"   > ' + FORMAT(Round((RecPheader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + ' </td>');
                                 Total2 += Round((RecPheader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=');

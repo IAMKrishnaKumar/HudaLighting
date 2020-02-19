@@ -72,6 +72,8 @@ report 50108 "PO Daily Report"
         // EmailIDs := CopyStr(EmailIDs, 1, StrLen(EmailIDs) - 1);
         //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailIDs, 'Purchase Order Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '', true);
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Purchase Order Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Purchase Orders From ' + FORMAT(CALCDATE('-1W', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ' To ' + Format(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        // + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
         SMTPMail.AddBCC(BccEmail);
         SMTPMail.AppendBody('<p>Report : Purchase Orders Today</p>');
@@ -109,6 +111,7 @@ report 50108 "PO Daily Report"
                     RecPurchHeader.ChangeCompany(RecCompanies.Name);
                     RecPurchHeader.SetRange("Document Type", RecPurchHeader."Document Type"::Order);
                     RecPurchHeader.SetRange("Order Date", Workdate());//CalcDate('-1D', Workdate()));
+                    //RecPurchHeader.SetFilter("Order Date", FORMAT(CALCDATE('-1W', WorkDate())) + '..' + Format(WorkDate()));//Workdate());//CalcDate('-1D', Workdate()));
                     if RecPurchHeader.FindSet() then begin
                         repeat
                             RecPurchHeader.CalcFields("Amount Including VAT");

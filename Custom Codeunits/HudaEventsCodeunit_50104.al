@@ -458,9 +458,7 @@ codeunit 50104 HudaEvents
         RecItem: Record Item;
     begin
         if Rec."Item No." <> '' then begin
-
             Clear(RecItem);
-
             if RecItem.GET(Rec."Item No.") then begin
                 Rec."Vendor Article No." := RecItem."Vendor Article No";
                 Rec.Description := RecItem.Description;

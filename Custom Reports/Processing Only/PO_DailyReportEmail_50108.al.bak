@@ -71,7 +71,9 @@ report 50108 "PO Daily Report"
         //     exit;
         // EmailIDs := CopyStr(EmailIDs, 1, StrLen(EmailIDs) - 1);
         //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailIDs, 'Purchase Order Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '', true);
-        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Purchase Order Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Purchase Order Today ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Purchase Orders From ' + FORMAT(CALCDATE('-1W', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ' To ' + Format(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
+        // + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
         SMTPMail.AddBCC(BccEmail);
         SMTPMail.AppendBody('<p>Report : Purchase Orders Today</p>');
@@ -108,7 +110,8 @@ report 50108 "PO Daily Report"
                     Clear(RecPurchHeader);
                     RecPurchHeader.ChangeCompany(RecCompanies.Name);
                     RecPurchHeader.SetRange("Document Type", RecPurchHeader."Document Type"::Order);
-                    RecPurchHeader.SetRange("Order Date", Workdate());//CalcDate('-1D', Workdate()));
+                    // RecPurchHeader.SetRange("Order Date", Workdate());//CalcDate('-1D', Workdate()));
+                    RecPurchHeader.SetFilter("Order Date", FORMAT(CALCDATE('-1W', WorkDate())) + '..' + Format(WorkDate()));//Workdate());//CalcDate('-1D', Workdate()));
                     if RecPurchHeader.FindSet() then begin
                         repeat
                             RecPurchHeader.CalcFields("Amount Including VAT");
@@ -128,12 +131,9 @@ report 50108 "PO Daily Report"
                                 else
                                     CurrencyFactor := 1;
 
-                                CurrencyFactor := Round(CurrencyFactor, 0.01, '=');
                                 RecPurchHeader.CalcFields("Amount Including VAT");
-
-                                //SMTPMail.AppendBody('<td align="right"   >  ' + FORMAT(Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '</th>');
                                 SMTPMail.AppendBody('<td align="right"   >  ' + FORMAT(Round(RecPurchHeader."Amount Including VAT", 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '</th>'); // PO amout should be display Order Currency
-                                                                                                                                                                                                     //Total1 += Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '=');
+                                //Total1 += Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '=');
                                 Total1 += Round(RecPurchHeader."Amount Including VAT", 0.01, '=');
                                 GrandTotal1 += Round(RecPurchHeader."Amount Including VAT" / CurrencyFactor, 0.01, '=');
 
@@ -142,8 +142,6 @@ report 50108 "PO Daily Report"
                                 CurrencyExchangeRate.ChangeCompany(RecCompanies.Name);
                                 ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(LocalCurrency);//ExchCurrency
 
-
-                                ExchangeRateAmt := Round(ExchangeRateAmt, 0.01, '=');
                                 SMTPMail.AppendBody('<td align="right"   > ' + FORMAT(ROUND((RecPurchHeader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + ' </td>');
                                 Total2 += Round((RecPurchHeader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=');
                                 GrandTotal2 += Round((RecPurchHeader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=');
@@ -197,6 +195,7 @@ report 50108 "PO Daily Report"
         SMTPMail.AppendBody('</br></br>');
 
         SMTPMail.AppendBody('<p>This email is sent by Huda Lighting Business Central</p>');
-        SMTPMail.Send();
+        if GrandTotal2 <> 0 then
+            SMTPMail.Send();
     end;
 }

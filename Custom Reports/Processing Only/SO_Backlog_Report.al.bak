@@ -66,17 +66,14 @@ report 50140 "OA Backlog Report"
                 RecUserSetup.SetRange("User ID", RecAccessControl."User Name");
                 RecUserSetup.SetFilter("E-Mail", '<>%1', '');
                 if RecUserSetup.FindFirst() then begin
-                    //EmailIDs += RecUserSetup."E-Mail" + ';';
                     EmailList.Add(RecUserSetup."E-Mail");
                 end;
             until RecAccessControl.Next() = 0;
         end;
-        // if EmailIDs = '' then
-        //     exit;
+
         if EmailList.Count = 0 then
             exit;
-        //  EmailIDs := CopyStr(EmailIDs, 1, StrLen(EmailIDs) - 1);
-        //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailIDs, '[Order Acknowledgements Today] [Open Orders till ' + FORMAT(CalcDate('-1D', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ']', '', true);
+
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, '[Order Acknowledgements Today] [Open Orders till ' + FORMAT(CalcDate('-1D', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ']', '');
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
         SMTPMail.AddBCC(BccEmail);
@@ -88,8 +85,8 @@ report 50140 "OA Backlog Report"
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000"> Company </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">OA Reference </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"><font color="#000000"> Order Date </font></th>');
-        SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Customer Name </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Project Name </font></th>');
+        SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Customer Name </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000"> Amount </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"><font color="#000000"> Currency </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"><font color="#000000"> Amount (' + LocalCurrency + ')</font></th>');
@@ -124,8 +121,8 @@ report 50140 "OA Backlog Report"
                                 SMTPMail.AppendBody('<td align="left"   > ' + RecCompanies.Name + ' </td>');
                                 SMTPMail.AppendBody('<td align="left"   > <a href="' + DocUrl + '">' + RecSalesheader."No." + ' </a></td>');
                                 SMTPMail.AppendBody('<td align="left"   > ' + FORMAT(RecSalesheader."Order Date", 0, '<day,2>/<month,2>/<year4>') + ' </td>');
-                                SMTPMail.AppendBody('<td align="left"   > ' + RecSalesheader."Sell-to Customer Name" + ' </td>');
                                 SMTPMail.AppendBody('<td align="left"   > ' + RecSalesheader."Project Name" + '</td>');
+                                SMTPMail.AppendBody('<td align="left"   > ' + RecSalesheader."Sell-to Customer Name" + ' </td>');
                                 Clear(CurrencyFactor);//
 
                                 if RecSalesheader."Currency Factor" <> 0 then
@@ -201,8 +198,8 @@ report 50140 "OA Backlog Report"
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000"> Company </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">OA Reference </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"><font color="#000000"> Order Date </font></th>');
-        SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Customer Name </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Project Name </font></th>');
+        SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000">Customer Name </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"> <font color="#000000"> Amount </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"><font color="#000000"> Currency </font></th>');
         SMTPMail.AppendBody('<th align="left" bgcolor="#b2e8ed"><font color="#000000"> Amount (' + LocalCurrency + ')</font></th>');
@@ -236,8 +233,8 @@ report 50140 "OA Backlog Report"
                                 SMTPMail.AppendBody('<td align="left"   > ' + RecCompanies.Name + ' </td>');
                                 SMTPMail.AppendBody('<td align="left"   > <a href="' + DocUrl + '">' + RecSheader."No." + ' </a></td>');
                                 SMTPMail.AppendBody('<td align="left"   > ' + FORMAT(RecSheader."Order Date", 0, '<day,2>/<month,2>/<year4>') + ' </td>');
-                                SMTPMail.AppendBody('<td align="left"   > ' + RecSheader."Sell-to Customer Name" + ' </td>');
                                 SMTPMail.AppendBody('<td align="left"   > ' + RecSheader."Project Name" + '</td>');
+                                SMTPMail.AppendBody('<td align="left"   > ' + RecSheader."Sell-to Customer Name" + ' </td>');
 
                                 Clear(CurrencyFactor);//
 

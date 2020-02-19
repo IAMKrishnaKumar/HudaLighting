@@ -235,9 +235,13 @@ report 50118 PaymentVoucherGL_LT
                     Name := "Payee Name";
 
                 Clear(AccountNo);
-                if "Source No." <> '' then
-                    AccountNo := "Source No."
-                else
+                if "Source No." <> '' then begin
+                    if AccountNoTest = "Source No." then
+                        AccountNo := "Bal. Account No."
+                    else
+                        AccountNo := "Source No.";
+                    AccountNoTest := "Source No.";
+                end else
                     AccountNo := "G/L Account No.";
 
                 //IF (Source Type=CONST(Customer)) Customer ELSE IF (Source Type=CONST(Vendor)) 
@@ -471,6 +475,7 @@ report 50118 PaymentVoucherGL_LT
         checkDate: Date;
         NewAmount: Decimal;
         AccountNo: Text;
+        AccountNoTest: Text;
         AccountName: Text;
         GlSubCatId: Integer;
 
