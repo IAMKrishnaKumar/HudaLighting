@@ -1366,7 +1366,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=IIF(Fields!IsArabic.Value = "True", Fields!ItemCodeCaption.Value + "/" + Fields!ItemDescCaption.Value, "")</Value>
+                                      <Value>=IIF(Fields!IsArabic.Value = "True", VBCRLF+Fields!ItemCodeCaption.Value + "/" + Fields!ItemDescCaption.Value, "")</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3083,7 +3083,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!Amount_PurchaseLine.Value) + Sum(Fields!LineDiscountAmount_PurchaseLine.Value)</Value>
+                                      <Value>=Sum(Fields!VATBaseAmount_PurchaseLine.Value)</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3131,7 +3131,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!LineDiscountAmount_PurchaseLine.Value)</Value>
+                                      <Value>=Sum(Fields!LineDiscountAmount_PurchaseLine.Value) + Sum(Fields!InvDiscountAmount_PurchaseLine.Value)</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -6433,7 +6433,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!Amount_PurchaseLine.Value) + Sum(Fields!LineDiscountAmount_PurchaseLine.Value)</Value>
+                                      <Value>=Sum(Fields!VATBaseAmount_PurchaseLine.Value)</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -6481,7 +6481,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=(Sum(Fields!Amount_PurchaseLine.Value) + Sum(Fields!LineDiscountAmount_PurchaseLine.Value)) * Fields!CurrencyFactor.Value</Value>
+                                      <Value>=Sum(Fields!VATBaseAmount_PurchaseLine.Value) * Fields!CurrencyFactor.Value</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -6532,7 +6532,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!LineDiscountAmount_PurchaseLine.Value)</Value>
+                                      <Value>=Sum(Fields!LineDiscountAmount_PurchaseLine.Value) + Sum(Fields!InvDiscountAmount_PurchaseLine.Value)</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -6580,7 +6580,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!LineDiscountAmount_PurchaseLine.Value) * Fields!CurrencyFactor.Value</Value>
+                                      <Value>=(Sum(Fields!LineDiscountAmount_PurchaseLine.Value) + Sum(Fields!InvDiscountAmount_PurchaseLine.Value))* Fields!CurrencyFactor.Value</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -7589,9 +7589,6 @@ End Function
         <Field Name="AmountText1">
           <DataField>AmountText1</DataField>
         </Field>
-        <Field Name="Comment_PurchCommentLine">
-          <DataField>Comment_PurchCommentLine</DataField>
-        </Field>
         <Field Name="DocumentNo_PurchaseLine">
           <DataField>DocumentNo_PurchaseLine</DataField>
         </Field>
@@ -7726,6 +7723,9 @@ End Function
         </Field>
         <Field Name="Amount_PurchaseLineFormat">
           <DataField>Amount_PurchaseLineFormat</DataField>
+        </Field>
+        <Field Name="Comment_PurchCommentLine">
+          <DataField>Comment_PurchCommentLine</DataField>
         </Field>
       </Fields>
       <Query>

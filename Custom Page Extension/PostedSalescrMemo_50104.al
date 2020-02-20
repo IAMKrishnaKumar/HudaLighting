@@ -15,7 +15,13 @@ pageextension 50104 PostedSalescrMemo extends "Posted Sales Credit Memo"
                 ApplicationArea = All;
                 Editable = false;
             }
-
+        }
+        addlast("Invoice Details")
+        {
+            field("Amount (In Arabic)"; "Amount (In Arabic)")
+            {
+                ApplicationArea = All;
+            }
         }
         addafter("Invoice Details")
         {

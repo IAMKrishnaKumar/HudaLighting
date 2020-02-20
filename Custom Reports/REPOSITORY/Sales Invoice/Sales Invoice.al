@@ -654,11 +654,11 @@
                     CurrCode := "Sales Header"."Currency Code";
 
                 GLSetupG.GET;
-               /* if "Sales Header"."Currency Code" <> GLSetupG."LCY Code" then
-                    IsDiffCurrency := true
-                else
-                    IsDiffCurrency := false;
-                    */
+                /* if "Sales Header"."Currency Code" <> GLSetupG."LCY Code" then
+                     IsDiffCurrency := true
+                 else
+                     IsDiffCurrency := false;
+                     */
                 //<LT>
                 Currency_Rec.RESET;
                 IF Currency_Rec.GET(CurrCode) THEN
@@ -769,10 +769,10 @@
                     {
                         ApplicationArea = All;
                     }
-                    field(IsDiffCurrency;IsDiffCurrency)
+                    field(IsDiffCurrency; IsDiffCurrency)
                     {
-                        ApplicationArea=All;
-                        Caption='Print in Dual Currency';
+                        ApplicationArea = All;
+                        Caption = 'Print in Dual Currency';
                     }
                 }
             }

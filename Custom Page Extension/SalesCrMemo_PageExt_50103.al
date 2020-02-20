@@ -10,6 +10,14 @@ pageextension 50103 SalesCrMemo extends "Sales Credit Memo"
                 ApplicationArea = All;
             }
         }
+
+        addlast("Credit Memo Details")
+        {
+            field("Amount (In Arabic)"; "Amount (In Arabic)")
+            {
+                ApplicationArea = All;
+            }
+        }
         addafter("Due Date")
         {
             field("Project Reference"; "Project Reference")

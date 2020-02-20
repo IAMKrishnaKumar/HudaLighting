@@ -381,7 +381,7 @@ report 50118 PaymentVoucherGL_LT
                 FormatNoText(Amount_Words, TotalAmt, '');
                 Text := Amount_Words[1];
                 // AmountText1 := Text + ' ' + CurrCode + ' AND ' + AmtInwrd12 + ' ' + DecimalDec + ' ONLY';
-                AmountText1 := Text + ' ' + GLSetup."LCY Code" + ' AND ' + AmtInwrd12 + ' ' + DecimalDec + ' ONLY';
+                AmountText1 := UpperCase(Text + ' ' + GLSetup."LCY Code" + ' AND ' + AmtInwrd12 + ' ' + DecimalDec + ' ONLY');
 
 
                 Clear(Users);

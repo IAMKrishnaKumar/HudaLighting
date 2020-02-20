@@ -268,16 +268,9 @@ report 50122 "Purchase  Credit Memo Report"
             column(AmountText1; AmountText1)
             {
             }
-            dataitem("Purch. Comment Line"; "Purch. Comment Line")
-            {
-                DataItemLink = "No." = FIELD("No.");
-                DataItemTableView = SORTING("Document Type", "No.", "Document Line No.", "Line No.");
-                column(Comment_PurchCommentLine; "Purch. Comment Line".Comment)
-                {
-                }
-            }
             dataitem("Purchase Line"; "Purch. Cr. Memo Line")
             {
+                DataItemLinkReference = "Purchase Header";
                 DataItemLink = "Document No." = FIELD("No.");
                 DataItemTableView = SORTING("Document No.", "Line No.")
                                     ORDER(Ascending);
@@ -426,6 +419,16 @@ report 50122 "Purchase  Credit Memo Report"
                     CLEAR(Discount);
                     CLEAR(AmtIncVat)
                 end;
+            }
+
+            dataitem("Purch. Comment Line"; "Purch. Comment Line")
+            {
+                DataItemLinkReference = "Purchase Header";
+                DataItemLink = "No." = FIELD("No.");
+                DataItemTableView = SORTING("Document Type", "No.", "Document Line No.", "Line No.");
+                column(Comment_PurchCommentLine; "Purch. Comment Line".Comment)
+                {
+                }
             }
 
             trigger OnAfterGetRecord()
