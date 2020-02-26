@@ -20,6 +20,10 @@ report 50155 "Purchase Order Withholding"
             column(BuyfromVendorNo_PurchaseHeader; "Purchase Header"."Buy-from Vendor No.")
             {
             }
+            column(No__of_Archived_Versions; "No. of Archived Versions")
+            {
+
+            }
             column(Name_Vend; Name_Vend)
             {
             }
@@ -395,6 +399,7 @@ report 50155 "Purchase Order Withholding"
                 Clear(Add_Vend);
                 Clear(Add2_Vend);
                 Clear(VendorVATNo);
+                CalcFields("No. of Archived Versions");
                 if "Purchase Header".Status <> "Purchase Header".Status::Released then
                     IsDraft := true
                 else

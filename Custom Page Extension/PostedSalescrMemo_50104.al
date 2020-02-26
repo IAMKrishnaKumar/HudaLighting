@@ -21,6 +21,7 @@ pageextension 50104 PostedSalescrMemo extends "Posted Sales Credit Memo"
             field("Amount (In Arabic)"; "Amount (In Arabic)")
             {
                 ApplicationArea = All;
+                MultiLine = true;
             }
         }
         addafter("Invoice Details")

@@ -172,21 +172,23 @@ report 50116 GeneralVoucherGL_LT
 
                 // If not IsSameSource then begin
 
-                Clear(AccountNo);
-                if "Source No." <> '' then begin
-                    if AccountNoTest = "Source No." then
-                        AccountNo := "Bal. Account No."
-                    else
-                        AccountNo := "Source No.";
-                    AccountNoTest := "Source No.";
-                end else
-                    AccountNo := "G/L Account No.";
+                /* Clear(AccountNo);
+                 if "Source No." <> '' then begin
+                     if AccountNoTest = "Source No." then
+                         AccountNo := "Bal. Account No."
+                     else
+                         AccountNo := "Source No.";
+                     AccountNoTest := "Source No.";
+                 end else
+                     AccountNo := "G/L Account No.";*/
 
                 Clear(AccountName);
                 if "Source Type" = "Source Type"::" " then begin
                     CalcFields("G/L Account Name");
                     AccountName := "G/L Account Name";
-                end else
+                    AccountNo := "G/L Account No.";
+                end else begin
+                    AccountNo := "Source No.";
                     if "Source Type" = "Source Type"::"Bank Account" then begin
                         Clear(RecBankAccount);
                         RecBankAccount.GET("Source No.");
@@ -217,6 +219,7 @@ report 50116 GeneralVoucherGL_LT
                                             RecEmployee.GET("Source No.");
                                             AccountName := RecEmployee."First Name";
                                         end;
+                end;
                 /*end else begin
                     AccountNo := "G/L Account No.";
                     AccountName := "G/L Account Name";

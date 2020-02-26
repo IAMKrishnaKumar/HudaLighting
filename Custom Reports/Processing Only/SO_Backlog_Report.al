@@ -76,7 +76,7 @@ report 50140 "OA Backlog Report"
 
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, '[Order Acknowledgements Today] [Open Orders till ' + FORMAT(CalcDate('-1D', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ']', '');
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
-        SMTPMail.AddBCC(BccEmail);
+        //SMTPMail.AddBCC(BccEmail);
         SMTPMail.AppendBody('</br>');
         SMTPMail.AppendBody('<p>Report : Order Acknowledgements Today</p>');
         SMTPMail.AppendBody('<p>Date : ' + FORMAT(CURRENTDATETIME, 0, '<day,2>/<month,2>/<year4> <Hours12>:<Minutes,2> <AM/PM>') + '</p>');

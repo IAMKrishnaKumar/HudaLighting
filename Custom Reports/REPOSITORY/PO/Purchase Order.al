@@ -125,6 +125,10 @@ report 50119 "Purchase Order Report"
             column(CoMpanyInfo_Add2; CompanyInfo."Address 2")
             {
             }
+            column(No__of_Archived_Versions; "No. of Archived Versions")
+            {
+
+            }
             column(CompanyInfo_Postcode; CompanyInfo."Post Code")
             {
             }
@@ -381,6 +385,7 @@ report 50119 "Purchase Order Report"
                 Clear(Add_Vend);
                 Clear(Add2_Vend);
                 Clear(VendorVATNo);
+                CalcFields("No. of Archived Versions");
                 if "Purchase Header".Status <> "Purchase Header".Status::Released then
                     IsDraft := true
                 else

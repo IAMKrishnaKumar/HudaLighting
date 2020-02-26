@@ -52,7 +52,6 @@ codeunit 50104 HudaEvents
                 end;
             end;
 
-            // It was creating problems for Retail Users
             Clear(RecPT);
             Clear(TotalPercentage);
             If RecPT.GET(SalesHeader."Payment Terms Code") then begin

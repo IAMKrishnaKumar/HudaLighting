@@ -32,6 +32,10 @@ report 50154 "Purchase Order Without VAT"
             column(BuyfromContact_PurchaseHeader; "Purchase Header"."Buy-from Contact")
             {
             }
+            column(No__of_Archived_Versions; "No. of Archived Versions")
+            {
+
+            }
             column(VATRegistrationNo_PurchaseHeader; VendorVATNo)
             {
             }
@@ -383,6 +387,7 @@ report 50154 "Purchase Order Without VAT"
                 Clear(Add_Vend);
                 Clear(Add2_Vend);
                 Clear(VendorVATNo);
+                CalcFields("No. of Archived Versions");
                 if "Purchase Header".Status <> "Purchase Header".Status::Released then
                     IsDraft := true
                 else

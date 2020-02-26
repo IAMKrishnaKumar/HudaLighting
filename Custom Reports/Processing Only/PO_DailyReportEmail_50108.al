@@ -75,7 +75,7 @@ report 50108 "PO Daily Report"
         //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Purchase Orders From ' + FORMAT(CALCDATE('-1W', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ' To ' + Format(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
         // + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
-        SMTPMail.AddBCC(BccEmail);
+        //SMTPMail.AddBCC(BccEmail);
         SMTPMail.AppendBody('<p>Report : Purchase Orders Today</p>');
         SMTPMail.AppendBody('<p>Date : ' + FORMAT(CURRENTDATETIME, 0, '<day,2>/<month,2>/<year4> <Hours12>:<Minutes,2> <AM/PM>') + '</p>');
         SMTPMail.AppendBody('<table Border="1" Style="border-style: none; width: 100%; border-collapse: collapse; transform: scale(1); transform-origin: left top 0px;">');

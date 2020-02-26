@@ -234,7 +234,7 @@ report 50118 PaymentVoucherGL_LT
                 end else
                     Name := "Payee Name";
 
-                Clear(AccountNo);
+                /*Clear(AccountNo);
                 if "Source No." <> '' then begin
                     if AccountNoTest = "Source No." then
                         AccountNo := "Bal. Account No."
@@ -242,7 +242,7 @@ report 50118 PaymentVoucherGL_LT
                         AccountNo := "Source No.";
                     AccountNoTest := "Source No.";
                 end else
-                    AccountNo := "G/L Account No.";
+                    AccountNo := "G/L Account No.";*/
 
                 //IF (Source Type=CONST(Customer)) Customer ELSE IF (Source Type=CONST(Vendor)) 
                 //Vendor ELSE IF (Source Type=CONST(Bank Account)) "Bank Account" ELSE IF (Source Type=CONST(Fixed Asset)) 
@@ -251,7 +251,9 @@ report 50118 PaymentVoucherGL_LT
                 if "Source Type" = "Source Type"::" " then begin
                     CalcFields("G/L Account Name");
                     AccountName := "G/L Account Name";
+                    AccountNo := "G/L Account No.";
                 end else begin
+                    AccountNo := "Source No.";
                     if "Source Type" = "Source Type"::"Bank Account" then begin
                         Clear(RecBankAccount);
                         RecBankAccount.GET("Source No.");

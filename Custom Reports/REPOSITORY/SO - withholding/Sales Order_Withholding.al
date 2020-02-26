@@ -188,7 +188,10 @@ report 50143 "Sales Order Withholding"
             column(CompanyInfo_Picture; CompanyInfo."Header Image")//Picture)//"Header Image")
             {
             }
+            column(No__of_Archived_Versions; "No. of Archived Versions")
+            {
 
+            }
             column(UserName; UserName)
             {
             }
@@ -504,6 +507,8 @@ report 50143 "Sales Order Withholding"
                 Clear(SPEmail);
                 Clear(IsDraft);
                 Clear(ShipmentMethod);
+                CalcFields("No. of Archived Versions");
+
                 if "Sales Header".Status <> "Sales Header".Status::Released then
                     IsDraft := true
                 else

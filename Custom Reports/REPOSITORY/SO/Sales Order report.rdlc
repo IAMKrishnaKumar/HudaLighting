@@ -3600,6 +3600,20 @@
                               <FontSize>8pt</FontSize>
                             </Style>
                           </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0," R-","")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0,Fields!No__of_Archived_Versions.Value,"")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
                         </TextRuns>
                         <Style>
                           <TextAlign>Left</TextAlign>
@@ -4077,7 +4091,6 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>0in</Top>
               <Height>1.7057cm</Height>
               <Width>19.14149cm</Width>
               <Style>
@@ -4481,6 +4494,9 @@ jqIcHbkMEctwLai0XKWJTTO54hOolNQ3DrgibgqHLBbFUAriDc2lmXURdEfqtHtJGm5vi4xwPvNYlrZL
         </Field>
         <Field Name="Project_Name">
           <DataField>Project_Name</DataField>
+        </Field>
+        <Field Name="No__of_Archived_Versions">
+          <DataField>No__of_Archived_Versions</DataField>
         </Field>
         <Field Name="Project_Reference">
           <DataField>Project_Reference</DataField>

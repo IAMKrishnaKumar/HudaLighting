@@ -3335,6 +3335,20 @@
                               <FontSize>8pt</FontSize>
                             </Style>
                           </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0," R-","")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0,Fields!No__of_Archived_Versions.Value,"")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
                         </TextRuns>
                         <Style>
                           <TextAlign>Left</TextAlign>
@@ -4310,6 +4324,9 @@ jqIcHbkMEctwLai0XKWJTTO54hOolNQ3DrgibgqHLBbFUAriDc2lmXURdEfqtHtJGm5vi4xwPvNYlrZL
         </Field>
         <Field Name="CompanyInfo_City">
           <DataField>CompanyInfo_City</DataField>
+        </Field>
+        <Field Name="No__of_Archived_Versions">
+          <DataField>No__of_Archived_Versions</DataField>
         </Field>
         <Field Name="CurrencyFactor">
           <DataField>CurrencyFactor</DataField>

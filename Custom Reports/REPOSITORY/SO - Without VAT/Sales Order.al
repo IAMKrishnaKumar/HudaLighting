@@ -134,6 +134,10 @@ report 50149 "Sales Order Without VAT"
             column(CompanyInfo_City; CompanyInfo.City)
             {
             }
+            column(No__of_Archived_Versions; "No. of Archived Versions")
+            {
+
+            }
             column(CurrencyFactor; CurrencyFactor)//
             {
 
@@ -494,6 +498,8 @@ report 50149 "Sales Order Without VAT"
                 Clear(SPEmail);
                 Clear(IsDraft);
                 Clear(ShipmentMethod);
+                CalcFields("No. of Archived Versions");
+
                 if "Sales Header".Status <> "Sales Header".Status::Released then
                     IsDraft := true
                 else

@@ -2772,6 +2772,20 @@
                               <FontSize>8pt</FontSize>
                             </Style>
                           </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0," R-","")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0,Fields!No__of_Archived_Versions.Value,"")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
                         </TextRuns>
                         <Style>
                           <TextAlign>Left</TextAlign>
@@ -3873,6 +3887,9 @@ aLjzXQmD340m8BdQ0TeeR1EODxyGCOW4FtRaLlLEppnk8QnUSmobh1wRNwVDlgtiqAVxBubSzLqIuiP1
         </Field>
         <Field Name="BuyfromVendorNo_PurchaseHeader">
           <DataField>BuyfromVendorNo_PurchaseHeader</DataField>
+        </Field>
+        <Field Name="No__of_Archived_Versions">
+          <DataField>No__of_Archived_Versions</DataField>
         </Field>
         <Field Name="Name_Vend">
           <DataField>Name_Vend</DataField>

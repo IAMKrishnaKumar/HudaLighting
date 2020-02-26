@@ -209,6 +209,8 @@ pageextension 50128 SalesInv extends "Sales Invoice"
             trigger OnBeforeAction()
             begin
                 Rec.TestField("Currency Code");
+                //added later for payment milestone confirmation in invoice
+                ConfirmPaymentMilestone;
             end;
         }
         modify(PostAndSend)
@@ -216,6 +218,8 @@ pageextension 50128 SalesInv extends "Sales Invoice"
             trigger OnBeforeAction()
             begin
                 Rec.TestField("Currency Code");
+                //added later for payment milestone confirmation in invoice
+                ConfirmPaymentMilestone;
             end;
         }
     }
@@ -225,6 +229,7 @@ pageextension 50128 SalesInv extends "Sales Invoice"
         RecPM: Record "Payment Milestone";
         RecPT: Record "Payment Terms";
         TotalPercentage: Decimal;
+        RecSalesLine: Record "Sales Line";
     begin
         /*Clear(RecPaymentMilestone);
           RecPaymentMilestone.SetRange("Document Type", "Document Type");
@@ -236,7 +241,7 @@ pageextension 50128 SalesInv extends "Sales Invoice"
             if RecPT."Payment Milestone Mandatory" then begin
                 Clear(RecPM);
                 Clear(TotalPercentage);
-                RecPM.SetRange("Document Type", "Document Type"::Order);
+                RecPM.SetRange("Document Type", "Document Type"::Invoice);
                 RecPM.SetRange("Document No.", Rec."No.");
                 if RecPM.FindSet() then
                     repeat

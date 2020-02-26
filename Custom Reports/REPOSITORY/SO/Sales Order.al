@@ -31,6 +31,10 @@ report 50127 "Sales Order report"
             column(Project_Name; "Project Name")
             {
             }
+            column(No__of_Archived_Versions; "No. of Archived Versions")
+            {
+
+            }
             column(Project_Reference; "Project Reference")
             {
             }
@@ -494,6 +498,7 @@ report 50127 "Sales Order report"
                 Clear(SPEmail);
                 Clear(IsDraft);
                 Clear(ShipmentMethod);
+                CalcFields("No. of Archived Versions");
                 if "Sales Header".Status <> "Sales Header".Status::Released then
                     IsDraft := true
                 else

@@ -29,11 +29,9 @@ report 50122 "Purchase  Credit Memo Report"
             }
             column(CompanyAddress; CompanyAddress)
             {
-
             }
             column(Applies_to_Doc__No_; "Applies-to Doc. No.")
             {
-
             }
             column(CompanyInfo_vatRegNo; CompanyInfo."VAT Registration No.")
             {
@@ -294,7 +292,6 @@ report 50122 "Purchase  Credit Memo Report"
                 }
                 column(Unit_PriceLCY; "Purchase Line"."Unit Cost" * CurrencyFactor)
                 {
-
                 }
                 column(LineAmountLCY; "Purchase Line".Amount * CurrencyFactor)
                 {

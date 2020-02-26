@@ -2580,6 +2580,20 @@
                               <FontSize>8pt</FontSize>
                             </Style>
                           </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0," R-","")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                          <TextRun>
+                            <Value>=IIF(Fields!No__of_Archived_Versions.Value &lt;&gt;0,Fields!No__of_Archived_Versions.Value,"")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
                         </TextRuns>
                         <Style>
                           <TextAlign>Left</TextAlign>
@@ -3166,7 +3180,6 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>0in</Top>
               <Height>1.7057cm</Height>
               <Width>19.16617cm</Width>
               <Style>
@@ -3797,6 +3810,9 @@ aLjzXQmD340m8BdQ0TeeR1EODxyGCOW4FtRaLlLEppnk8QnUSmobh1wRNwVDlgtiqAVxBubSzLqIuiP1
         </Field>
         <Field Name="CoMpanyInfo_Add2">
           <DataField>CoMpanyInfo_Add2</DataField>
+        </Field>
+        <Field Name="No__of_Archived_Versions">
+          <DataField>No__of_Archived_Versions</DataField>
         </Field>
         <Field Name="CompanyInfo_Postcode">
           <DataField>CompanyInfo_Postcode</DataField>

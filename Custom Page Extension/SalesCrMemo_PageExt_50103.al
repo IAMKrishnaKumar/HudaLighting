@@ -16,6 +16,7 @@ pageextension 50103 SalesCrMemo extends "Sales Credit Memo"
             field("Amount (In Arabic)"; "Amount (In Arabic)")
             {
                 ApplicationArea = All;
+                MultiLine = true;
             }
         }
         addafter("Due Date")

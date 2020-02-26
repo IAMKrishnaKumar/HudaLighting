@@ -74,7 +74,7 @@ report 50107 "OA Daily Report"
         //SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", EmailList, 'Order Acknowledgements From ' + FORMAT(CALCDATE('-1W', WorkDate()), 0, '<day,2>/<month,2>/<year4>') + ' To ' + Format(WorkDate(), 0, '<day,2>/<month,2>/<year4>'), '');
         //FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>')
         BccEmail.Add('krishnakumar.r@levtechconsulting.com');
-        SMTPMail.AddBCC(BccEmail);
+        //SMTPMail.AddBCC(BccEmail);
         SMTPMail.AppendBody('</br>');
         SMTPMail.AppendBody('<p>Report : Order Acknowledgements Today</p>');
         SMTPMail.AppendBody('<p>Date : ' + FORMAT(CURRENTDATETIME, 0, '<day,2>/<month,2>/<year4> <Hours12>:<Minutes,2> <AM/PM>') + '</p>');
