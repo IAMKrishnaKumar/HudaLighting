@@ -10,6 +10,10 @@ pageextension 50127 ItemPageList extends "Item List"
                 ApplicationArea = All;
                 Editable = false;
             }
+            field("Available Items"; "Available Items")
+            {
+                ApplicationArea = All;
+            }
             field(IsUploaded; IsUploaded)
             {
                 ApplicationArea = All;

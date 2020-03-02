@@ -131,6 +131,25 @@ pageextension 50102 PostedSalesInv extends "Posted Sales Invoice"
                 }
             }
         }
+        addafter(Print)
+        {
+            action("Update Document")
+            {
+                ApplicationArea = All;
+                Image = UpdateDescription;
+                trigger OnAction()
+                VAR
+                    UpdateCard: Page "Update Sales Invoice";
+                    RecSalesInvHeader: Record "Sales Invoice Header";
+                begin
+                    Clear(RecSalesInvHeader);
+                    RecSalesInvHeader.SetRange("No.", "No.");
+                    UpdateCard.SetTableView(RecSalesInvHeader);
+                    UpdateCard.LookupMode(true);
+                    UpdateCard.RunModal();
+                end;
+            }
+        }
         addafter(Invoice)
         {
             action("Print Delivery Note")

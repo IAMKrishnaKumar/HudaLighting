@@ -43,6 +43,21 @@ page 50109 "Sales Order Holistic View"
                 {
                     ApplicationArea = All;
                     Caption = 'Purchase Order No.';
+                    DrillDown = true;
+                    trigger OnDrillDown()
+                    var
+                        PurchHeader: Record "Purchase Header";
+                        PurchLine: Record "Purchase Line";
+                        PurchOrderCard: Page "Purchase Order";
+                    begin
+                        Clear(PurchHeader);
+                        PurchHeader.SetRange("Document Type", PurchHeader."Document Type"::Order);
+                        PurchHeader.SetRange("No.", "HL_Purchase Order No.");
+                        if PurchHeader.FindFirst() then begin
+                            PurchOrderCard.SetTableView(PurchHeader);
+                            PurchOrderCard.Run();
+                        end;
+                    end;
                 }
                 field("PO Qty"; "PO Qty")
                 {

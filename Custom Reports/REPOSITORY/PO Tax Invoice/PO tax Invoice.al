@@ -149,6 +149,14 @@ report 50120 "Purchase Tax Invoice"
                 column(SNo; SNo)
                 {
                 }
+                column(Type; Type)
+                {
+
+                }
+                column(IsComment; IsComment)
+                {
+
+                }
                 column(VatAmt; VatAmt)
                 {
                 }
@@ -227,10 +235,14 @@ report 50120 "Purchase Tax Invoice"
                     RecBrand: Record "Item Brands";
                     RecItem: Record Item;
                 begin
-                    IF "Purch. Inv. Line"."No." <> '' THEN
+                    //IF "Purch. Inv. Line"."No." <> '' THEN
+                    IF "Purch. Inv. Line".Type <> "Purch. Inv. Line".Type::" " THEN
                         SNo += 1;
 
-
+                    if "Purch. Inv. Line".Type = "Purch. Inv. Line".Type::" " then
+                        IsComment := true
+                    else
+                        IsComment := false;
                     //Amount := "Purchase Line"."Unit Cost" * "Purchase Line"."Unit Cost";
 
                     VatAmt := ("Purch. Inv. Line"."VAT Base Amount" * "Purch. Inv. Line"."VAT %") / 100;
@@ -417,7 +429,7 @@ report 50120 "Purchase Tax Invoice"
     var
         VendorRec: Record 23;
         PurchaseOrderNO: Text;
-
+        IsComment: Boolean;
         DescriptionText: Text;
         ItemCode: Text;
         Add_Vend: Text;

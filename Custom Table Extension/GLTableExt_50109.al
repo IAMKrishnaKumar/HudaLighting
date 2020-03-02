@@ -24,6 +24,17 @@ tableextension 50109 GenLedtableExt extends "G/L Entry"
         {
             DataClassification = ToBeClassified;
         }
+        field(50005; "Project Name"; Text[50])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup ("Dimension Value".Name where("Dimension Code" = field("Global Dimension 1 Code")));
+        }
+        field(50006; "Customer Name"; Text[100])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup (Customer.Name where("No." = field("Source No.")));
+        }
+
         //****************************PDC
         field(60000; "Import L/C"; Code[20])
         {
@@ -62,4 +73,5 @@ tableextension 50109 GenLedtableExt extends "G/L Entry"
 
     var
         myInt: Integer;
+        GLEntry: Record "G/L Entry";
 }

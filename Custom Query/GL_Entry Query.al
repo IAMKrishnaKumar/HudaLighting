@@ -108,6 +108,14 @@ query 50100 "G/L Entry"
             {
 
             }
+            column(Project_Name; "Project Name")
+            {
+
+            }
+            column(Customer_Name; "Customer Name")
+            {
+
+            }
         }
     }
 }

@@ -72,6 +72,12 @@ tableextension 50115 ItemTableExt extends Item
         {
             DataClassification = ToBeClassified;
         }
+
+        field(50005; "Available Items"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = Sum ("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."), "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"), "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"), "Location Code" = FIELD("Location Filter")));
+        }
     }
     keys
     {

@@ -52,6 +52,10 @@ pageextension 50161 MyExtension extends "Posted Sales Invoice Subform"
                 Caption = 'Purchase Order Quanity';
                 Visible = false;
             }
+            field("Sales Order No."; "Sales Order No.")
+            {
+                ApplicationArea = All;
+            }
 
             field("PO Line No."; "PO Line No.")
             {

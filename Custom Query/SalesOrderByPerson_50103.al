@@ -43,6 +43,49 @@ query 50103 "Sales Order by Sales Person"
                     {
 
                     }
+                    column(Shortcut_Dimension_2_Code; "Shortcut Dimension 2 Code")
+                    {
+
+                    }
+                    dataitem(Salesperson_Purchaser; "Salesperson/Purchaser")
+                    {
+                        DataItemLink = Code = Sales_Header."Salesperson Code";
+                        column(SalesPersonCode; "Code")
+                        {
+                        }
+                        column(SalesPersonName; Name)
+                        {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+query 50104 "Sales Person And Territory"
+{
+    Caption = 'Sales Person And Territory';
+
+    elements
+    {
+        dataitem(Sales_Line; "Sales Line")
+        {
+            dataitem(Currency; Currency)
+            {
+                DataItemLink = Code = Sales_Line."Currency Code";
+
+                dataitem(Sales_Header; "Sales Header")
+                {
+                    DataItemLink = "No." = Sales_Line."Document No.";
+
+                    column(Shortcut_Dimension_2_Code; "Shortcut Dimension 2 Code")
+                    {
+
+                    }
                     dataitem(Salesperson_Purchaser; "Salesperson/Purchaser")
                     {
                         DataItemLink = Code = Sales_Header."Salesperson Code";

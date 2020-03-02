@@ -5,6 +5,10 @@ pageextension 50157 CashReceupt extends "Cash Receipt Journal"
         // Add changes to page layout here
         addafter("External Document No.")
         {
+            field("Payment Method Code"; "Payment Method Code")
+            {
+                ApplicationArea = All;
+            }
             field("Payee Name"; "Payee Name")
             {
                 ApplicationArea = All;

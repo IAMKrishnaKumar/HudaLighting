@@ -80,6 +80,10 @@ pageextension 50118 ItemCard extends "Item Card"
                 ApplicationArea = All;
                 Editable = false;
             }
+            field("Available Items"; "Available Items")
+            {
+                ApplicationArea = All;
+            }
         }
 
 

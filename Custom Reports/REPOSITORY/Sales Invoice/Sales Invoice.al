@@ -58,6 +58,10 @@
             {
 
             }
+            column(OANo; OANo)
+            {
+
+            }
             column(DelAddCaption; DelAddCaption)
             {
 
@@ -636,6 +640,11 @@
                 Clear(SPPhone);
                 Clear(ShipmentMethod);
 
+                Clear(RecSalesLine);
+                RecSalesLine.SetRange("Document No.", "No.");
+                RecSalesLine.SetFilter("Sales Order No.", '<>%1', '');
+                if RecSalesLine.FindFirst() then
+                    OANo := RecSalesLine."Sales Order No.";
 
                 IF Customer_Rec.GET("Sales Header"."Sell-to Customer No.") THEN begin
                     CustNameArabic := Customer_Rec."Name - Arabic";
@@ -785,6 +794,7 @@
 
     var
         ItemDescArabic: Text;
+        OANo: Text;
         BrandDesc: Text;
         Duplicate: Boolean;
         AmountIncVAT: Decimal;

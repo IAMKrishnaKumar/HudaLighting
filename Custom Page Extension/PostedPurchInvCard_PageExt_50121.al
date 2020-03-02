@@ -97,6 +97,23 @@ pageextension 50121 PurchInvCard extends "Purchase Invoice"
                 Rec.TestField("Currency Code");
             end;
         }
+        addafter("P&osting")
+        {
+            action("Update VAT Bus. Posting Group")
+            {
+                ApplicationArea = All;
+
+                trigger OnAction()
+                VAR
+                    PLines: Record "Purchase Line";
+                    UpdatePosGrp: Report 50152;
+                begin
+                    UpdatePosGrp.SetInvoiceNo("No.");
+                    UpdatePosGrp.RunModal();
+                    Message('Process completed.');
+                end;
+            }
+        }
     }
 
     var

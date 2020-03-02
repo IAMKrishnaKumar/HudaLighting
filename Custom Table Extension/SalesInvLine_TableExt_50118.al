@@ -45,6 +45,10 @@ tableextension 50118 SalesInvLine extends "Sales Invoice Line"
         {
             DataClassification = ToBeClassified;
         }
+        field(50009; "Sales Order No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
         field(50010; "Brand"; Text[20])
         {
             DataClassification = ToBeClassified;

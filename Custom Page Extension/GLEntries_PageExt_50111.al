@@ -69,7 +69,7 @@ pageextension 50111 GenLedEntries extends "General Ledger Entries"
                 action("Update G/L Acc. No.")
                 {
                     ApplicationArea = All;
-
+                    Visible = false;
                     trigger OnAction()
                     var
                         UpdateGLReport: Report 50142;

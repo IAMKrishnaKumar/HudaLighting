@@ -34,6 +34,8 @@ report 50141 "General Project Status"
                     RecCustLedEntry: Record "Cust. Ledger Entry";
                     LandedCost: Decimal;
                     TotalLandedCost: Decimal;
+                    RecReservEntry: Record "Reservation Entry";
+                    SourceFilter: Text;
                 begin
                     RecGLSetup.GET;
                     ExcelBuf.NewRow;
@@ -57,8 +59,32 @@ report 50141 "General Project Status"
                     if RecBrand.GET(Brand) then;
                     ExcelBuf.AddColumn(RecBrand.Description, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
                     ExcelBuf.AddColumn("Vendor Article No", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                    ExcelBuf.AddColumn(Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
                     CalcFields("Reserved Quantity");
                     ExcelBuf.AddColumn("Reserved Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    Clear(SourceFilter);
+                    Clear(RecReservEntry);
+                    RecReservEntry.SetFilter("Source Type", '=%1', Database::"Sales Line");
+                    RecReservEntry.SetFilter("Source ID", '=%1', "Document No.");
+                    if RecReservEntry.FindSet() then begin
+                        repeat
+                            SourceFilter += FORMAT(RecReservEntry."Entry No.") + '|';
+                        until RecReservEntry.Next() = 0;
+                    end;
+                    if SourceFilter <> '' then begin
+                        SourceFilter := CopyStr(SourceFilter, 1, StrLen(SourceFilter) - 1);
+                        Clear(RecReservEntry);
+                        RecReservEntry.SetRange("Source Type", 32);
+                        RecReservEntry.SetFilter("Entry No.", SourceFilter);
+                        if RecReservEntry.FindSet() then begin
+                            RecReservEntry.CalcSums(Quantity);
+                            ExcelBuf.AddColumn(Round(RecReservEntry.Quantity, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                        end else
+                            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                    end else
+                        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+
                     Clear(CurrencyFactor);//
                     if "Sales Header"."Currency Factor" <> 0 then
                         CurrencyFactor := "Sales Header"."Currency Factor"
@@ -67,7 +93,6 @@ report 50141 "General Project Status"
                     Clear(CurrencyExchangeRate);
                     ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(RecGLSetup."LCY Code");
                     ExcelBuf.AddColumn(ROUND(("Unit Price" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                    ExcelBuf.AddColumn(Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                     ExcelBuf.AddColumn(ROUND(("Line Amount" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                     Clear(RecPurchLine);
                     RecPurchLine.SetRange("Document Type", "Document Type"::Order);
@@ -192,6 +217,7 @@ report 50141 "General Project Status"
     local procedure MakeExcelDataHeader()
     var
         RecGLSetup: Record "General Ledger Setup";
+
     begin
         RecGLSetup.GET;
         ExcelBuf.NewRow;
@@ -208,9 +234,12 @@ report 50141 "General Project Status"
         ExcelBuf.AddColumn('Brand', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Vendor Article No.', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
 
-        ExcelBuf.AddColumn('Reserved quantity', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
-        ExcelBuf.AddColumn('Unit Price (' + RecGLSetup."LCY Code" + ')', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Quantity', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('PO Reservation', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+
+        ExcelBuf.AddColumn('Received Qty', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('Unit Price (' + RecGLSetup."LCY Code" + ')', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+
         ExcelBuf.AddColumn('Total Price (' + RecGLSetup."LCY Code" + ')', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Balance Not Received', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Balance Not Delivered', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);

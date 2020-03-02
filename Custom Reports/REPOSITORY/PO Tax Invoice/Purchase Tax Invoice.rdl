@@ -7104,6 +7104,12 @@ End Function
         <Field Name="SNo">
           <DataField>SNo</DataField>
         </Field>
+        <Field Name="Type">
+          <DataField>Type</DataField>
+        </Field>
+        <Field Name="IsComment">
+          <DataField>IsComment</DataField>
+        </Field>
         <Field Name="VatAmt">
           <DataField>VatAmt</DataField>
         </Field>

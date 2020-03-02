@@ -192,6 +192,24 @@ pageextension 50128 SalesInv extends "Sales Invoice"
             }
         }
 
+        addafter("P&osting")
+        {
+            action("Update VAT Bus. Posting Group")
+            {
+                ApplicationArea = All;
+
+                trigger OnAction()
+                VAR
+                    PLines: Record "Purchase Line";
+                    UpdatePosGrp: Report 50156;
+                begin
+                    UpdatePosGrp.SetInvoiceNo("No.");
+                    UpdatePosGrp.RunModal();
+                    Message('Process completed.');
+                end;
+            }
+        }
+
         modify(Post)
         {
             trigger OnBeforeAction()
