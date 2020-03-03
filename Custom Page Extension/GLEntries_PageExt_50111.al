@@ -45,6 +45,10 @@ pageextension 50111 GenLedEntries extends "General Ledger Entries"
             {
                 ApplicationArea = All;
             }
+            field("G/L Account Category "; "G/L Account Category ")
+            {
+                ApplicationArea = All;
+            }
         }
         addlast(Control1)
         {

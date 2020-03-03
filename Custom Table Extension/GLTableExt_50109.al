@@ -34,8 +34,14 @@ tableextension 50109 GenLedtableExt extends "G/L Entry"
             FieldClass = FlowField;
             CalcFormula = lookup (Customer.Name where("No." = field("Source No.")));
         }
+        field(50007; "G/L Account Category "; Option)
+        {
+            OptionMembers = ,Assets,Liabilities,Equity,Income,"Cost of Goods Sold",Expense;
+            FieldClass = FlowField;
+            CalcFormula = lookup ("G/L Account"."Account Category" where("No." = field("G/L Account No.")));
+        }
 
-        //****************************PDC
+        //****************************PDC***********************
         field(60000; "Import L/C"; Code[20])
         {
             DataClassification = ToBeClassified;

@@ -116,6 +116,10 @@ query 50100 "G/L Entry"
             {
 
             }
+            column(G_L_Account_Category_; "G/L Account Category ")
+            {
+
+            }
         }
     }
 }
