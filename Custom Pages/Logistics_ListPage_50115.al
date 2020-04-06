@@ -232,7 +232,7 @@ page 50115 "Logistics History"
                         DatePage.RunModal();
                         SelectedDate := DatePage.GetDate();
                         if SelectedDate <> 0D then begin
-                            if not Confirm('Are you sure you want to update the Promised Arrival Date.', false) then
+                            if not Confirm('Are you sure you want to update the Promised Arrival Date?', false) then
                                 exit;
                             repeat
                                 //PLine.Validate("Promised Receipt Date", SelectedDate);
@@ -258,7 +258,7 @@ page 50115 "Logistics History"
                     Clear(PLine);
                     CurrPage.SetSelectionFilter(PLine);
                     if PLine.FindSet() then begin
-                        if not Confirm('Are you sure you want to remove the Promised Arrival Date.', false) then
+                        if not Confirm('Are you sure you want to remove the Promised Arrival Date?', false) then
                             exit;
                         repeat
                             //PLine.Validate("Promised Receipt Date", 0D);

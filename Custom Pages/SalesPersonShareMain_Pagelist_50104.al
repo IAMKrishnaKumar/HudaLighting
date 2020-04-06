@@ -5,9 +5,9 @@ page 50104 "Sales Person Share Main"
     UsageCategory = Administration;
     SourceTable = "Sales Person Main";
     Caption = 'Sales Person Share Main';
-    ModifyAllowed = false;
-    InsertAllowed = false;
-    DeleteAllowed = true;
+    // ModifyAllowed = false;
+    // InsertAllowed = false;
+    // DeleteAllowed = true;
 
     layout
     {

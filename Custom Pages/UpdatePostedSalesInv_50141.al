@@ -6,7 +6,7 @@ page 50141 "Update Sales Invoice"
     SourceTable = "Sales Invoice Header";
     InsertAllowed = false;
     DeleteAllowed = false;
-
+    Permissions = tabledata 112 = RIMD;
     layout
     {
         area(Content)

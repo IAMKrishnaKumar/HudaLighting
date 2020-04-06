@@ -49,69 +49,28 @@ pageextension 50112 GenJournalLine extends "General Journal"
 
     actions
     {
-        // Add changes to page actions here
-        /* addafter("Opening Balance")
-         {
-             group(Print)
-             {
-                 action("Print Voucher")
-                 {
-                     ApplicationArea = All;
-                     Caption = 'Print';
-                     Image = Print;
-                     trigger OnAction()
-                     var
-                         GenVoucher: Report 50115;
-                         GJln: Record "Gen. Journal Line";
-                     begin
-                         Clear(GJln);
-                         GJln.SetRange("Journal Template Name", Rec."Journal Template Name");
-                         GJln.SetRange("Journal Batch Name", Rec."Journal Batch Name");
-                         if GJln.FindSet() then begin
-                             GenVoucher.SetTableView(GJln);
-                             GenVoucher.Run();
-                         end;
-                     end;
-                 }
-             }
-         }*/
-
         modify(Post)
         {
-            trigger OnBeforeAction()
+            trigger OnAfterAction()
             var
-                Check: Codeunit 50104;
+                GenLedSetup: Record "General Ledger Setup";
+                GenVoucher: Report 50116;
+                GLEntry: Record "G/L Entry";
             begin
-                // Check.CheckCurrencyForJournal(Rec);
-                // RecJln.COPY(Rec);
-                // // Clear(RecJln);
-                // // RecJln.SetRange("Journal Template Name", Rec."Journal Template Name");
-                // // RecJln.SetRange("Journal Batch Name", Rec."Journal Batch Name");
-                // // RecJln.SetRange();
-                // RecJln.SetFilter("Bal. Account Type", '=%1|%2', "Bal. Account Type"::Vendor, "Bal. Account Type"::Customer);
-                // if RecJln.FindSet() then begin
-                //     RecJln.TestField("Currency Code");
-                //  end;
+                GenLedSetup.GET;
+                if GenLedSetup."Gen. Jln. Post & Print" then begin
+                    if not Confirm('Do you want to print the Voucher?', false) then
+                        exit;
+                    Clear(GLEntry);
+                    GLEntry.SetRange("Document No.", Rec."Document No.");
+                    if GLEntry.FindFirst() then begin
+                        GenVoucher.SetTableView(GLEntry);
+                        GenVoucher.Run();
+                    end;
+                end;
             end;
         }
-        modify(PostAndPrint)
-        {
-            trigger OnBeforeAction()
-            var
-                Check: Codeunit 50104;
-            begin
-                //  Check.CheckCurrencyForJournal(Rec);
-                // RecJln.COPY(Rec);
-                // // Clear(RecJln);
-                // // RecJln.SetRange("Journal Template Name", Rec."Journal Template Name");
-                // // RecJln.SetRange("Journal Batch Name", Rec."Journal Batch Name");
-                // // RecJln.SetRange();
-                // RecJln.SetFilter("Bal. Account Type", '=%1|%2', "Bal. Account Type"::Vendor, "Bal. Account Type"::Customer);
-                // if RecJln.FindSet() then begin
-                //     RecJln.TestField("Currency Code");
-                //  end;
-            end;
-        }
+
 
     }
 
@@ -152,36 +111,6 @@ pageextension 50186 InterCompanyJournal extends "IC General Journal"
 
     actions
     {
-        // Add changes to page actions here
-        /*  modify("P&ost")
-          {
-              trigger OnBeforeAction()
-              var
-                  RecJln: Record "Gen. Journal Line";
-              begin
-                  Clear(RecJln);
-                  RecJln.SetRange("Journal Template Name", Rec."Journal Template Name");
-                  RecJln.SetRange("Journal Batch Name", Rec."Journal Batch Name");
-                  if RecJln.FindSet() then begin
-                      RecJln.TestField("Currency Code");
-                  end;
-              end;
-          }
-          modify("Post and &Print")
-          {
-              trigger OnBeforeAction()
-              var
-                  RecJln: Record "Gen. Journal Line";
-              begin
-                  Clear(RecJln);
-                  RecJln.SetRange("Journal Template Name", Rec."Journal Template Name");
-                  RecJln.SetRange("Journal Batch Name", Rec."Journal Batch Name");
-                  if RecJln.FindSet() then begin
-                      RecJln.TestField("Currency Code");
-                  end;
-              end;
-          }
-          */
     }
 
     var

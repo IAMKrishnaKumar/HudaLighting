@@ -145,6 +145,7 @@ pageextension 50102 PostedSalesInv extends "Posted Sales Invoice"
                     Clear(RecSalesInvHeader);
                     RecSalesInvHeader.SetRange("No.", "No.");
                     UpdateCard.SetTableView(RecSalesInvHeader);
+                    UpdateCard.Editable(true);
                     UpdateCard.LookupMode(true);
                     UpdateCard.RunModal();
                 end;

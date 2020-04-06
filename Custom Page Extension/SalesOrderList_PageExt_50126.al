@@ -47,6 +47,39 @@ pageextension 50126 SalesOrderList extends "Sales Order List"
                 ApplicationArea = All;
             }
         }
+        addlast(Control1)
+        {
+            field("G/L Invoiced"; "G/L Invoiced")
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+            field("Non Stock Invoiced"; "Non Stock Invoiced")
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+            field("UE GP"; "UE GP")
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+            field("UE GP ACY"; "UE GP ACY")
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+            field("UE Sales"; "UE Sales")
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+            field("UE Sales ACY"; "UE Sales ACY")
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+        }
     }
 
     actions
@@ -116,7 +149,45 @@ pageextension 50126 SalesOrderList extends "Sales Order List"
                 CheckAdvanceGLAmount;
             end;
         }
-
+        addafter("&Order Confirmation")
+        {
+            action("Posted Sales Invoices")
+            {
+                ApplicationArea = All;
+                Image = CoupledInvoice;
+                trigger OnAction()
+                VAR
+                    SalesInvLine: Record "Sales Invoice Line";
+                    SalesInvHeader: Record "Sales Invoice Header";
+                    SalesInvoiceList: Page "Posted Sales Invoices";
+                    CheckList: List of [Text];
+                    FilterText: Text;
+                begin
+                    Clear(SalesInvLine);
+                    Clear(FilterText);
+                    SalesInvLine.SetRange("Sales Order No.", Rec."No.");
+                    if SalesInvLine.FindSet() then begin
+                        repeat
+                            if not CheckList.Contains(SalesInvLine."Document No.") then begin
+                                CheckList.Add(SalesInvLine."Document No.");
+                                FilterText := FilterText + SalesInvLine."Document No." + '|';
+                            end;
+                        until SalesInvLine.Next() = 0;
+                    end;
+                    if FilterText <> '' then begin
+                        FilterText := CopyStr(FilterText, 1, StrLen(FilterText) - 1);
+                        Clear(SalesInvHeader);
+                        SalesInvHeader.SetFilter("No.", FilterText);
+                        if SalesInvHeader.FindSet() then begin
+                            Clear(SalesInvoiceList);
+                            SalesInvoiceList.SetTableView(SalesInvHeader);
+                            SalesInvoiceList.Caption := 'Posted Sales Invoices for ' + Rec."No.";
+                            SalesInvoiceList.Run;
+                        end;
+                    end;
+                end;
+            }
+        }
         addafter(Warehouse)
         {
             group(Import)

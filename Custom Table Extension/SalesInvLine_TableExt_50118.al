@@ -53,6 +53,12 @@ tableextension 50118 SalesInvLine extends "Sales Invoice Line"
         {
             DataClassification = ToBeClassified;
         }
+        field(60000; "Item Type"; Option)
+        {
+            OptionMembers = Inventory,Service,"Non-Inventory";
+            FieldClass = FlowField;
+            CalcFormula = lookup (Item.Type where("No." = field("No.")));
+        }
     }
 
     var

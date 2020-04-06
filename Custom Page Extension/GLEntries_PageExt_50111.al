@@ -37,6 +37,10 @@ pageextension 50111 GenLedEntries extends "General Ledger Entries"
             {
                 ApplicationArea = All;
             }
+            field("Shared %"; "Shared %")
+            {
+                ApplicationArea = All;
+            }
             field("Source Type"; "Source Type")
             {
                 ApplicationArea = All;
@@ -46,6 +50,10 @@ pageextension 50111 GenLedEntries extends "General Ledger Entries"
                 ApplicationArea = All;
             }
             field("G/L Account Category "; "G/L Account Category ")
+            {
+                ApplicationArea = All;
+            }
+            field("Project Name"; "Project Name")
             {
                 ApplicationArea = All;
             }

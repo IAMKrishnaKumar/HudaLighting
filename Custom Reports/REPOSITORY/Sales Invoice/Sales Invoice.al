@@ -313,7 +313,7 @@
             column(CompanyInfo_Country; CompanyInfo."Country/Region Code")
             {
             }
-            column(Instructions; Instructions + CompanyInfo.Name) { }
+            column(Instructions; Instructions) { }
             column(Ins2; Ins2) { }
             column(Ins3; Ins3) { }
             column(IsDiffCurrency; IsDiffCurrency)

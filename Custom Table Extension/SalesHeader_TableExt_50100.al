@@ -122,6 +122,40 @@ tableextension 50100 SalesHeader extends "Sales Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(50029; "Sales Person Share"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50030; "Non Stock Invoiced"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Invoice Line"."Line Amount" where(Type = const(Item), "Item Type" = filter('<>Inventory'), "Sales Order No." = field("No.")));
+        }
+        field(50031; "G/L Invoiced"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Invoice Line"."Line Amount" where(Type = const("G/L Account"), "Sales Order No." = field("No."), "No." = filter('<>201610|103350')));
+        }
+        field(50032; "UE Sales"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."UE Sales" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
+        }
+        field(50033; "UE GP"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."UE GP" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
+        }
+        field(50034; "UE Sales ACY"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."ACY UE Sales" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
+        }
+        field(50035; "UE GP ACY"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."ACY UE GP" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
+        }
 
         //***********************************PDC************************
         field(60000; "Applies-to ID for PDC"; Code[20])
@@ -157,6 +191,23 @@ tableextension 50100 SalesHeader extends "Sales Header"
         {
             DataClassification = ToBeClassified;
             ObsoleteState = Removed;
+        }
+        modify("Shortcut Dimension 1 Code")
+        {
+            trigger OnAfterValidate()
+            var
+                RecSalesPersonShare: Record "Sales Person Main";
+            begin
+                if "Shortcut Dimension 1 Code" <> '' then begin
+                    Clear(RecSalesPersonShare);
+                    RecSalesPersonShare.SetRange("Opportunity No", "Shortcut Dimension 1 Code");
+                    if RecSalesPersonShare.FindFirst() then
+                        "Sales Person Share" := true
+                    else
+                        "Sales Person Share" := false;
+                end else
+                    "Sales Person Share" := false;
+            end;
         }
         modify("Sell-to Customer No.")
         {

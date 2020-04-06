@@ -278,6 +278,14 @@ report 50104 "Standard Statement HL"
                             {
 
                             }
+                            column(ExtDocNo; ExtDocNo)
+                            {
+
+                            }
+                            column(Narration; Narration)
+                            {
+
+                            }
                             //Levtech-End
 
                             trigger OnAfterGetRecord()
@@ -291,20 +299,25 @@ report 50104 "Standard Statement HL"
                                 Clear(OpportunityNo);
                                 Clear(SalesPerson);
                                 Clear(ProjectName);
+                                Clear(ExtDocNo);
+                                Clear(Narration);
                                 Clear(ProjectReference);
-                                if CustLedgerEntry."Document Type" = CustLedgerEntry."Document Type"::Invoice then begin
-                                    Clear(SalesInvHeader);
-                                    SalesInvHeader.SetRange("No.", CustLedgerEntry."Document No.");
-                                    if SalesInvHeader.FindFirst() then begin
-                                        OpportunityNo := SalesInvHeader."Shortcut Dimension 1 Code";
-                                        SalesPerson := SalesInvHeader."Salesperson Code";
-                                        ProjectName := SalesInvHeader."Project Name";
-                                        ProjectReference := SalesInvHeader."Project Reference";
+                                Clear(CustLedgerEntryG);
+                                if CustLedgerEntryG.GET("Cust. Ledger Entry No.") then begin
+                                    if CustLedgerEntryG."Document Type" = CustLedgerEntryG."Document Type"::Invoice then begin
+                                        Clear(SalesInvHeader);
+                                        SalesInvHeader.SetRange("No.", CustLedgerEntryG."Document No.");
+                                        if SalesInvHeader.FindFirst() then begin
+                                            OpportunityNo := SalesInvHeader."Shortcut Dimension 1 Code";
+                                            SalesPerson := SalesInvHeader."Salesperson Code";
+                                            ProjectName := SalesInvHeader."Project Name";
+                                            ProjectReference := SalesInvHeader."Project Reference";
+                                        end;
                                     end;
+                                    ExtDocNo := CustLedgerEntryG."External Document No.";
+                                    Narration := CustLedgerEntryG.Narration;
                                 end;
                                 //Levtech-End
-
-
                                 CASE "Entry Type" OF
                                     "Entry Type"::"Initial Entry":
                                         BEGIN
@@ -442,25 +455,32 @@ report 50104 "Standard Statement HL"
                             column(Desc_CustLedgEntry2; Description)
                             {
                             }
-                            //Levtech-Start
-                            column(Opportunity__No; OpportunityNo)
+                            //Levtech-Start1
+                            column(opportunity2; opportunity2)
                             {
 
                             }
-                            column(Sales__Person; SalesPerson)
+                            column(SalesPerson2; SalesPerson2)
                             {
 
                             }
-                            column(Project__Name; ProjectName)
+                            column(ProjectName2; ProjectName2)
                             {
 
                             }
-                            column(Project__Reference; ProjectReference)
+                            column(ProjectRef2; ProjectRef2)
                             {
 
                             }
                             //Levtech-End
+                            column(ExtDocNo2; ExtDocNo)
+                            {
 
+                            }
+                            column(Narration2; Narration)
+                            {
+
+                            }
                             column(DueDate_CustLedgEntry2; FORMAT("Due Date"))
                             {
                             }
@@ -501,28 +521,24 @@ report 50104 "Standard Statement HL"
 
                                 IF "Due Date" >= EndDate THEN
                                     CurrReport.SKIP;
-
                                 CustBalance2 := CustBalance2 + CustLedgEntry."Remaining Amount";
 
-
-                                //Levtech-Start
-                                Clear(OpportunityNo);
-                                Clear(SalesPerson);
-                                Clear(ProjectName);
-                                Clear(ProjectReference);
-                                if CustLedgEntry."Document Type" = CustLedgEntry."Document Type"::Invoice then begin
+                                //Levtech-Start1
+                                Clear(opportunity2);
+                                Clear(SalesPerson2);
+                                Clear(ProjectName2);
+                                Clear(ProjectRef2);
+                                if CustLedgEntry2."Document Type" = CustLedgEntry2."Document Type"::Invoice then begin
                                     Clear(SalesInvHeader);
-                                    SalesInvHeader.SetRange("No.", CustLedgEntry."Document No.");
+                                    SalesInvHeader.SetRange("No.", CustLedgEntry2."Document No.");
                                     if SalesInvHeader.FindFirst() then begin
-                                        OpportunityNo := SalesInvHeader."Shortcut Dimension 1 Code";
-                                        SalesPerson := SalesInvHeader."Salesperson Code";
-                                        ProjectName := SalesInvHeader."Project Name";
-                                        ProjectReference := SalesInvHeader."Project Reference";
+                                        opportunity2 := SalesInvHeader."Shortcut Dimension 1 Code";
+                                        SalesPerson2 := SalesInvHeader."Salesperson Code";
+                                        ProjectName2 := SalesInvHeader."Project Name";
+                                        ProjectRef2 := SalesInvHeader."Project Reference";
                                     end;
                                 end;
                                 //Levtech-End
-
-
                             end;
 
                             trigger OnPreDataItem()
@@ -1013,6 +1029,8 @@ report 50104 "Standard Statement HL"
         GLSetup: Record 98;
         SalesInvHeader: Record "Sales Invoice Header";
         OpportunityNo: Text;
+        ExtDocNo: Text;
+        Narration: Text;
         SalesPerson: Text;
         ProjectName: Text;
         ProjectReference: Text;
@@ -1106,6 +1124,11 @@ report 50104 "Standard Statement HL"
         GreetingLbl: Label 'Hello';
         ClosingLbl: Label 'Sincerely';
         BodyLbl: Label 'Thank you for your business. Your statement is attached to this message.';
+        CustLedgerEntryG: Record "Cust. Ledger Entry";
+        ProjectName2: Text;
+        ProjectRef2: Text;
+        SalesPerson2: Text;
+        opportunity2: Text;
 
     local procedure GetDate(PostingDate: Date; DueDate: Date): Date
     begin

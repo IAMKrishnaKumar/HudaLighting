@@ -51,6 +51,10 @@ tableextension 50107 GenLedSetExt extends "General Ledger Setup"
             DataClassification = ToBeClassified;
             TableRelation = "No. Series".Code;
         }
+        field(50010; "Gen. Jln. Post & Print"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         //********************************PDC****************
         field(60000; "CQ Template"; Code[20])
         {
@@ -112,6 +116,7 @@ tableextension 50107 GenLedSetExt extends "General Ledger Setup"
             Caption = 'PDC Receipt Batch';
             TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("PDC Receipt Template"));
         }
+
     }
 
     var

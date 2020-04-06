@@ -5676,6 +5676,12 @@ End Function
         <Field Name="ProjectReference">
           <DataField>ProjectReference</DataField>
         </Field>
+        <Field Name="ExtDocNo">
+          <DataField>ExtDocNo</DataField>
+        </Field>
+        <Field Name="Narration">
+          <DataField>Narration</DataField>
+        </Field>
         <Field Name="CurrencyCode3_CustLedgEntryFooter">
           <DataField>CurrencyCode3_CustLedgEntryFooter</DataField>
         </Field>
@@ -5730,17 +5736,23 @@ End Function
         <Field Name="Desc_CustLedgEntry2">
           <DataField>Desc_CustLedgEntry2</DataField>
         </Field>
-        <Field Name="Opportunity__No">
-          <DataField>Opportunity__No</DataField>
+        <Field Name="opportunity2">
+          <DataField>opportunity2</DataField>
         </Field>
-        <Field Name="Sales__Person">
-          <DataField>Sales__Person</DataField>
+        <Field Name="SalesPerson2">
+          <DataField>SalesPerson2</DataField>
         </Field>
-        <Field Name="Project__Name">
-          <DataField>Project__Name</DataField>
+        <Field Name="ProjectName2">
+          <DataField>ProjectName2</DataField>
         </Field>
-        <Field Name="Project__Reference">
-          <DataField>Project__Reference</DataField>
+        <Field Name="ProjectRef2">
+          <DataField>ProjectRef2</DataField>
+        </Field>
+        <Field Name="ExtDocNo2">
+          <DataField>ExtDocNo2</DataField>
+        </Field>
+        <Field Name="Narration2">
+          <DataField>Narration2</DataField>
         </Field>
         <Field Name="DueDate_CustLedgEntry2">
           <DataField>DueDate_CustLedgEntry2</DataField>

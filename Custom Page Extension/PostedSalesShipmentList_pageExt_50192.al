@@ -9,6 +9,11 @@ pageextension 50192 PostedSalesShipmentPage extends "Posted Sales Shipments"
             {
                 ApplicationArea = All;
             }
+            field(CompletelyInvoiced; CompletelyInvoiced)
+            {
+                ApplicationArea = All;
+                Caption = 'Completely Invoiced';
+            }
         }
     }
 
@@ -17,6 +22,26 @@ pageextension 50192 PostedSalesShipmentPage extends "Posted Sales Shipments"
         // Add changes to page actions here
     }
 
+    trigger OnAfterGetRecord()
     var
-        myInt: Integer;
+        RecPurcRcpLine: Record "Sales Shipment Line";
+        TotalInvoiced: Decimal;
+    begin
+        Clear(RecPurcRcpLine);
+        Clear(TotalInvoiced);
+        Clear(CompletelyInvoiced);
+        RecPurcRcpLine.SetRange("Document No.", Rec."No.");
+        if RecPurcRcpLine.FindSet() then begin
+            repeat
+                TotalInvoiced += RecPurcRcpLine."Qty. Shipped Not Invoiced";
+            until RecPurcRcpLine.Next() = 0;
+        end;
+        if TotalInvoiced = 0 then
+            CompletelyInvoiced := true
+        else
+            CompletelyInvoiced := false;
+    end;
+
+    var
+        CompletelyInvoiced: Boolean;
 }

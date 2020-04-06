@@ -1,6 +1,7 @@
 page 50109 "Sales Order Holistic View"
 {
     PageType = List;
+    Caption = 'Holistic View';
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "Sales Line";
@@ -27,6 +28,10 @@ page 50109 "Sales Order Holistic View"
                     ApplicationArea = All;
                 }
                 field("Vendor Article No"; "Vendor Article No")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shipment Date"; "Shipment Date")
                 {
                     ApplicationArea = All;
                 }
@@ -85,6 +90,64 @@ page 50109 "Sales Order Holistic View"
                     CurrPage.Update();
                 end;
             }
+
+
+            action("Update Shipment Date")
+            {
+                ApplicationArea = All;
+                Image = ChangeDates;
+
+                trigger OnAction()
+                var
+                    ShipmentDateReport: Report "Date Selection";
+                    Sline: Record "Sales Line";
+                    SelectedDate: Date;
+                begin
+                    Clear(Sline);
+                    CurrPage.SetSelectionFilter(Sline);
+                    if Sline.FindSet() then begin
+                        ShipmentDateReport.UseRequestPage(true);
+                        ShipmentDateReport.RunModal();
+                        SelectedDate := ShipmentDateReport.GetDate();
+                        if SelectedDate <> 0D then begin
+                            if not Confirm('Are you sure you want to update Shipment Date?', false) then
+                                exit;
+                            repeat
+                                Sline.SuspendStatusCheck(true);
+                                Sline.Validate("Shipment Date", SelectedDate);
+                                Sline.Modify();
+                            until Sline.Next() = 0;
+                        end;
+                    end;
+                end;
+            }
+
+
+
+            action("Remove Shipment Date")
+            {
+                ApplicationArea = All;
+                Image = RemoveLine;
+                trigger OnAction()
+                var
+                    Sline: Record "Sales Line";
+                begin
+                    Clear(Sline);
+                    CurrPage.SetSelectionFilter(Sline);
+                    if Sline.FindSet() then begin
+                        if not Confirm('Are you sure you want to remove Shipment Date?', false) then
+                            exit;
+                        repeat
+                            Sline.SuspendStatusCheck(true);
+                            Sline.Validate("Shipment Date", 0D);
+                            Sline.Modify();
+                        until Sline.Next() = 0;
+                    end;
+                end;
+            }
+
+
+
         }
     }
 

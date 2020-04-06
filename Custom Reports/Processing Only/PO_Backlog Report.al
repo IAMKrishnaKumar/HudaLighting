@@ -260,6 +260,7 @@ report 50139 "PO Backlog Report"
                                 ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(LocalCurrency);//ExchCurrency
                                 //ExchangeRateAmt := Round(ExchangeRateAmt, 0.01, '=');
 
+
                                 SMTPMail.AppendBody('<td align="right"   > ' + FORMAT(Round((RecPheader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + ' </td>');
                                 Total2 += Round((RecPheader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=');
                                 GrandTotal2 += Round((RecPheader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=');

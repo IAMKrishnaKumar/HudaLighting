@@ -18,6 +18,10 @@ report 50136 "Aged Accounts Rec. HL"
             column(CompanyName; CompanyDisplayName)
             {
             }
+            column(Logo; RecCompanyInfo.Picture)
+            {
+
+            }
             column(FormatEndingDate; STRSUBSTNO(Text006, FORMAT(EndingDate, 0, 4)))
             {
             }
@@ -286,6 +290,12 @@ report 50136 "Aged Accounts Rec. HL"
                         {
                         }
                         column(CLEDocType; FORMAT(CustLedgEntryEndingDate."Document Type"))
+                        {
+                        }
+                        column(CLEExtDocNo; CustLedgEntryEndingDate."External Document No.")
+                        {
+                        }
+                        column(CLENarration; CustLedgEntryEndingDate.Narration)
                         {
                         }
                         //Levtech-Start
@@ -746,7 +756,8 @@ report 50136 "Aged Accounts Rec. HL"
         FormatDocument: Codeunit 368;
     begin
         CustFilter := FormatDocument.GetRecordFiltersWithCaptions(Customer);
-
+        RecCompanyInfo.GET;
+        RecCompanyInfo.CalcFields(Picture);
         GLSetup.GET;
 
         CalcDates;
@@ -824,6 +835,7 @@ report 50136 "Aged Accounts Rec. HL"
         EnterDateFormulaErr: Label 'Enter a date formula in the Period Length field.';
         TodayFormatted: Text;
         CompanyDisplayName: Text;
+        RecCompanyInfo: Record "Company Information";
 
     local procedure CalcDates()
     var

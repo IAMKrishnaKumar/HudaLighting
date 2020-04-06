@@ -481,7 +481,7 @@ pageextension 50109 SalesOrder extends "Sales Order"
                         RecSOSplit.SetRange("Opportunity No", Rec."Shortcut Dimension 1 Code");
                         if RecSOSplit.FindSet() then;
                         SoSPlit.SetTableView(RecSOSplit);
-                        SoSPlit.Editable(false);
+                        //SoSPlit.Editable(false);
                         SoSPlit.Run();
                     end;
 
@@ -491,24 +491,6 @@ pageextension 50109 SalesOrder extends "Sales Order"
             group(Printing)
             {
                 Image = Print;
-                /*action(Print)
-                {
-                    ApplicationArea = All;
-                    Image = Print;
-                    trigger OnAction()
-                    var
-                        Sheader: Record "Sales Header";
-                        DeliveryReport: Report "Sales Order Delivery Note";
-                    begin
-                        Clear(Sheader);
-                        Sheader.SetRange("Document Type", Sheader."Document Type"::Order);
-                        Sheader.SetRange("No.", Rec."No.");
-                        IF Sheader.FindFirst() then begin
-                            DeliveryReport.SetTableView(Sheader);
-                            DeliveryReport.Run();
-                        end;
-                    end;
-                }*/
                 action("Pro Forma Invoice")
                 {
                     ApplicationArea = All;
@@ -557,6 +539,46 @@ pageextension 50109 SalesOrder extends "Sales Order"
             begin
                 CheckAdvanceGLAmount();
             end;
+        }
+
+        addafter("&Order Confirmation")
+        {
+            action("Posted Sales Invoices")
+            {
+                ApplicationArea = All;
+                Image = CoupledInvoice;
+                trigger OnAction()
+                VAR
+                    SalesInvLine: Record "Sales Invoice Line";
+                    SalesInvHeader: Record "Sales Invoice Header";
+                    SalesInvoiceList: Page "Posted Sales Invoices";
+                    CheckList: List of [Text];
+                    FilterText: Text;
+                begin
+                    Clear(SalesInvLine);
+                    Clear(FilterText);
+                    SalesInvLine.SetRange("Sales Order No.", Rec."No.");
+                    if SalesInvLine.FindSet() then begin
+                        repeat
+                            if not CheckList.Contains(SalesInvLine."Document No.") then begin
+                                CheckList.Add(SalesInvLine."Document No.");
+                                FilterText := FilterText + SalesInvLine."Document No." + '|';
+                            end;
+                        until SalesInvLine.Next() = 0;
+                    end;
+                    if FilterText <> '' then begin
+                        FilterText := CopyStr(FilterText, 1, StrLen(FilterText) - 1);
+                        Clear(SalesInvHeader);
+                        SalesInvHeader.SetFilter("No.", FilterText);
+                        if SalesInvHeader.FindSet() then begin
+                            Clear(SalesInvoiceList);
+                            SalesInvoiceList.SetTableView(SalesInvHeader);
+                            SalesInvoiceList.Caption := 'Posted Sales Invoices for ' + Rec."No.";
+                            SalesInvoiceList.Run;
+                        end;
+                    end;
+                end;
+            }
         }
     }
 

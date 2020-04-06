@@ -332,7 +332,7 @@ report 50131 "Posted Delivery Note"
                 RecSP: Record "Salesperson/Purchaser";
                 RecSSL: Record "Sales Shipment Line";
                 Sheader: Record "Sales Header";
-                RecWhLine: Record "Warehouse Shipment Line";
+                RecWhLine: Record "Posted Whse. Shipment Line";
             begin
                 Customer_Rec.RESET;
                 IF Customer_Rec.GET("Sales Header"."Sell-to Customer No.") THEN
@@ -375,7 +375,7 @@ report 50131 "Posted Delivery Note"
                 RecWhLine.SetRange("Source Document", RecWhLine."Source Document"::"Sales Order");
                 RecWhLine.SetRange("Source No.", "Order No.");
                 if RecWhLine.FindFirst() then
-                    PreDNNumber := RecWhLine."No."
+                    PreDNNumber := RecWhLine."Whse. Shipment No."
                 else
                     PreDNNumber := '';
 

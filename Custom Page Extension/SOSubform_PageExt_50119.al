@@ -87,6 +87,16 @@ pageextension 50119 SoSubForm extends "Sales Order Subform"
             {
                 ApplicationArea = All;
             }
+            field("Sales Person"; "Sales Person")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
+            field("Sales Person Share"; "Sales Person Share")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
         }
         modify("Invoice Discount Amount")
         {
@@ -141,34 +151,6 @@ pageextension 50119 SoSubForm extends "Sales Order Subform"
             }
         }
     }
-
-
-
-    procedure UpdatePaymentMileStone()
-    var
-        RecPaymentMileStone: Record "Payment Milestone";
-        RecSheader: Record "Sales Header";
-
-    begin
-        if ("Document Type" <> "Document Type"::Order) AND ("Document Type" <> "Document Type"::Invoice) then
-            exit;
-        Clear(RecPaymentMileStone);
-        Clear(RecSheader);
-        RecSheader.SetRange("Document Type", "Document Type");
-        RecSheader.SetRange("No.", "Document No.");
-        if RecSheader.FindFirst() then;
-        RecSheader.CalcFields(Amount);
-        RecPaymentMileStone.SetRange("Document Type", "Document Type");
-        RecPaymentMileStone.SetRange("Document No.", "Document No.");
-        if RecPaymentMileStone.FindSet() then begin
-            repeat
-                RecPaymentMileStone.Validate("Currency Factor", RecSheader."Currency Factor");
-                RecPaymentMileStone.Validate("Total Value", RecSheader.Amount);
-                RecPaymentMileStone.Validate(Amount, (RecSheader.Amount * RecPaymentMileStone."Milestone %") / 100);
-                RecPaymentMileStone.Modify();
-            until RecPaymentMileStone.Next() = 0;
-        end;
-    end;
 
     var
         myInt: Integer;

@@ -102,6 +102,24 @@ pageextension 50125 SaleInvSubForm extends "Sales Invoice Subform"
                 Visible = false;
             }
         }
+        modify("Invoice Disc. Pct.")
+        {
+            trigger OnAfterValidate()
+            var
+                myInt: Integer;
+            begin
+                UpdatePaymentMilestone();
+            end;
+        }
+        modify("Invoice Discount Amount")
+        {
+            trigger OnAfterValidate()
+            var
+                myInt: Integer;
+            begin
+                UpdatePaymentMilestone();
+            end;
+        }
     }
 
     actions

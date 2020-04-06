@@ -3,6 +3,13 @@ pageextension 50108 GenLedSetrupPExt extends "General Ledger Setup"
     layout
     {
         // Add changes to page layout here
+        addlast(General)
+        {
+            field("Gen. Jln. Post & Print"; "Gen. Jln. Post & Print")
+            {
+                ApplicationArea = All;
+            }
+        }
         addafter(Application)
         {
             group("Integrations Mapping")

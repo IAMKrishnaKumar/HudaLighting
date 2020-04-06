@@ -65,6 +65,7 @@ pageextension 50174 PostedSalesInvLost extends "Posted Sales Invoices"
                     Clear(RecSalesInvHeader);
                     RecSalesInvHeader.SetRange("No.", "No.");
                     UpdateCard.SetTableView(RecSalesInvHeader);
+                    UpdateCard.Editable(true);
                     UpdateCard.LookupMode(true);
                     UpdateCard.RunModal();
                 end;

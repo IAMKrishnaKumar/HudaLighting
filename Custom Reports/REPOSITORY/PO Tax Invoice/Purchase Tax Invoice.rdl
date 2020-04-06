@@ -3079,7 +3079,7 @@
                                   <TablixMember>
                                     <Group Name="Details" />
                                     <Visibility>
-                                      <Hidden>=IIf(Fields!No_PurchInvHeader.Value = "", True, False)</Hidden>
+                                      <Hidden>=IIf((Fields!No_PurchInvHeader.Value = "") And (Fields!Description_PurchInvLine.Value = ""), True, False)</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember />
@@ -5389,7 +5389,7 @@
                     <TablixMember>
                       <Group Name="Details4" />
                       <Visibility>
-                        <Hidden>=IIf(Fields!No_PurchInvLine.Value = "", True, False)</Hidden>
+                        <Hidden>=IIf((Fields!No_PurchInvHeader.Value = "") And (Fields!Description_PurchInvLine.Value = ""), True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>

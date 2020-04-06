@@ -47,7 +47,7 @@ table 50103 "Sales Person Main"
         field(7; COGS; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum ("G/L Entry".Amount where("G/L Account No." = filter(300310 .. 300340 | 300510 .. 300850)));
+            CalcFormula = sum ("G/L Entry".Amount where("G/L Account No." = filter(300310 .. 300340 | 300510 .. 300850), "Global Dimension 1 Code" = field("Opportunity No")));
         }
         field(8; "Shared SOGS"; Decimal)
         {
@@ -69,7 +69,7 @@ table 50103 "Sales Person Main"
         {
             Caption = 'Sales';
             FieldClass = FlowField;
-            CalcFormula = - Sum ("G/L Entry".Amount WHERE("G/L Account No." = FILTER(300110 .. 300160)));
+            CalcFormula = - Sum ("G/L Entry".Amount WHERE("G/L Account No." = FILTER(300110 .. 300160), "Global Dimension 1 Code" = field("Opportunity No")));
         }
         field(12; "Oustanding Amount (LCY)"; Decimal)
         {

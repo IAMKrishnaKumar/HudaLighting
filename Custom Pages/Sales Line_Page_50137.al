@@ -4,6 +4,7 @@ page 50137 "Sales Line Subform"
     SourceTable = 37;
     ApplicationArea = All;
     UsageCategory = Administration;
+    SourceTableView = sorting("Document No.") where("Document Type" = const(Order));
     layout
     {
         area(content)
@@ -267,10 +268,6 @@ page 50137 "Sales Line Subform"
                     ApplicationArea = All;
                 }
                 field("Currency Code"; "Currency Code")
-                {
-                    ApplicationArea = All;
-                }
-                field("Outstanding Amount (LCY)"; "Outstanding Amount (LCY)")
                 {
                     ApplicationArea = All;
                 }
@@ -752,6 +749,14 @@ page 50137 "Sales Line Subform"
                 {
                     ApplicationArea = All;
                 }
+                field("Sales Person"; "Sales Person")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sales Person Share"; "Sales Person Share")
+                {
+                    ApplicationArea = All;
+                }
                 field("Estimated Cost"; "Estimated Cost")
                 {
                     ApplicationArea = All;
@@ -765,12 +770,131 @@ page 50137 "Sales Line Subform"
                     ApplicationArea = All;
                     Caption = 'VAT Prod. Posting Group';
                 }
+                field("Unit Estimated Cost"; "Unit Estimated Cost")
+                {
+                    ApplicationArea = All;
+                }
+                field("Estimated Cost Of Outs. qty"; "Estimated Cost Of Outs. qty")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Outstanding Amount (LCY)"; "Outstanding Amount (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("UE Sales"; "UE Sales")
+                {
+                    ApplicationArea = All;
+                }
+                field("ACY UE Sales"; "ACY UE Sales")
+                {
+                    ApplicationArea = All;
+                }
+                field("UE GP"; "UE GP")
+                {
+                    ApplicationArea = All;
+                }
+                field("ACY UE GP"; "ACY UE GP")
+                {
+                    ApplicationArea = All;
+                }
+                field("Non Stock Invoiced"; "Non Stock Invoiced")
+                {
+                    ApplicationArea = All;
+                }
+                field("G/L Invoiced"; "G/L Invoiced")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
 
     actions
     {
+        area(Processing)
+        {
+            action("Update ACY Amounts")
+            {
+                ApplicationArea = All;
+                Image = UpdateUnitCost;
+                trigger OnAction()
+                VAR
+                    Sline: Record "Sales Line";
+                begin
+                    Sline.SetRange("Document Type", Sline."Document Type"::Order);
+                    Sline.SetFilter("Document No.", '<>%1', '');
+                    if Sline.FindSet() then begin
+                        if not Confirm('Are you sure you want to update ACY UE Sales and ACY UE GP Fields', false) then
+                            exit;
+                        repeat
+                            Sline.UpdateAEDAmounts();
+                            Sline.Modify();
+                        until Sline.Next() = 0;
+                    end;
+                end;
+            }
+            action("Update SalesPerson Share Falg")
+            {
+                ApplicationArea = All;
+                Image = Trace;
+                trigger OnAction()
+                VAR
+                    SHeader: Record "Sales Header";
+                    RecSalesPersonShare: Record "Sales Person Main";
+                begin
+                    if not Confirm('Are you sure you want to update Sales Person Share flag ?', false) then
+                        exit;
+                    Clear(SHeader);
+                    SHeader.SetRange("Document Type", SHeader."Document Type"::Order);
+                    SHeader.SetFilter("Shortcut Dimension 1 Code", '<>%1', '');
+                    if SHeader.FindSet() then begin
+                        repeat
+                            Clear(RecSalesPersonShare);
+                            RecSalesPersonShare.SetRange("Opportunity No", "Shortcut Dimension 1 Code");
+                            if RecSalesPersonShare.FindFirst() then
+                                SHeader."Sales Person Share" := true
+                            else
+                                SHeader."Sales Person Share" := false;
+                            SHeader.Modify();
+                        until SHeader.Next() = 0;
+                        Message('Process Completed.');
+                    end;
+                end;
+            }
+            action("Update Order No.")
+            {
+                ApplicationArea = All;
+                Image = UpdateDescription;
+                trigger OnAction()
+                var
+                    RecSline: Record "Sales Line";
+                    RecSline2: Record "Sales Line";
+                begin
+                    Clear(RecSline);
+                    RecSline.SetRange("Document Type", RecSline."Document Type"::Invoice);
+                    RecSline.SetFilter("Document No.", '<>%1', '');
+                    RecSline.SetFilter("Sales Order No.", '=%1', '');
+                    if RecSline.FindSet() then begin
+                        if not Confirm('Are you sure you want to update Sales Order No.?', false) then
+                            exit;
+                        repeat
+                            Clear(RecSline2);
+                            RecSline2.SetRange("Document Type", "Document Type"::Invoice);
+                            RecSline2.SetRange("Document No.", RecSline."Document No.");
+                            RecSline2.SetFilter("Sales Order No.", '<>%1', '');
+                            if RecSline2.FindFirst() then begin
+                                RecSline."Sales Order No." := RecSline2."Sales Order No.";
+                                RecSline.Modify();
+                            end;
+                        until RecSline.Next() = 0;
+                        Message('Process Completed.');
+                    end;
+                end;
+            }
+        }
+
     }
 }
 
