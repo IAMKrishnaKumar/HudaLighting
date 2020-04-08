@@ -43,6 +43,10 @@ report 50150 "Sales Invoice Without VAT"
             {
 
             }
+            column(LPORef; LPORef)
+            {
+
+            }
             column(CompanyInfo_SWIFT; CompanyInfo."SWIFT Code")
             {
 
@@ -635,6 +639,7 @@ report 50150 "Sales Invoice Without VAT"
                 RecPT: Record "Payment Terms";
                 RecSnpSetup: Record "Sales & Receivables Setup";
                 RecSalesLine: Record "Sales Invoice Line";
+                Sheader: Record "Sales Header";
             begin
                 Clear(CustNameArabic);
                 Clear(CustAddressArabic);
@@ -645,6 +650,15 @@ report 50150 "Sales Invoice Without VAT"
                 Clear(SPPhone);
                 Clear(ShipmentMethod);
 
+                Clear(LPORef);
+                Clear(RecSalesLine);
+                RecSalesLine.SetRange("Document No.", "No.");
+                RecSalesLine.SetFilter("Sales Order No.", '<>%1', '');
+                if RecSalesLine.FindFirst() then begin
+                    Clear(Sheader);
+                    if Sheader.GET(Sheader."Document Type"::Order, RecSalesLine."Sales Order No.") then
+                        LPORef := Sheader."PO Reference";
+                end;
 
                 IF Customer_Rec.GET("Sales Header"."Sell-to Customer No.") THEN begin
                     CustNameArabic := Customer_Rec."Name - Arabic";
@@ -895,6 +909,7 @@ report 50150 "Sales Invoice Without VAT"
         Approvedby_Cap: Label 'Approved By';
         Receivedby_Cap: Label 'Received By';
         VatAmt: Decimal;
+        LPORef: Text;
         Instructions: Label 'Cheque to be issued in favour of ';
         Ins2: Label 'Goods recieved in good condition.';
         Ins3: Label 'EXCHANGE/RETURN POLICY : Credit will be given for Items returned within 10 days of product puurchase, subject to them being in good condition & in original packing. NO CASH REFUND.';

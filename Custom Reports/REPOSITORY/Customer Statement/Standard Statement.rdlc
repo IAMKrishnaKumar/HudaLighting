@@ -5682,6 +5682,9 @@ End Function
         <Field Name="Narration">
           <DataField>Narration</DataField>
         </Field>
+        <Field Name="SoNo">
+          <DataField>SoNo</DataField>
+        </Field>
         <Field Name="CurrencyCode3_CustLedgEntryFooter">
           <DataField>CurrencyCode3_CustLedgEntryFooter</DataField>
         </Field>
@@ -5747,6 +5750,9 @@ End Function
         </Field>
         <Field Name="ProjectRef2">
           <DataField>ProjectRef2</DataField>
+        </Field>
+        <Field Name="SoNo2">
+          <DataField>SoNo2</DataField>
         </Field>
         <Field Name="ExtDocNo2">
           <DataField>ExtDocNo2</DataField>

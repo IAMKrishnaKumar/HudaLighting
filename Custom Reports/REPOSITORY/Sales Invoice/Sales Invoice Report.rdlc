@@ -2002,8 +2002,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>1.27946cm</Top>
-                    <Left>0cm</Left>
+                    <Top>1.69221cm</Top>
+                    <Left>0.07138cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.55256cm</Width>
                     <Style>
@@ -2036,8 +2036,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>1.27946cm</Top>
-                    <Left>2.61298cm</Left>
+                    <Top>1.69221cm</Top>
+                    <Left>2.68436cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.86028cm</Width>
                     <ZIndex>1</ZIndex>
@@ -2070,8 +2070,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>2.2352cm</Top>
-                    <Left>2.61987cm</Left>
+                    <Top>2.64795cm</Top>
+                    <Left>2.69125cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.85339cm</Width>
                     <ZIndex>2</ZIndex>
@@ -2103,8 +2103,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>2.23191cm</Top>
-                    <Left>0cm</Left>
+                    <Top>2.64466cm</Top>
+                    <Left>0.07138cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.53879cm</Width>
                     <ZIndex>3</ZIndex>
@@ -2137,8 +2137,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>2.67753cm</Top>
-                    <Left>2.61298cm</Left>
+                    <Top>3.09028cm</Top>
+                    <Left>2.68436cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.86028cm</Width>
                     <ZIndex>4</ZIndex>
@@ -2170,8 +2170,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>2.67424cm</Top>
-                    <Left>0cm</Left>
+                    <Top>3.08699cm</Top>
+                    <Left>0.07138cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.53878cm</Width>
                     <ZIndex>5</ZIndex>
@@ -2204,8 +2204,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>3.11634cm</Top>
-                    <Left>2.61298cm</Left>
+                    <Top>3.52909cm</Top>
+                    <Left>2.68436cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.86028cm</Width>
                     <ZIndex>6</ZIndex>
@@ -2237,8 +2237,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>3.0813cm</Top>
-                    <Left>0cm</Left>
+                    <Top>3.49405cm</Top>
+                    <Left>0.07138cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.53879cm</Width>
                     <ZIndex>7</ZIndex>
@@ -2272,8 +2272,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>1.26615cm</Top>
-                    <Left>6.26485cm</Left>
+                    <Top>1.6789cm</Top>
+                    <Left>6.33623cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>8</ZIndex>
@@ -2310,8 +2310,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>2.25035cm</Top>
-                    <Left>6.26485cm</Left>
+                    <Top>2.6631cm</Top>
+                    <Left>6.33623cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>9</ZIndex>
@@ -2348,8 +2348,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>2.69267cm</Top>
-                    <Left>6.26485cm</Left>
+                    <Top>3.10542cm</Top>
+                    <Left>6.33623cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>10</ZIndex>
@@ -2386,8 +2386,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>3.13149cm</Top>
-                    <Left>6.26485cm</Left>
+                    <Top>3.54424cm</Top>
+                    <Left>6.33623cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>11</ZIndex>
@@ -2423,7 +2423,7 @@ Mobile No.      _______________________</Value>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
                     <Top>0.43115cm</Top>
-                    <Left>0cm</Left>
+                    <Left>0.07138cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.55256cm</Width>
                     <ZIndex>12</ZIndex>
@@ -2457,7 +2457,7 @@ Mobile No.      _______________________</Value>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
                     <Top>0.41328cm</Top>
-                    <Left>2.61987cm</Left>
+                    <Left>2.69125cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.85339cm</Width>
                     <ZIndex>13</ZIndex>
@@ -2492,7 +2492,7 @@ Mobile No.      _______________________</Value>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
                     <Top>0.41783cm</Top>
-                    <Left>6.27174cm</Left>
+                    <Left>6.34312cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>14</ZIndex>
@@ -2529,8 +2529,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>3.54833cm</Top>
-                    <Left>0cm</Left>
+                    <Top>3.96108cm</Top>
+                    <Left>0.07138cm</Left>
                     <Height>0.433cm</Height>
                     <Width>2.55256cm</Width>
                     <ZIndex>15</ZIndex>
@@ -2565,8 +2565,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>3.57415cm</Top>
-                    <Left>6.27174cm</Left>
+                    <Top>3.9869cm</Top>
+                    <Left>6.34312cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>16</ZIndex>
@@ -2602,8 +2602,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>3.57062cm</Top>
-                    <Left>2.61987cm</Left>
+                    <Top>3.98337cm</Top>
+                    <Left>2.69125cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.85339cm</Width>
                     <ZIndex>17</ZIndex>
@@ -2637,8 +2637,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>1.73671cm</Top>
-                    <Left>2.59489cm</Left>
+                    <Top>2.14946cm</Top>
+                    <Left>2.66627cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.90126cm</Width>
                     <ZIndex>18</ZIndex>
@@ -2673,8 +2673,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>1.73501cm</Top>
-                    <Left>0.00545cm</Left>
+                    <Top>2.14776cm</Top>
+                    <Left>0.07683cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.54711cm</Width>
                     <ZIndex>19</ZIndex>
@@ -2709,8 +2709,8 @@ Mobile No.      _______________________</Value>
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
-                    <Top>1.73501cm</Top>
-                    <Left>6.27174cm</Left>
+                    <Top>2.14776cm</Top>
+                    <Left>6.34312cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.20152cm</Width>
                     <ZIndex>20</ZIndex>
@@ -2746,7 +2746,7 @@ Mobile No.      _______________________</Value>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
                     <Top>0.82659cm</Top>
-                    <Left>0.00345cm</Left>
+                    <Left>0.07483cm</Left>
                     <Height>0.4cm</Height>
                     <Width>2.55256cm</Width>
                     <ZIndex>21</ZIndex>
@@ -2780,7 +2780,7 @@ Mobile No.      _______________________</Value>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
                     <Top>0.82659cm</Top>
-                    <Left>2.61642cm</Left>
+                    <Left>2.6878cm</Left>
                     <Height>0.4cm</Height>
                     <Width>6.86028cm</Width>
                     <ZIndex>22</ZIndex>
@@ -2815,7 +2815,7 @@ Mobile No.      _______________________</Value>
                     </Paragraphs>
                     <rd:DefaultName>Textbox4</rd:DefaultName>
                     <Top>0.81328cm</Top>
-                    <Left>6.2683cm</Left>
+                    <Left>6.33968cm</Left>
                     <Height>0.4cm</Height>
                     <Width>3.2692cm</Width>
                     <ZIndex>23</ZIndex>
@@ -2831,12 +2831,117 @@ Mobile No.      _______________________</Value>
                       <PaddingBottom>2pt</PaddingBottom>
                     </Style>
                   </Textbox>
+                  <Textbox Name="Textbox126">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>="LPO Ref."</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox4</rd:DefaultName>
+                    <Top>1.27245cm</Top>
+                    <Left>0.0533cm</Left>
+                    <Height>0.4cm</Height>
+                    <Width>2.55256cm</Width>
+                    <ZIndex>24</ZIndex>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Textbox Name="Textbox127">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LPORef.Value</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Left</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox4</rd:DefaultName>
+                    <Top>1.27245cm</Top>
+                    <Left>2.66627cm</Left>
+                    <Height>0.4cm</Height>
+                    <Width>6.86028cm</Width>
+                    <ZIndex>25</ZIndex>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Textbox Name="Textbox128">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=IIF(Fields!IsArabic.Value = "True", "مرجع LPO", "")</Value>
+                            <Style>
+                              <FontFamily>Segoe UI</FontFamily>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Right</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox4</rd:DefaultName>
+                    <Top>1.25914cm</Top>
+                    <Left>6.31815cm</Left>
+                    <Height>0.4cm</Height>
+                    <Width>3.2692cm</Width>
+                    <ZIndex>26</ZIndex>
+                    <Visibility>
+                      <Hidden>=IIF(Fields!IsArabic.Value, False, True)</Hidden>
+                    </Visibility>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
                 <Top>0cm</Top>
-                <Left>0.10039cm</Left>
+                <Left>0.02901cm</Left>
                 <Height>5.74209cm</Height>
-                <Width>9.54094cm</Width>
+                <Width>9.61232cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -8874,7 +8979,6 @@ Mobile No.      _______________________</Value>
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>0in</Top>
               <Left>0.00417in</Left>
               <Height>1.7057cm</Height>
               <Width>19.14149cm</Width>
@@ -9259,6 +9363,9 @@ mCmjlGU7lmoE40cDY1LOict8j8wQs4EyocHvgBZyJlO4D1ETPqaOzsF1D3QCINx9kVd+g74JZXUKhX0k
         </Field>
         <Field Name="CompanyInfo_SWIFT">
           <DataField>CompanyInfo_SWIFT</DataField>
+        </Field>
+        <Field Name="LPORef">
+          <DataField>LPORef</DataField>
         </Field>
         <Field Name="CompanyInfo_IBAN">
           <DataField>CompanyInfo_IBAN</DataField>

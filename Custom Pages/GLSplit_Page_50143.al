@@ -16,6 +16,11 @@ page 50143 "G/L Entry Split"
                     ApplicationArea = All;
                     Visible = false;
                 }
+                field("G/L Entry No."; "G/L Entry No.")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
                 field("Posting Date"; "Posting Date")
                 {
                     ApplicationArea = All;

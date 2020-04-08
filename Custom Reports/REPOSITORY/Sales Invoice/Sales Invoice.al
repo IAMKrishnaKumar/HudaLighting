@@ -47,6 +47,10 @@
             {
 
             }
+            column(LPORef; LPORef)
+            {
+
+            }
             column(CompanyInfo_IBAN; CompanyInfo.IBAN)
             {
 
@@ -630,6 +634,7 @@
                 RecPT: Record "Payment Terms";
                 RecSnpSetup: Record "Sales & Receivables Setup";
                 RecSalesLine: Record "Sales Invoice Line";
+                Sheader: Record "Sales Header";
             begin
                 Clear(CustNameArabic);
                 Clear(CustAddressArabic);
@@ -639,13 +644,16 @@
                 Clear(SPEmail);
                 Clear(SPPhone);
                 Clear(ShipmentMethod);
-
+                Clear(LPORef);
                 Clear(RecSalesLine);
                 RecSalesLine.SetRange("Document No.", "No.");
                 RecSalesLine.SetFilter("Sales Order No.", '<>%1', '');
-                if RecSalesLine.FindFirst() then
+                if RecSalesLine.FindFirst() then begin
                     OANo := RecSalesLine."Sales Order No.";
-
+                    Clear(Sheader);
+                    if Sheader.GET(Sheader."Document Type"::Order, RecSalesLine."Sales Order No.") then
+                        LPORef := Sheader."PO Reference";
+                end;
                 IF Customer_Rec.GET("Sales Header"."Sell-to Customer No.") THEN begin
                     CustNameArabic := Customer_Rec."Name - Arabic";
                     CustAddressArabic := Customer_Rec."Address-Arabic";
@@ -958,6 +966,7 @@
         DecimalDec: Text[250];
         Users: Record User;
         UserName: Text;
+        LPORef: Text;
 
 
     procedure FormatNoText(var NoText: array[2] of Text[80]; No: Decimal; CurrencyCode: Code[10])

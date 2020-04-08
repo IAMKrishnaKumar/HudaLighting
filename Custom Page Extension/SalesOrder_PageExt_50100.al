@@ -189,6 +189,13 @@ pageextension 50109 SalesOrder extends "Sales Order"
                 SubPageLink = "Document Type" = field("Document Type"), "Document No." = FIELD("No.");
             }
         }
+        addafter("Salesperson Code")
+        {
+            field("Share %"; "Share %")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
 
     actions

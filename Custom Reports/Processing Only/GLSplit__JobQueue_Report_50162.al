@@ -1,7 +1,7 @@
 report 50162 "Update GL Split"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
+    //UsageCategory = Administration;
+    //ApplicationArea = All;
     ProcessingOnly = true;
 
     dataset
@@ -23,16 +23,17 @@ report 50162 "Update GL Split"
                 Clear(RecSoSplit);
                 RecSoSplit.SetRange("Opportunity No", "Global Dimension 1 Code");
                 if RecSoSplit.FindSet() then begin
-
-                    if not CheckList.Contains("G/L Entry"."Document No." + "G/L Entry"."G/L Account No.") then
-                        CheckList.Add("G/L Entry"."Document No." + "G/L Entry"."G/L Account No.")
-                    else
-                        CurrReport.Skip();
-
+                    /*
+                                        if not CheckList.Contains("G/L Entry"."Document No." + "G/L Entry"."G/L Account No.") then
+                                            CheckList.Add("G/L Entry"."Document No." + "G/L Entry"."G/L Account No.")
+                                        else
+                                            CurrReport.Skip();
+                    */
                     CalcFields("Sales Person");
                     Clear(RecGLSplit);
-                    RecGLSplit.SetRange("Document No.", "G/L Entry"."Document No.");
-                    RecGLSplit.SetRange("G/L Account No.", "G/L Entry"."G/L Account No.");
+                    RecGLSplit.SetRange("G/L Entry No.", "Entry No.");
+                    //RecGLSplit.SetRange("Document No.", "G/L Entry"."Document No.");
+                    //RecGLSplit.SetRange("G/L Account No.", "G/L Entry"."G/L Account No.");
                     if RecGLSplit.FindSet() then begin
                         if RecGLSplit.Count = RecSoSplit.Count then begin
                             Clear(EntryNoList);
@@ -54,6 +55,7 @@ report 50162 "Update GL Split"
                                     RecGLSplit2."Shared Amount" := Amount * RecSoSplit."Share %" / 100;
                                     RecGLSplit2."Shared Add. Currency Amount" := "Additional-Currency Amount" * RecSoSplit."Share %" / 100;
                                     RecGLSplit2."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
+                                    RecGLSplit2."G/L Entry No." := "Entry No.";
                                     RecGLSplit2.Modify();
                                 end;
                                 LoopCount += 1;
@@ -76,6 +78,7 @@ report 50162 "Update GL Split"
                                 RecGLSplit2."Shared Amount" := Amount * RecSoSplit."Share %" / 100;
                                 RecGLSplit2."Shared Add. Currency Amount" := "Additional-Currency Amount" * RecSoSplit."Share %" / 100;
                                 RecGLSplit2."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
+                                RecGLSplit2."G/L Entry No." := "Entry No.";
                                 RecGLSplit2.Insert();
                             until RecSoSplit.Next() = 0;
                         end;
@@ -96,6 +99,7 @@ report 50162 "Update GL Split"
                             RecGLSplit2."Shared Amount" := Amount * RecSoSplit."Share %" / 100;
                             RecGLSplit2."Shared Add. Currency Amount" := "Additional-Currency Amount" * RecSoSplit."Share %" / 100;
                             RecGLSplit2."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
+                            RecGLSplit2."G/L Entry No." := "Entry No.";
                             RecGLSplit2.Insert();
                         until RecSoSplit.Next() = 0;
                     end;

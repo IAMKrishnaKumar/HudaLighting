@@ -44,6 +44,8 @@ report 50159 "General Project Status TEST"
                     i: Integer;
                     fromIndex: Integer;
                     ToIndex: Integer;
+                    RecItem: Record Item;
+                    PSILine: Record "Sales Invoice Line";
                 begin
                     RecGLSetup.GET;
                     Clear(ReceivedQty);
@@ -65,6 +67,7 @@ report 50159 "General Project Status TEST"
                     Clear(RecPT);
                     if RecPT.GET("Sales Header"."Payment Terms Code") then;
                     ExcelBuf.AddColumn(RecPT.Description, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                    ExcelBuf.AddColumn("Sales Line"."No.", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
                     ExcelBuf.AddColumn("HL Line Type", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
                     Clear(RecBrand);
                     if RecBrand.GET(Brand) then;
@@ -72,20 +75,23 @@ report 50159 "General Project Status TEST"
                     ExcelBuf.AddColumn("Vendor Article No", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
                     ExcelBuf.AddColumn(Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
-                    CalcFields("Reserved Quantity");
-                    ExcelBuf.AddColumn("Reserved Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    //CalcFields("Reserved Quantity");
+                    //ExcelBuf.AddColumn("Reserved Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
-                    /*Comment to received Qty- Now get from purch line.
+                    //Comment to received Qty- Now get from purch line.
                     Clear(SourceFilter);
                     Clear(RecReservEntry);
-                    RecReservEntry.SetFilter("Source Type", '=%1', Database::"Sales Line");
+                    Clear(POReservationQty);
+                    //RecReservEntry.SetFilter("Source Type", '=%1', Database::"Sales Line");
                     RecReservEntry.SetFilter("Source ID", '=%1', "Document No.");
+                    RecReservEntry.SetRange("Source Ref. No.", "Line No.");
+                    RecReservEntry.SetFilter("Expected Receipt Date", '<>%1', 0D);
                     if RecReservEntry.FindSet() then begin
                         repeat
-                            SourceFilter += FORMAT(RecReservEntry."Entry No.") + '|';
+                            POReservationQty += Abs(RecReservEntry.Quantity);
                         until RecReservEntry.Next() = 0;
                     end;
-                    if SourceFilter <> '' then begin
+                    /*if SourceFilter <> '' then begin
                         SourceFilter := CopyStr(SourceFilter, 1, StrLen(SourceFilter) - 1);
                         Clear(RecReservEntry);
                         RecReservEntry.SetRange("Source Type", 32);
@@ -95,9 +101,41 @@ report 50159 "General Project Status TEST"
                             ReceivedQty := Round(RecReservEntry.Quantity, 0.01, '=');
                         end;
                     end;*/
-                    ExcelBuf.AddColumn(ReceivedQty, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                    ExcelBuf.AddColumn("Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
+                    ExcelBuf.AddColumn(POReservationQty, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
+                    Clear(InventoryReservation);
+                    Clear(RecReservEntry);
+                    RecReservEntry.SetFilter("Source ID", '=%1', "Document No.");
+                    RecReservEntry.SetRange("Source Ref. No.", "Line No.");
+                    RecReservEntry.SetFilter("Expected Receipt Date", '=%1', 0D);
+                    if RecReservEntry.FindSet() then begin
+                        repeat
+                            InventoryReservation += Abs(RecReservEntry.Quantity);
+                        until RecReservEntry.Next() = 0;
+                    end;
+                    ExcelBuf.AddColumn(InventoryReservation, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    Clear(RecItem);
+                    if (Type = Type::Item) AND (RecItem.GET("Sales Line"."No.")) then begin
+                        if RecItem.Type = RecItem.Type::"Non-Inventory" then begin
+                            Clear(PSILine);
+                            PSILine.SetRange("Sales Order No.", "Document No.");
+                            PSILine.SetRange(Type, Type::Item);
+                            PSILine.SetRange("No.", "Sales Line"."No.");
+                            PSILine.SetRange("HL Line Type", "Sales Line"."HL Line Type");
+                            if PSILine.FindSet() then begin
+                                PSILine.CalcSums(Quantity);
+                                ExcelBuf.AddColumn(0, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                                ExcelBuf.AddColumn(PSILine.Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                            end;
+                        end else begin
+                            ExcelBuf.AddColumn(InventoryReservation + "Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                            ExcelBuf.AddColumn("Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                        end;
+                    end else begin
+                        ExcelBuf.AddColumn(InventoryReservation + "Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                        ExcelBuf.AddColumn("Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    end;
                     Clear(CurrencyFactor);//
                     if "Sales Header"."Currency Factor" <> 0 then
                         CurrencyFactor := "Sales Header"."Currency Factor"
@@ -118,7 +156,7 @@ report 50159 "General Project Status TEST"
                     else
                         ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);*/
 
-                    ExcelBuf.AddColumn((Quantity - ReceivedQty - "Quantity Shipped"), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    ExcelBuf.AddColumn((Quantity - (InventoryReservation + "Quantity Shipped")), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                     ExcelBuf.AddColumn("Outstanding Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                     //Purchase Orderss
                     Clear(RecPurchLine);
@@ -171,6 +209,7 @@ report 50159 "General Project Status TEST"
                     Clear(RecSalesShipmentLine);
                     RecSalesShipmentLine.SetRange("Order No.", "Document No.");
                     RecSalesShipmentLine.SetRange("Order Line No.", "Line No.");
+                    RecSalesShipmentLine.SetFilter(Quantity, '<>%1', 0);
                     Clear(CheckList);
                     Clear(DNNo);
                     Clear(DeliveryDate);
@@ -239,7 +278,7 @@ report 50159 "General Project Status TEST"
                     // RecSalesShipmentLine.SetFilter("Document No.", DNNoFilterText);
                     // if RecSalesShipmentLine.FindSet() then begin
                     // repeat
-                    Clear(RecItemLedgerEntry);
+                    /*Clear(RecItemLedgerEntry);
                     RecItemLedgerEntry.SetFilter("Document No.", DNNoFilterText);//RecSalesInvHeader."Pre-Assigned No.");
                     RecItemLedgerEntry.SetRange("Document Type", RecItemLedgerEntry."Document Type"::"Sales Shipment");
                     RecItemLedgerEntry.SetRange("Entry Type", RecItemLedgerEntry."Entry Type"::Sale);
@@ -253,10 +292,16 @@ report 50159 "General Project Status TEST"
                         TotalLandedCost := RecItemLedgerEntry."Cost Amount (Actual)";
                         if TotalLandedCost < 0 then
                             TotalLandedCost := TotalLandedCost * -1;
-                    end;
+                    end;*/
                     // until RecSalesShipmentLine.Next() = 0;
+
+                    //
+                    Clear(RecItem);
+                    If (Type = Type::Item) AND (RecItem.GET("No.")) then begin
+                        LandedCost := RecItem."Unit Cost";
+                    end;
                     ExcelBuf.AddColumn(LandedCost, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                    ExcelBuf.AddColumn(TotalLandedCost, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    ExcelBuf.AddColumn(LandedCost * Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                     Clear(RecSalesInvLine);
                     Clear(CheckList);
                     Clear(PSINo);
@@ -265,6 +310,7 @@ report 50159 "General Project Status TEST"
                     RecSalesInvLine.SetFilter("Shipment No.", DNNoFilterText);// RecSalesShipmentLine."Document No.");
                     RecSalesInvLine.SetRange(Type, RecSalesInvLine.Type::Item);
                     RecSalesInvLine.SetRange("No.", "Sales Line"."No.");
+                    RecSalesInvLine.SetRange("HL Line Type", "Sales Line"."HL Line Type");
                     if RecSalesInvLine.FindSet() then begin
                         repeat
                             if not CheckList.Contains(RecSalesInvLine."Document No.") then begin
@@ -374,7 +420,7 @@ report 50159 "General Project Status TEST"
         ExcelBuf.NewRow;
         ExcelBuf.AddColumn('OA Number', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('OA Date', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
-        ExcelBuf.AddColumn('Amount Inc. VAT', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('Amount', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Sales Person', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('LPO No.', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Customer No.', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
@@ -382,11 +428,13 @@ report 50159 "General Project Status TEST"
         ExcelBuf.AddColumn('Project Name', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Currency Code', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Payment Terms', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('Item No.', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Type', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Brand', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Vendor Article No.', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Quantity', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('PO Reservation', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('Inventory Reservation', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Received Qty', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Qty Shipped', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Unit Price (' + RecGLSetup."LCY Code" + ')', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
@@ -394,14 +442,14 @@ report 50159 "General Project Status TEST"
         ExcelBuf.AddColumn('Balance Not Received', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Balance Not Delivered', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Purchase Order No.', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
-        ExcelBuf.AddColumn('Purchase Order Amount Inc. VAT', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('Purchase Order Amount', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Delivery Note', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Delivery Date', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Landed Cost', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Total Landed Cost', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Sales Invoice', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Invoice Date', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
-        ExcelBuf.AddColumn('Invoice Amount Inc. VAT', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('Invoice Amount', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddColumn('Advance', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);
     END;
 
@@ -438,11 +486,13 @@ report 50159 "General Project Status TEST"
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Project Name
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Currency Code
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Payment Terms
+        ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);//Item No.
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Type
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Brand
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Vendor Article No.
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Quantity
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//PO Reservation
+        ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, TRUE, '', ExcelBuf."Cell Type"::Text);//Inv Reservation
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Received Qty
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Qty Shipped
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Unit Price
@@ -460,99 +510,7 @@ report 50159 "General Project Status TEST"
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Invoice Amount Inc. VAT
         ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Advance
     end;
-    /*
-        local procedure AddBlankColumnTillDNNo()
-        begin
-            ExcelBuf.NewRow;
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//OA Number
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//OA Date
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//Amount Inc. VAT
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Sales Person
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//LPO No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Customer No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Customer Name
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Project Name
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Currency Code
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Payment Terms
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Type
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Brand
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Vendor Article No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Quantity
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//PO Reservation
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Received Qty
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Qty Shipped
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Unit Price
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Total Price
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Balance Not Received
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Balance Not Delivered
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Purchase Order No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Purchase Order Amount Inc. VAT
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Delivery Note
-        end;
 
-        local procedure AddBlankColumnTillPoNo()
-        var
-            myInt: Integer;
-        begin
-            ExcelBuf.NewRow;
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//OA Number
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//OA Date
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//Amount Inc. VAT
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Sales Person
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//LPO No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Customer No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Customer Name
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Project Name
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Currency Code
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Payment Terms
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Type
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Brand
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Vendor Article No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Quantity
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//PO Reservation
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Received Qty
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Qty Shipped
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Unit Price
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Total Price
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Balance Not Received
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Balance Not Delivered
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Purchase Order No.
-        end;
-
-
-        local procedure AddBlankColumnTiillSalesInvoices()
-        begin
-            ExcelBuf.NewRow;
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//OA Number
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//OA Date
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//Amount Inc. VAT
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Sales Person
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//LPO No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Customer No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Customer Name
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Project Name
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Currency Code
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Payment Terms
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Type
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Brand
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Vendor Article No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Quantity
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//PO Reservation
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Received Qty
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Qty Shipped
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Unit Price
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Total Price
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Balance Not Received
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Balance Not Delivered
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Purchase Order No.
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Purchase Order Amount Inc. VAT
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Delivery Note
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Delivery Date
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Landed Cost
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Total Landed Cost
-            ExcelBuf.AddColumn('', FALSE, '', TRUE, FALSE, false, '', ExcelBuf."Cell Type"::Text);//Sales Invoice
-        end;
-    */
     VAR
         ExcelBuf: Record 370 temporary;
         Text103: Label 'Company Name';
@@ -571,4 +529,7 @@ report 50159 "General Project Status TEST"
         InvoiceValue: Decimal;
         Advance: Decimal;
         CheckList: List of [Text];
+        POReservationQty: Decimal;
+        InventoryReservation: Decimal;
+        RecItem: Record Item;
 }

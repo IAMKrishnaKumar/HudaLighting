@@ -71,6 +71,10 @@ table 50117 "GL Entry Split"
             FieldClass = FlowField;
             CalcFormula = lookup ("Dimension Value".Name where("Dimension Code" = field("Shortcut Dimension 1 Code")));
         }
+        field(15; "G/L Entry No."; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

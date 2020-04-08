@@ -156,7 +156,23 @@ tableextension 50100 SalesHeader extends "Sales Header"
             FieldClass = FlowField;
             CalcFormula = sum ("Sales Line"."ACY UE GP" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
         }
-
+        field(50036; "Share %"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup ("Sales Person Main"."Share %" where("Opportunity No" = field("Shortcut Dimension 1 Code"), Salesperson = field("Salesperson Code")));
+            // ObsoleteReason = 'Giving Error';
+            // ObsoleteState = Removed;
+        }
+        field(50037; "G/L Invoiced (LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            // ObsoleteState = Removed;
+        }
+        field(50038; "Non Stock Invoiced (LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            //sObsoleteState = Removed;
+        }
         //***********************************PDC************************
         field(60000; "Applies-to ID for PDC"; Code[20])
         {

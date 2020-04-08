@@ -262,7 +262,7 @@ report 50104 "Standard Statement HL"
                             {
                             }
                             //Levtech-Start
-                            column(OpportunityNo; OpportunityNo)
+                            column(OpportunityNo; LPORef)
                             {
 
                             }
@@ -286,9 +286,16 @@ report 50104 "Standard Statement HL"
                             {
 
                             }
+                            column(SoNo; SoNo)
+                            {
+
+                            }
                             //Levtech-End
 
                             trigger OnAfterGetRecord()
+                            var
+                                SILine: Record "Sales Invoice Line";
+                                Sheader: Record "Sales Header";
                             begin
                                 IF SkipReversedUnapplied(DtldCustLedgEntries) OR (Amount = 0) THEN
                                     CurrReport.SKIP;
@@ -301,6 +308,8 @@ report 50104 "Standard Statement HL"
                                 Clear(ProjectName);
                                 Clear(ExtDocNo);
                                 Clear(Narration);
+                                Clear(SoNo);
+                                Clear(LPORef);
                                 Clear(ProjectReference);
                                 Clear(CustLedgerEntryG);
                                 if CustLedgerEntryG.GET("Cust. Ledger Entry No.") then begin
@@ -308,10 +317,20 @@ report 50104 "Standard Statement HL"
                                         Clear(SalesInvHeader);
                                         SalesInvHeader.SetRange("No.", CustLedgerEntryG."Document No.");
                                         if SalesInvHeader.FindFirst() then begin
-                                            OpportunityNo := SalesInvHeader."Shortcut Dimension 1 Code";
+                                            // OpportunityNo := SalesInvHeader."Shortcut Dimension 1 Code";
                                             SalesPerson := SalesInvHeader."Salesperson Code";
                                             ProjectName := SalesInvHeader."Project Name";
                                             ProjectReference := SalesInvHeader."Project Reference";
+                                            Clear(SILine);
+                                            SILine.SetRange("Document No.", SalesInvHeader."No.");
+                                            SILine.SetFilter("Sales Order No.", '<>%1', '');
+                                            if SILine.FindFirst() then begin
+                                                SoNo := SILine."Sales Order No.";
+                                                Clear(Sheader);
+                                                IF Sheader.GET(Sheader."Document Type"::Order, SILine."Sales Order No.") then
+                                                    LPORef := Sheader."PO Reference";
+                                            end;
+
                                         end;
                                     end;
                                     ExtDocNo := CustLedgerEntryG."External Document No.";
@@ -456,7 +475,7 @@ report 50104 "Standard Statement HL"
                             {
                             }
                             //Levtech-Start1
-                            column(opportunity2; opportunity2)
+                            column(opportunity2; LPORef2)
                             {
 
                             }
@@ -469,6 +488,10 @@ report 50104 "Standard Statement HL"
 
                             }
                             column(ProjectRef2; ProjectRef2)
+                            {
+
+                            }
+                            column(SoNo2; SoNo2)
                             {
 
                             }
@@ -508,6 +531,8 @@ report 50104 "Standard Statement HL"
                             trigger OnAfterGetRecord()
                             var
                                 CustLedgEntry: Record 21;
+                                SILine: Record "Sales Invoice Line";
+                                Sheader: Record "Sales Header";
                             begin
                                 IF IncludeAgingBand THEN
                                     IF ("Posting Date" > EndDate) AND ("Due Date" >= EndDate) THEN
@@ -528,14 +553,24 @@ report 50104 "Standard Statement HL"
                                 Clear(SalesPerson2);
                                 Clear(ProjectName2);
                                 Clear(ProjectRef2);
+                                Clear(LPORef2);
                                 if CustLedgEntry2."Document Type" = CustLedgEntry2."Document Type"::Invoice then begin
                                     Clear(SalesInvHeader);
                                     SalesInvHeader.SetRange("No.", CustLedgEntry2."Document No.");
                                     if SalesInvHeader.FindFirst() then begin
-                                        opportunity2 := SalesInvHeader."Shortcut Dimension 1 Code";
+                                        //opportunity2 := SalesInvHeader."Shortcut Dimension 1 Code";
                                         SalesPerson2 := SalesInvHeader."Salesperson Code";
                                         ProjectName2 := SalesInvHeader."Project Name";
                                         ProjectRef2 := SalesInvHeader."Project Reference";
+                                        Clear(SILine);
+                                        SILine.SetRange("Document No.", SalesInvHeader."No.");
+                                        SILine.SetFilter("Sales Order No.", '<>%1', '');
+                                        if SILine.FindFirst() then begin
+                                            SoNo2 := SILine."Sales Order No.";
+                                            Clear(Sheader);
+                                            IF Sheader.GET(Sheader."Document Type"::Order, SILine."Sales Order No.") then
+                                                LPORef2 := Sheader."PO Reference";
+                                        end;
                                     end;
                                 end;
                                 //Levtech-End
@@ -1129,6 +1164,10 @@ report 50104 "Standard Statement HL"
         ProjectRef2: Text;
         SalesPerson2: Text;
         opportunity2: Text;
+        SoNo: Text;
+        SoNo2: Text;
+        LPORef: Text;
+        LPORef2: Text;
 
     local procedure GetDate(PostingDate: Date; DueDate: Date): Date
     begin

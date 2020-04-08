@@ -112,6 +112,10 @@ query 50100 "G/L Entry"
             {
 
             }
+            column(Shared__; "Shared %")
+            {
+
+            }
             column(Customer_Name; "Customer Name")
             {
 

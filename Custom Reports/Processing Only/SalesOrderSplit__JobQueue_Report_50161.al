@@ -1,7 +1,7 @@
 report 50161 "Update Sales Order Split"
 {
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
     ProcessingOnly = true;
 
     dataset

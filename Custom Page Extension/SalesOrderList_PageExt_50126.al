@@ -14,7 +14,13 @@ pageextension 50126 SalesOrderList extends "Sales Order List"
             {
                 ApplicationArea = All;
             }
-
+        }
+        addbefore(Amount)
+        {
+            field("Share %"; "Share %")
+            {
+                ApplicationArea = All;
+            }
         }
         addafter("Completely Shipped")
         {

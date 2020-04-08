@@ -847,6 +847,14 @@ page 50144 "Sales header"
                 {
                     ApplicationArea = All;
                 }
+                field("G/L Invoiced (LCY)"; "G/L Invoiced (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Non Stock Invoiced (LCY)"; "Non Stock Invoiced (LCY)")
+                {
+                    ApplicationArea = All;
+                }
                 field("UE Sales"; "UE Sales")
                 {
                     ApplicationArea = All;
@@ -860,6 +868,10 @@ page 50144 "Sales header"
                     ApplicationArea = All;
                 }
                 field("UE GP ACY"; "UE GP ACY")
+                {
+                    ApplicationArea = All;
+                }
+                field("Share %"; "Share %")
                 {
                     ApplicationArea = All;
                 }

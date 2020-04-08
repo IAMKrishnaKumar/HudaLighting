@@ -43,7 +43,8 @@ tableextension 50109 GenLedtableExt extends "G/L Entry"
         field(50008; "Shared %"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = lookup ("Sales Person Main"."Share %" where("Opportunity No" = field("Global Dimension 1 Code"), Salesperson = field("Sales Person")));
+            CalcFormula = lookup ("GL Entry Split"."Share %" where("Document No." = field("Document No.")));
+            //CalcFormula = lookup ("Sales Person Main"."Share %" where("Opportunity No" = field("Global Dimension 1 Code"), Salesperson = field("Sales Person")));
         }
 
         //****************************PDC***********************
