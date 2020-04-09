@@ -149,6 +149,13 @@ tableextension 50117 SalesLineTableExt extends "Sales Line"
                 UpdateAEDAmounts();
             end;
         }
+        field(50021; "Share %"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup ("Sales Header"."Share %" where("Document Type" = field("Document Type"), "No." = field("Document No.")));
+            ObsoleteReason = 'Giving Error';
+            ObsoleteState = Removed;
+        }
 
         modify("No.")
         {

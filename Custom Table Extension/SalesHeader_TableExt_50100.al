@@ -160,18 +160,24 @@ tableextension 50100 SalesHeader extends "Sales Header"
         {
             FieldClass = FlowField;
             CalcFormula = lookup ("Sales Person Main"."Share %" where("Opportunity No" = field("Shortcut Dimension 1 Code"), Salesperson = field("Salesperson Code")));
-            // ObsoleteReason = 'Giving Error';
-            // ObsoleteState = Removed;
         }
         field(50037; "G/L Invoiced (LCY)"; Decimal)
         {
             DataClassification = ToBeClassified;
-            // ObsoleteState = Removed;
         }
         field(50038; "Non Stock Invoiced (LCY)"; Decimal)
         {
             DataClassification = ToBeClassified;
-            //sObsoleteState = Removed;
+        }
+        field(50039; "Withholding Tax (LCY)"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."UE Sales" where("Document Type" = field("Document Type"), "Document No." = field("No."), Type = const("G/L Account"), "No." = filter('201950')));
+        }
+        field(50040; "Withholding Tax (ACY)"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."ACY UE Sales" where("Document Type" = field("Document Type"), "Document No." = field("No."), Type = const("G/L Account"), "No." = filter('201950')));
         }
         //***********************************PDC************************
         field(60000; "Applies-to ID for PDC"; Code[20])

@@ -2,7 +2,6 @@ pageextension 50174 PostedSalesInvLost extends "Posted Sales Invoices"
 {
     layout
     {
-        // Add changes to page layout here
     }
 
     actions
@@ -68,6 +67,21 @@ pageextension 50174 PostedSalesInvLost extends "Posted Sales Invoices"
                     UpdateCard.Editable(true);
                     UpdateCard.LookupMode(true);
                     UpdateCard.RunModal();
+                end;
+            }
+            action("Update Sales Order No.")
+            {
+                ApplicationArea = All;
+                Image = EditAdjustments;
+                AccessByPermission = Tabledata 113 = RIMD;
+                trigger OnAction()
+                Var
+                    RecSalesInvLine: Record "Sales Invoice Line";
+                    RecSalesShipmentLine: Record "Sales Shipment Line";
+                    UpdatePSI: Report "Update Sales Order No.";
+                begin
+                    UpdatePSI.UseRequestPage(false);
+                    UpdatePSI.Run();
                 end;
             }
         }

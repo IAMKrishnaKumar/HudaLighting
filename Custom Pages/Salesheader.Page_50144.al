@@ -875,6 +875,14 @@ page 50144 "Sales header"
                 {
                     ApplicationArea = All;
                 }
+                field("Withholding Tax (LCY)"; "Withholding Tax (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Withholding Tax (ACY)"; "Withholding Tax (ACY)")
+                {
+                    ApplicationArea = All;
+                }
 
             }
         }

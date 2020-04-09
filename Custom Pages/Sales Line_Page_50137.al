@@ -753,10 +753,6 @@ page 50137 "Sales Line Subform"
                 {
                     ApplicationArea = All;
                 }
-                field("Sales Person Share"; "Sales Person Share")
-                {
-                    ApplicationArea = All;
-                }
                 field("Estimated Cost"; "Estimated Cost")
                 {
                     ApplicationArea = All;

@@ -83,6 +83,7 @@ pageextension 50118 ItemCard extends "Item Card"
             field("Available Items"; "Available Items")
             {
                 ApplicationArea = All;
+                Visible = false;
             }
         }
 

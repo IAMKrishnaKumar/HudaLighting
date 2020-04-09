@@ -13,6 +13,7 @@ pageextension 50127 ItemPageList extends "Item List"
             field("Available Items"; "Available Items")
             {
                 ApplicationArea = All;
+                Visible = false;
             }
             field(IsUploaded; IsUploaded)
             {

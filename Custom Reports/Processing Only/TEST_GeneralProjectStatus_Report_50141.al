@@ -127,6 +127,9 @@ report 50159 "General Project Status TEST"
                                 PSILine.CalcSums(Quantity);
                                 ExcelBuf.AddColumn(0, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                                 ExcelBuf.AddColumn(PSILine.Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                            end else begin
+                                ExcelBuf.AddColumn(0, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                                ExcelBuf.AddColumn(0, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                             end;
                         end else begin
                             ExcelBuf.AddColumn(InventoryReservation + "Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
@@ -155,9 +158,19 @@ report 50159 "General Project Status TEST"
                         ExcelBuf.AddColumn(RecPurchLine."Outstanding Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number)
                     else
                         ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);*/
-
-                    ExcelBuf.AddColumn((Quantity - (InventoryReservation + "Quantity Shipped")), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                    ExcelBuf.AddColumn("Outstanding Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    Clear(RecItem);
+                    if RecItem.GET("No.") then begin
+                        if RecItem.Type = RecItem.Type::"Non-Inventory" then begin
+                            ExcelBuf.AddColumn(0, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                            ExcelBuf.AddColumn(Quantity - PSILine.Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                        end else begin
+                            ExcelBuf.AddColumn((Quantity - (InventoryReservation + "Quantity Shipped")), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                            ExcelBuf.AddColumn(Quantity - "Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                        end;
+                    end else begin
+                        ExcelBuf.AddColumn((Quantity - (InventoryReservation + "Quantity Shipped")), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                        ExcelBuf.AddColumn(Quantity - "Quantity Shipped", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    end;
                     //Purchase Orderss
                     Clear(RecPurchLine);
                     RecPurchLine.SetRange("Document Type", "Document Type"::Order);
@@ -532,4 +545,5 @@ report 50159 "General Project Status TEST"
         POReservationQty: Decimal;
         InventoryReservation: Decimal;
         RecItem: Record Item;
+        QtyShipped: Decimal;
 }
