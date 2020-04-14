@@ -39,7 +39,7 @@ report 60012 "Check Report ARAB"
                 SETRANGE("Check Printed", true);
             end;
         }
-        dataitem(GenJnlLine; "Gen. Journal Line")
+        dataitem(GenJnlLine; "Gen. Journal Line")//Modified
         {
             DataItemTableView = SORTING("Journal Template Name", "Journal Batch Name", "Posting Date", "Document No.");
             column(JournalTempName_GenJnlLine; "Journal Template Name")

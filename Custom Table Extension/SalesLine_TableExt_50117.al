@@ -109,12 +109,12 @@ tableextension 50117 SalesLineTableExt extends "Sales Line"
         field(50013; "Non Stock Invoiced"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum ("Sales Invoice Line"."Line Amount" where(Type = const(Item), "Item Type" = filter('<>Inventory'), "Sales Order No." = field("Document No.")));
+            CalcFormula = sum ("Sales Invoice Line".Amount where(Type = const(Item), "Item Type" = filter('<>Inventory'), "Sales Order No." = field("Document No.")));
         }
         field(50014; "G/L Invoiced"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum ("Sales Invoice Line"."Line Amount" where(Type = const("G/L Account"), "Sales Order No." = field("Document No."), "No." = filter('<>201610|103350')));
+            CalcFormula = sum ("Sales Invoice Line".Amount where(Type = const("G/L Account"), "Sales Order No." = field("Document No."), "No." = filter('<>201610|103350')));
         }
         field(50015; "UE Sales"; Decimal)
         {
@@ -157,6 +157,30 @@ tableextension 50117 SalesLineTableExt extends "Sales Line"
             ObsoleteState = Removed;
         }
 
+        field(50022; "FOC Reason"; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = ,"FOC Sample","FOC Item","FOC Extra";
+        }
+        field(50023; "Amount Shipped Not Inv. (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        modify("Shipped Not Invoiced (LCY)")
+        {
+            trigger OnAfterValidate()
+            var
+                CurrencyExchangeRate: Record "Currency Exchange Rate";
+                ExchangeRateAmt: Decimal;
+            begin
+                if ("Document Type" <> "Document Type"::Order) then
+                    exit;
+                Clear(CurrencyExchangeRate);
+                Clear(ExchangeRateAmt);
+                ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor('AED');
+                "Amount Shipped Not Inv. (ACY)" := Round("Shipped Not Invoiced (LCY)" * ExchangeRateAmt, 0.01, '=');
+            end;
+        }
         modify("No.")
         {
             trigger OnAfterValidate()
@@ -267,19 +291,24 @@ tableextension 50117 SalesLineTableExt extends "Sales Line"
         Clear(ExchangeRateAmt);
         ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor('AED');
         if "Outstanding Amount (LCY)" <> 0 then
-            "UE Sales" := "Outstanding Amount (LCY)" - ("Outstanding Amount (LCY)" * "VAT %" / 100)
+            "UE Sales" := "Outstanding Amount (LCY)" / (1 + "VAT %" / 100) //"Outstanding Amount (LCY)" - ("Outstanding Amount (LCY)" * "VAT %" / 100)
         else
             "UE Sales" := 0;
         "ACY UE Sales" := Round("UE Sales" * ExchangeRateAmt, 0.01, '=');
         if ("Estimated Cost" <> 0) AND (Quantity <> 0) then
             "Unit Estimated Cost" := "Estimated Cost" / Quantity
-        else
-            "Unit Estimated Cost" := 0;
+        else begin
+            if "Estimated Cost" = 0 then
+                "Unit Estimated Cost" := "Unit Cost (LCY)"
+            else
+                "Unit Estimated Cost" := 0;
+        end;
 
-        "Estimated Cost Of Outs. qty" := "Unit Estimated Cost" * "Outstanding Quantity";
+        "Estimated Cost Of Outs. qty" := "Unit Estimated Cost" * ("Outstanding Quantity" + "Qty. Shipped Not Invoiced");
 
         "UE GP" := "UE Sales" - "Estimated Cost Of Outs. qty";
         "ACY UE GP" := Round("UE GP" * ExchangeRateAmt, 0.01, '=');
+        "Amount Shipped Not Inv. (ACY)" := Round("Shipped Not Invoiced (LCY)" * ExchangeRateAmt, 0.01, '=');
 
     end;
 

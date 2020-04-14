@@ -747,8 +747,54 @@ codeunit 50104 HudaEvents
             RecJln.TestField("Currency Code");
         end;
     end;
+    //General Journal Post and print 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnAfterPostJournalBatch', '', false, false)]
+    procedure StoreVariables(VAR GenJournalLine: Record "Gen. Journal Line")
+    var
+        GenLedSetup: Record "General Ledger Setup";
+        GenVoucher: Report 50116;
+        GLEntry: Record "G/L Entry";
+        NoSeries: Record "No. Series";
+        GenJlnBatch: Record "Gen. Journal Batch";
+        NOSeriesLine: Record "No. Series Line";
+        BatchPostingPrintMgt: Codeunit "Batch Posting Print Mgt.";
+    begin
+        GenLedSetup.GET;
+        if GenLedSetup."Gen. Jln. Post & Print" then begin
+            // COMMIT;
+            // COMMIT;
+            Clear(GenJlnBatch);
+            IF GenJlnBatch.GET(GenJournalLine."Journal Template Name", GenJournalLine."Journal Batch Name") then begin
+                clear(NOSeriesLine);
+                NOSeriesLine.SetRange("Series Code", GenJlnBatch."Posting No. Series");
+                if NOSeriesLine.FindFirst() then begin
+                    Clear(GLEntry);
+                    GLEntry.SetRange("Document No.", NOSeriesLine."Last No. Used");
+                    if GLEntry.FindSet() then begin
+                        GenVoucher.SetTableView(GLEntry);
+                        GenVoucher.UseRequestPage(false);
+                        GenVoucher.RunModal();
+                    end;
+                end;
+            end;
+
+        end;
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Batch Posting Print Mgt.", 'OnBeforeGLRegPostingReportPrint', '', false, false)]
+    procedure PrintAfterPost(VAR ReportID: Integer; ReqWindow: Boolean; SystemPrinter: Boolean; VAR GLRegister: Record "G/L Register"; VAR Handled: Boolean)
+    VAR
+        GenLedSetup: Record "General Ledger Setup";
+    begin
+        GenLedSetup.GET;
+        if GenLedSetup."Gen. Jln. Post & Print" then begin
+            Handled := true;
+        end;
+    end;
 
     var
-        myInt: Integer;
+        JlnBatchName: Text;
+        JlnTemplateName: Text;
 }

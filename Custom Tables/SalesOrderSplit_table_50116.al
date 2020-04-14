@@ -93,6 +93,54 @@ table 50116 "Sales Order Split"
         {
             DataClassification = ToBeClassified;
         }
+        field(22; "Shared G/L Invoiced (LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(23; "Shared G/L Invoiced (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(24; "Shared Non Stock Invoiced(LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(25; "Shared Non Stock Invoiced(ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(26; "Withholding Tax (LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(27; "Withholding Tax (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(28; "Shared Withholding Tax (LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(29; "Shared Withholding Tax (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(30; "Amount Shipped not Inv. (LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(31; "Amount Shipped not Inv. (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(32; "Shared Amt. Shp. Not Inv.(LCY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(33; "Shared Amt. Shp. Not Inv.(ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

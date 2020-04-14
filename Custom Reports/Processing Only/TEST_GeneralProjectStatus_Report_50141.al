@@ -147,7 +147,7 @@ report 50159 "General Project Status TEST"
                     Clear(CurrencyExchangeRate);
                     ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(RecGLSetup."LCY Code");
                     ExcelBuf.AddColumn(ROUND(("Unit Price" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                    ExcelBuf.AddColumn(ROUND(("Line Amount" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+                    ExcelBuf.AddColumn(ROUND((("Line Amount" - "Inv. Discount Amount") / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
                     /*Clear(RecPurchLine);
                     RecPurchLine.SetRange("Document Type", "Document Type"::Order);

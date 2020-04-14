@@ -96,6 +96,54 @@ page 50142 "Sales Order Split"
                 {
                     ApplicationArea = All;
                 }
+                field("Withholding Tax (ACY)"; "Withholding Tax (ACY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Withholding Tax (LCY)"; "Withholding Tax (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared G/L Invoiced (ACY)"; "Shared G/L Invoiced (ACY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared G/L Invoiced (LCY)"; "Shared G/L Invoiced (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared Non Stock Invoiced(ACY)"; "Shared Non Stock Invoiced(ACY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared Non Stock Invoiced(LCY)"; "Shared Non Stock Invoiced(LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared Withholding Tax (ACY)"; "Shared Withholding Tax (ACY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared Withholding Tax (LCY)"; "Shared Withholding Tax (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Amount Shipped not Inv. (LCY)"; "Amount Shipped not Inv. (LCY)")
+                {
+                    ApplicationArea = ALl;
+                }
+                field("Amount Shipped not Inv. (ACY)"; "Amount Shipped not Inv. (ACY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared Amt. Shp. Not Inv.(LCY)"; "Shared Amt. Shp. Not Inv.(LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shared Amt. Shp. Not Inv.(ACY)"; "Shared Amt. Shp. Not Inv.(ACY)")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -235,6 +235,7 @@ pageextension 50109 SalesOrder extends "Sales Order"
                 RecPT: Record "Payment Terms";
                 RecPM: Record "Payment Milestone";
                 TotalPercentage: Decimal;
+                Sline: Record "Sales Line";
             begin
                 Rec.TestField("Payment Terms Code");
                 Rec.TestField("Currency Code");
@@ -261,6 +262,19 @@ pageextension 50109 SalesOrder extends "Sales Order"
                             if TotalPercentage <> 100 then begin
                                 Error('Payment Milestone % must be 100 for this order.');
                             end;
+                    end;
+                end;
+                CalcFields("Retail Location");
+                if not "Retail Location" then begin
+                    Clear(Sline);
+                    Sline.SetRange("Document Type", "Document Type"::Order);
+                    Sline.SetRange("Document No.", "No.");
+                    Sline.SetRange(Type, Sline.Type::Item);
+                    if Sline.FindSet() then begin
+                        repeat
+                            if Sline."Estimated Cost" = 0 then
+                                Sline.TestField("FOC Reason");
+                        until Sline.Next() = 0;
                     end;
                 end;
             end;

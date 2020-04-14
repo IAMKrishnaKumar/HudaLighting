@@ -51,6 +51,10 @@ query 50101 "G/L Budget Entry"
             {
 
             }
+            column(Amount__ACY_; "Amount (ACY)")
+            {
+
+            }
         }
     }
 }

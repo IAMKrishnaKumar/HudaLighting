@@ -555,10 +555,6 @@ page 50144 "Sales header"
                 {
                     ApplicationArea = All;
                 }
-                field("Amt. Ship. Not Inv. (LCY)"; "Amt. Ship. Not Inv. (LCY)")
-                {
-                    ApplicationArea = All;
-                }
                 field("Amt. Ship. Not Inv. (LCY) Base"; "Amt. Ship. Not Inv. (LCY) Base")
                 {
                     ApplicationArea = All;
@@ -883,7 +879,14 @@ page 50144 "Sales header"
                 {
                     ApplicationArea = All;
                 }
-
+                field("Amt. Ship. Not Inv. (LCY)"; "Amt. Ship. Not Inv. (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Amount Shipped Not Inv. (ACY)"; "Amount Shipped Not Inv. (ACY)")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

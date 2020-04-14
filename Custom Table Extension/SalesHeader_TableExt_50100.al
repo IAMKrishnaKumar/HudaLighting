@@ -129,12 +129,12 @@ tableextension 50100 SalesHeader extends "Sales Header"
         field(50030; "Non Stock Invoiced"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum ("Sales Invoice Line"."Line Amount" where(Type = const(Item), "Item Type" = filter('<>Inventory'), "Sales Order No." = field("No.")));
+            CalcFormula = sum ("Sales Invoice Line"."Amount" where(Type = const(Item), "Item Type" = filter('<>Inventory'), "Sales Order No." = field("No.")));
         }
         field(50031; "G/L Invoiced"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum ("Sales Invoice Line"."Line Amount" where(Type = const("G/L Account"), "Sales Order No." = field("No."), "No." = filter('<>201610|103350')));
+            CalcFormula = sum ("Sales Invoice Line"."Amount" where(Type = const("G/L Account"), "Sales Order No." = field("No."), "No." = filter('<>201610|103350')));
         }
         field(50032; "UE Sales"; Decimal)
         {
@@ -178,6 +178,11 @@ tableextension 50100 SalesHeader extends "Sales Header"
         {
             FieldClass = FlowField;
             CalcFormula = sum ("Sales Line"."ACY UE Sales" where("Document Type" = field("Document Type"), "Document No." = field("No."), Type = const("G/L Account"), "No." = filter('201950')));
+        }
+        field(50041; "Amount Shipped Not Inv. (ACY)"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum ("Sales Line"."Amount Shipped Not Inv. (ACY)" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
         }
         //***********************************PDC************************
         field(60000; "Applies-to ID for PDC"; Code[20])

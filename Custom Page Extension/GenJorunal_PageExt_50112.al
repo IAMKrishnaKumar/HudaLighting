@@ -49,33 +49,53 @@ pageextension 50112 GenJournalLine extends "General Journal"
 
     actions
     {
-        modify(Post)
+        /*modify(Post)
         {
-            trigger OnAfterAction()
-            var
-                GenLedSetup: Record "General Ledger Setup";
-                GenVoucher: Report 50116;
-                GLEntry: Record "G/L Entry";
-            begin
-                GenLedSetup.GET;
-                if GenLedSetup."Gen. Jln. Post & Print" then begin
-                    if not Confirm('Do you want to print the Voucher?', false) then
-                        exit;
-                    Clear(GLEntry);
-                    GLEntry.SetRange("Document No.", Rec."Document No.");
-                    if GLEntry.FindFirst() then begin
-                        GenVoucher.SetTableView(GLEntry);
-                        GenVoucher.Run();
-                    end;
-                end;
-            end;
-        }
+            /* trigger OnBeforeAction()
+             begin
+                 Clear(DocumentNO);
+                 DocumentNO := Rec."Document No.";
+             end;
+
+             trigger OnAfterAction()
+             var
+                 GenLedSetup: Record "General Ledger Setup";
+                 GenVoucher: Report 50116;
+                 GLEntry: Record "G/L Entry";
+                 NoSeries: Record "No. Series";
+                 GenJlnBatch: Record "Gen. Journal Batch";
+                 NOSeriesLine: Record "No. Series Line";
+             begin
+                 GenLedSetup.GET;
+                 if GenLedSetup."Gen. Jln. Post & Print" then begin
+                     if not Confirm('Do you want to print the Voucher?', false) then
+                         exit;
+                     COMMIT;
+                     COMMIT;
+                     Clear(GenJlnBatch);
+                     IF GenJlnBatch.GET(Rec."Journal Template Name", Rec."Journal Batch Name") then begin
+                         clear(NOSeriesLine);
+                         NOSeriesLine.SetRange("Series Code", GenJlnBatch."Posting No. Series");
+                         if NOSeriesLine.FindFirst() then begin
+                             Clear(GLEntry);
+                             GLEntry.SetRange("Document No.", NOSeriesLine."Last No. Used");
+                             if GLEntry.FindSet() then begin
+                                 GenVoucher.SetTableView(GLEntry);
+                                 GenVoucher.UseRequestPage(false);
+                                 GenVoucher.Run();
+                             end;
+                         end;
+                     end;
+
+                 end;
+             end;
+    }*/
 
 
     }
 
     var
-        myInt: Integer;
+        DocumentNO: Text;
 }
 
 pageextension 50186 InterCompanyJournal extends "IC General Journal"
@@ -113,6 +133,5 @@ pageextension 50186 InterCompanyJournal extends "IC General Journal"
     {
     }
 
-    var
-        myInt: Integer;
+
 }

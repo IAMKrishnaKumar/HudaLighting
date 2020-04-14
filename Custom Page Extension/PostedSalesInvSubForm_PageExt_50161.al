@@ -80,6 +80,10 @@ pageextension 50161 MyExtension extends "Posted Sales Invoice Subform"
         }
         addafter("Line Amount")
         {
+            field("Inv. Discount Amount"; "Inv. Discount Amount")
+            {
+                ApplicationArea = All;
+            }
             field("Estimated Cost"; "Estimated Cost")
             {
                 ApplicationArea = All;

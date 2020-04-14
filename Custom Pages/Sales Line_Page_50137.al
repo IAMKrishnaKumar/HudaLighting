@@ -271,10 +271,6 @@ page 50137 "Sales Line Subform"
                 {
                     ApplicationArea = All;
                 }
-                field("Shipped Not Invoiced (LCY)"; "Shipped Not Invoiced (LCY)")
-                {
-                    ApplicationArea = All;
-                }
                 field("Shipped Not Inv. (LCY) No VAT"; "Shipped Not Inv. (LCY) No VAT")
                 {
                     ApplicationArea = All;
@@ -800,6 +796,14 @@ page 50137 "Sales Line Subform"
                     ApplicationArea = All;
                 }
                 field("G/L Invoiced"; "G/L Invoiced")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shipped Not Invoiced (LCY)"; "Shipped Not Invoiced (LCY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Amount Shipped Not Inv. (ACY)"; "Amount Shipped Not Inv. (ACY)")
                 {
                     ApplicationArea = All;
                 }

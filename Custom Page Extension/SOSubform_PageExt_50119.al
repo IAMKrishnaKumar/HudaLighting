@@ -56,6 +56,10 @@ pageextension 50119 SoSubForm extends "Sales Order Subform"
                 ApplicationArea = All;
                 Visible = false;
             }
+            field("FOC Reason"; "FOC Reason")
+            {
+                ApplicationArea = All;
+            }
             field("Estimated GP"; "Estimated GP")
             {
                 ApplicationArea = All;
