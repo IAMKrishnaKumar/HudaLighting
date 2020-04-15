@@ -184,6 +184,14 @@ tableextension 50100 SalesHeader extends "Sales Header"
             FieldClass = FlowField;
             CalcFormula = sum ("Sales Line"."Amount Shipped Not Inv. (ACY)" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
         }
+        field(50042; "G/L Invoiced (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50043; "Non Stock Invoiced (ACY)"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
         //***********************************PDC************************
         field(60000; "Applies-to ID for PDC"; Code[20])
         {

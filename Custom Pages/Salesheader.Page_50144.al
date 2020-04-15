@@ -851,6 +851,14 @@ page 50144 "Sales header"
                 {
                     ApplicationArea = All;
                 }
+                field("G/L Invoiced (ACY)"; "G/L Invoiced (ACY)")
+                {
+                    ApplicationArea = All;
+                }
+                field("Non Stock Invoiced (ACY)"; "Non Stock Invoiced (ACY)")
+                {
+                    ApplicationArea = All;
+                }
                 field("UE Sales"; "UE Sales")
                 {
                     ApplicationArea = All;
