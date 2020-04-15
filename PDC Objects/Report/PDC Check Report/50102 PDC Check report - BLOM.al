@@ -331,7 +331,6 @@ report 50102 "PDC BLOM BANK CHECK"
 
                 trigger OnAfterGetRecord()
                 begin
-
                     IF ("Vendor Ledger Entry"."Document Type" = "Vendor Ledger Entry"."Document Type"::"Credit Memo") THEN
                         TotalAmountToApply += "Amount to Apply" * -1
                     ELSE

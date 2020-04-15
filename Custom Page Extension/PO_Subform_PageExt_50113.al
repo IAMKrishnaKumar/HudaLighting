@@ -65,6 +65,10 @@ pageextension 50113 PurchOrderSubForm extends "Purchase Order Subform"
             {
                 ApplicationArea = All;
             }
+            field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
+            {
+                ApplicationArea = All;
+            }
 
         }
         addafter(Description)

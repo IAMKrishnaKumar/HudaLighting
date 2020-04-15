@@ -794,6 +794,7 @@ codeunit 50104 HudaEvents
         end;
     end;
 
+
     var
         JlnBatchName: Text;
         JlnTemplateName: Text;

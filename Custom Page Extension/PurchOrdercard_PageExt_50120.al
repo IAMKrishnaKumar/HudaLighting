@@ -20,6 +20,10 @@ pageextension 50120 POCard extends "Purchase Order"
             {
                 ApplicationArea = All;
             }
+            field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
+            {
+                ApplicationArea = All;
+            }
         }
 
         modify("Order Address Code")
