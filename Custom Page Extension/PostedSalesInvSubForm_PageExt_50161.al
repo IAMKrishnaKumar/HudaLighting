@@ -69,6 +69,10 @@ pageextension 50161 MyExtension extends "Posted Sales Invoice Subform"
                 ApplicationArea = All;
                 Caption = 'VAT Prod. Posting Group';
             }
+            field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
+            {
+                ApplicationArea = All;
+            }
         }
         addafter(Quantity)
         {

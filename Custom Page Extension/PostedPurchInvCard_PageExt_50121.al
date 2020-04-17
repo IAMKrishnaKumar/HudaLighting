@@ -3,9 +3,12 @@ pageextension 50121 PurchInvCard extends "Purchase Invoice"
     layout
     {
         // Add changes to page layout here
-        addafter("Creditor No.")
+        addafter("VAT Bus. Posting Group")
         {
-
+            field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
+            {
+                ApplicationArea = All;
+            }
         }
         modify("Responsibility Center")
         {

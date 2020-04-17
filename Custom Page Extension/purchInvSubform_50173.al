@@ -32,7 +32,7 @@ pageextension 50178 PurchInvSF extends "Purch. Invoice Subform"
         }
         addafter("VAT Prod. Posting Group")
         {
-            field("Gen. Prod. Posting Group"; "Gen. Prod. Posting Group")
+            field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
             {
                 ApplicationArea = All;
             }
