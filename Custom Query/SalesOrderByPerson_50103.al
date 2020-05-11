@@ -47,6 +47,10 @@ query 50103 "Sales Order by Sales Person"
                     {
 
                     }
+                    column(Shortcut_Dimension_1_Code; "Shortcut Dimension 1 Code")
+                    {
+
+                    }
                     dataitem(Salesperson_Purchaser; "Salesperson/Purchaser")
                     {
                         DataItemLink = Code = Sales_Header."Salesperson Code";
@@ -83,6 +87,10 @@ query 50104 "Sales Person And Territory"
                     DataItemLink = "No." = Sales_Line."Document No.";
 
                     column(Shortcut_Dimension_2_Code; "Shortcut Dimension 2 Code")
+                    {
+
+                    }
+                    column(Shortcut_Dimension_1_Code; "Shortcut Dimension 1 Code")
                     {
 
                     }

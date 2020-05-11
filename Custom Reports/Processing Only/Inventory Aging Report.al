@@ -156,17 +156,18 @@ report 50137 "Inventory Aging"
                     CalcRemainingQty;
                     RemainingQty += TotalInvtQty;
 
-                    IF Item."Costing Method" = Item."Costing Method"::Average THEN BEGIN
-                        InvtValue[i] += AverageCost[i] * InvtQty[i];
-                        InvtValueRTC[i] += AverageCost[i] * InvtQty[i];
-                    END ELSE BEGIN
-                        CalcUnitCost;
-                        TotalInvtValue_Item += UnitCost * ABS(TotalInvtQty);
-                        InvtValue[i] += UnitCost * ABS(InvtQty[i]);
+                    /* IF Item."Costing Method" = Item."Costing Method"::Average THEN BEGIN
+                         InvtValue[i] += AverageCost[i] * InvtQty[i];
+                         InvtValueRTC[i] += AverageCost[i] * InvtQty[i];
+                     END ELSE BEGIN
+                         */
+                    CalcUnitCost;
+                    TotalInvtValue_Item += UnitCost * ABS(TotalInvtQty);
+                    InvtValue[i] += UnitCost * ABS(InvtQty[i]);
 
-                        TotalInvtValueRTC += UnitCost * ABS(TotalInvtQty);
-                        InvtValueRTC[i] += UnitCost * ABS(InvtQty[i]);
-                    END;
+                    TotalInvtValueRTC += UnitCost * ABS(TotalInvtQty);
+                    InvtValueRTC[i] += UnitCost * ABS(InvtQty[i]);
+                    //END;
 
                     // MakeExcelDataBody;//------------------------
                 end;
@@ -391,6 +392,7 @@ report 50137 "Inventory Aging"
         Itemcat: Record "Item Category";
         DescText: Text;
         BStr: Text;
+        GrandTotal: Array[11] of Decimal;
 
     local procedure CalcRemainingQty()
     begin
@@ -582,7 +584,7 @@ report 50137 "Inventory Aging"
             ExcelBuf.AddColumn(Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(Item.Inventory - Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(Item."Unit Cost", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn((Item.Inventory * Item."Unit Cost"), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round((Item.Inventory * Item."Unit Cost"), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             /*
                if Item.Picture.Count > 0 then begin
                    IF TenantMedia.GET(Item.Picture.Item(1)) THEN BEGIN
@@ -595,15 +597,15 @@ report 50137 "Inventory Aging"
                ExcelBuf.AddColumn(BStr, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
        */
             ExcelBuf.AddColumn(InvtQtyForQ[1], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtValue[1], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round(InvtValue[1], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(InvtQtyForQ[2], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtValue[2], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round(InvtValue[2], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(InvtQtyForQ[3], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtValue[3], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round(InvtValue[3], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(InvtQtyForQ[4], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtValue[4], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round(InvtValue[4], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(InvtQtyForQ[5], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtValue[5], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round(InvtValue[5], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
             if (StrLen(DescText) > 249) then begin
                 ExcelBuf.NewRow();

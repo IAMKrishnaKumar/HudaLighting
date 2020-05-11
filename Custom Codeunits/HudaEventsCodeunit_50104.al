@@ -664,7 +664,6 @@ codeunit 50104 HudaEvents
     var
         Sheader: Record "Sales Header";
         Sline: Record "Sales Line";
-
         TempDocumentEntry: Record "Document Entry";
         NoFilter: Text;
         PPSetup: Record "Purchases & Payables Setup";

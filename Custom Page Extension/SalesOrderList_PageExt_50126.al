@@ -346,22 +346,23 @@ pageextension 50126 SalesOrderList extends "Sales Order List"
                     begin
                         if Rec.Closed then
                             Exit;
-                        Clear(Sline);
-                        Sline.SetRange("Document Type", Rec."Document Type");
-                        Sline.SetRange("Document No.", Rec."No.");
-                        if Sline.FindSet() then begin
-                            repeat
-                                If not ((Sline.Quantity = Sline."Quantity Shipped") AND (Sline."Quantity Shipped" = Sline."Quantity Invoiced")) then
-                                    Error('Order is not Shipped or Invoiced completely.You cannot close the Order.');
-                            until Sline.Next() = 0;
-                        end;
+                        /*
+                          Clear(Sline);
+                          Sline.SetRange("Document Type", Rec."Document Type");
+                          Sline.SetRange("Document No.", Rec."No.");
+                          if Sline.FindSet() then begin
+                              repeat
+                                  If not ((Sline.Quantity = Sline."Quantity Shipped") AND (Sline."Quantity Shipped" = Sline."Quantity Invoiced")) then
+                                      Error('Order is not Shipped or Invoiced completely.You cannot close the Order.');
+                              until Sline.Next() = 0;
+                          end;
+                          */
                         Clear(RecPM);
                         RecPM.SetRange("Document Type", "Document Type"::Order);
                         RecPM.SetRange("Document No.", "No.");
                         RecPM.SetFilter("Line No.", '<>%1', 0);
                         if RecPM.FindFirst() then begin
-                            if not Rec."Project Handover" then
-                                Error('You cannot close this Order without Project Handover.');
+                            Rec.TestField("Project Handover", true);
                         end;
                         if not Confirm('Are you sure you want to close the order?', false) then
                             Exit;
