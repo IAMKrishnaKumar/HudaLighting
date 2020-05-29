@@ -48,6 +48,7 @@ tableextension 50118 SalesInvLine extends "Sales Invoice Line"
         field(50009; "Sales Order No."; Code[20])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Sales Header"."No." where("Document Type" = const(Order));
         }
         field(50010; "Brand"; Text[20])
         {

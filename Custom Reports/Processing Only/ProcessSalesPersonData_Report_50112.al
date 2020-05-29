@@ -27,6 +27,7 @@ report 50112 "Process Sales Person Data"
         RecStaging.SetFilter("Integration Status", '=%1|%2', RecStaging."Integration Status"::Pending, RecStaging."Integration Status"::"Wait for Re-attempt");
         if RecStaging.FindSet() then begin
             repeat
+                Commit();
                 if not Codeunit.Run(50106, RecStaging) then begin
                     if GetLastErrorText = 'Duplicate' then begin
                         RecStaging."Integration Status" := RecStaging."Integration Status"::Duplicate;

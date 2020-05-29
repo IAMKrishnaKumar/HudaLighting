@@ -27,7 +27,7 @@ tableextension 50109 GenLedtableExt extends "G/L Entry"
         field(50005; "Project Name"; Text[50])
         {
             FieldClass = FlowField;
-            CalcFormula = lookup ("Dimension Value".Name where("Dimension Code" = field("Global Dimension 1 Code")));
+            CalcFormula = lookup ("Dimension Value".Name where(Code = field("Global Dimension 1 Code"), "Global Dimension No." = CONST(1)));
         }
         field(50006; "Customer Name"; Text[100])
         {

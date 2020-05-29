@@ -104,6 +104,22 @@ pageextension 50161 MyExtension extends "Posted Sales Invoice Subform"
     actions
     {
         // Add changes to page actions here
+        addafter("&Line")
+        {
+            action("Update Sales Order No.")
+            {
+                ApplicationArea = All;
+                Image = UpdateDescription;
+                trigger OnAction()
+                var
+                    updatesalesOrderNo: Report "Update SO In Posted Sales Line";
+                begin
+                    Clear(updatesalesOrderNo);
+                    updatesalesOrderNo.SetSalesInvNo(Rec."Document No.");
+                    updatesalesOrderNo.Run();
+                end;
+            }
+        }
     }
 
     var

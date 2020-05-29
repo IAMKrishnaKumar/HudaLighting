@@ -45,7 +45,7 @@ pageextension 50125 SaleInvSubForm extends "Sales Invoice Subform"
             field("Sales Order No."; "Sales Order No.")
             {
                 ApplicationArea = All;
-                Enabled = false;
+                Enabled = true;
             }
 
             field("Purchase Order No"; "HL_Purchase Order No.")

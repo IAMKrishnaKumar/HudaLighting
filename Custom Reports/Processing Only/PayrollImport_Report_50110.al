@@ -19,6 +19,7 @@ report 50110 "Import Payroll"
         PyrollStagingL.SetFilter("Integration Status", '=%1|%2', PyrollStagingL."Integration Status"::Pending, PyrollStagingL."Integration Status"::"Wait for Re-attempt");
         if PyrollStagingL.FindSet() then begin
             repeat
+                Commit();
                 if not Codeunit.Run(50101, PyrollStagingL) then begin
                     if PyrollStagingL."Retry Count" > 1 then
                         PyrollStagingL."Integration Status" := PyrollStagingL."Integration Status"::Error
