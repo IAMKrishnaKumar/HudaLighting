@@ -190,13 +190,55 @@ pageextension 50128 SalesInv extends "Sales Invoice"
 
                 }
             }
+
         }
 
+        addfirst("&Invoice")
+        {
+            action("Alert Whse. Team")
+            {
+                ApplicationArea = All;
+                Image = SendMail;
+                trigger OnAction()
+                VAR
+                    SendEmailAlert: Codeunit "Pick Material Alert";
+                    EntryNo: Integer;
+                    RecCompanyInfo: Record "Company Information";
+                    EmailAlertLog: Record "Email Alert Log";
+                begin
+                    RecCompanyInfo.GET;
+                    RecCompanyInfo.TestField("Pick Materials", TRUE);
+                    RecCompanyInfo.TestField("Pick Materials Email");
+                    if not Confirm('Do you want to alert the Whse. Team?', false) then exit;
+                    Clear(EmailAlertLog);
+                    if EmailAlertLog.FindLast() then
+                        EntryNo := EmailAlertLog."Entry No." + 1
+                    else
+                        EntryNo := 1;
+                    EmailAlertLog.Init();
+                    EmailAlertLog."Entry No." := EntryNo;
+                    EmailAlertLog."Document No." := Rec."No.";
+                    EmailAlertLog."Email For Record" := Rec.RecordId;
+                    EmailAlertLog."Email Alert Type" := EmailAlertLog."Email Alert Type"::"Pick Materials Alert";
+                    ClearLastError();
+                    SendEmailAlert.SetSalesOrderNumber(Rec."No.");
+                    Commit();
+                    if SendEmailAlert.RUN() then
+                        EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Sent
+                    else
+                        EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
+                    EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
+                    EmailAlertLog.Insert(true);
+
+                end;
+            }
+        }
         addafter("P&osting")
         {
             action("Update VAT Bus. Posting Group")
             {
                 ApplicationArea = All;
+                Visible = false;
 
                 trigger OnAction()
                 VAR

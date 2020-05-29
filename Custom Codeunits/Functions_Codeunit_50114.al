@@ -28,6 +28,7 @@ codeunit 50114 Functions
                     Dimvalue.Validate("Dimension Code", InvSetup."Brand Dimension");
                     Dimvalue.Validate(Code, ItemBrands.Code);
                     Dimvalue.Validate(Name, ItemBrands.Description);
+                    Dimvalue.Validate("Global Dimension No.", 7);
                     Dimvalue.Insert(true);
                 end else begin
                     Dimvalue.Name := ItemBrands.Description;

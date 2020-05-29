@@ -1,7 +1,7 @@
 report 50107 "OA Daily Report"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
     ProcessingOnly = true;
     dataset
     {

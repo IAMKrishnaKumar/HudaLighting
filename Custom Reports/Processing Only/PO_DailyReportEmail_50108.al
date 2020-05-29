@@ -1,7 +1,7 @@
 report 50108 "PO Daily Report"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
     ProcessingOnly = true;
     dataset
     {

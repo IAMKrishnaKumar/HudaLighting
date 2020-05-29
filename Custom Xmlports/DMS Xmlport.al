@@ -1205,6 +1205,7 @@ xmlport 50108 "DMS Universal XMLport"
         RECORDLINK_FIELD: Integer;
         RECORDLINK_DESC_FIELD: Integer;
         NEWLINE_CHAR: Text;
+        ReservationStatusEnum: Enum "Reservation Status";
 
     procedure getTableName(pnTableID: Integer)
     var
@@ -1245,7 +1246,7 @@ xmlport 50108 "DMS Universal XMLport"
                 END ELSE
                     lbDidInsert := rrRecRef.INSERT(bRunOnInsert);
 
-                IF lbDidInsert AND (nTableID = 83) THEN
+                IF lbDidInsert AND (nTableID = Database::"Item Journal Line") THEN//83
                     addItemTracking();
 
             END;//allow inserts
@@ -1636,8 +1637,9 @@ xmlport 50108 "DMS Universal XMLport"
 
     procedure addItemTracking()
     var
-        lrecItemJnl: Record 83;
-        lcuCreateResEntry: Codeunit 99000830;
+        lrecItemJnl: Record "Item Journal Line";
+        lcuCreateResEntry: Codeunit "Create Reserv. Entry";
+        forReservEntry: Record "Reservation Entry";
     begin
         //<DMS>
         // Adds item tracking lines to item journal line table
@@ -1649,7 +1651,7 @@ xmlport 50108 "DMS Universal XMLport"
         rrRecRef.SETTABLE(lrecItemJnl);
         WITH lrecItemJnl DO BEGIN
 
-            IF ("Serial No." <> '') OR ("Lot No." <> '') THEN BEGIN
+            /*IF ("Serial No." <> '') OR ("Lot No." <> '') THEN BEGIN
                 lcuCreateResEntry.CreateReservEntryFor(
                   DATABASE::"Item Journal Line",
                   "Entry Type",
@@ -1661,10 +1663,21 @@ xmlport 50108 "DMS Universal XMLport"
                   "Quantity (Base)",
                   "Serial No.",
                   "Lot No."
+                );*///Krishna
+            IF ("Serial No." <> '') OR ("Lot No." <> '') THEN BEGIN
+                lcuCreateResEntry.CreateReservEntryFor(
+                  DATABASE::"Item Journal Line",
+                  "Entry Type",
+                  "Journal Template Name", "Journal Batch Name",
+                  0, //prod order line
+                  "Line No.", //source ref no.
+                  "Qty. per Unit of Measure",
+                  Quantity,
+                  "Quantity (Base)",
+                  forReservEntry
                 );
 
                 lcuCreateResEntry.SetDates("Warranty Date", "Expiration Date");
-
                 lcuCreateResEntry.CreateEntry(
                   "Item No.", //ItemNo
                   "Variant Code", //VariantCode
@@ -1673,7 +1686,7 @@ xmlport 50108 "DMS Universal XMLport"
                   "Posting Date", //ExpectedReceiptDate
                   0D, //ShipmentDate
                   0, //TransferredFromEntryNo
-                  3 //Status (3==Prospect)
+                  ReservationStatusEnum::Prospect //Status (3==Prospect)
                 );
 
                 "Warranty Date" := 0D;

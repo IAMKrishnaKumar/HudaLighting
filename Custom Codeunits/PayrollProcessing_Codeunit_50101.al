@@ -31,8 +31,8 @@ codeunit 50101 PayrollProcessing
         RecGenjline.Validate(Amount, Rec.Amount);
         RecGenjline.Validate("Source Code", GenJln."Source Code");
         RecGenjline.Narration := Rec.Narration;
-        RecGenjline."Shortcut Dimension 1 Code" := Rec."Department Code";
-        RecGenjline."Shortcut Dimension 2 Code" := Rec."Branch Code";
+        //RecGenjline."Shortcut Dimension 1 Code" := Rec."Department Code";
+        //RecGenjline."Shortcut Dimension 2 Code" := Rec."Branch Code";
         RecGenjline."Dimension Set ID" := CheckAndCreateDim(Rec."Department Code", Rec."Branch Code");
         // RecGenjline.Validate("Bal. Account Type", RecGenjline."Bal. Account Type"::"G/L Account");
         // RecGenjline.Validate("Bal. Account No.", Rec."Account No");
@@ -58,7 +58,7 @@ codeunit 50101 PayrollProcessing
             DimValue.Init();
             DimValue.Validate("Dimension Code", GenLegSetup."Department Dimension Code");
             DimValue.Validate(Code, DimValL);
-            DimValue.Validate("Global Dimension No.", 1);
+            DimValue.Validate("Global Dimension No.", 5);
             DimValue.Validate(Name, DimValL);
             DimValue.Validate("Dimension Value Type", DimValue."Dimension Value Type"::Standard);
             DimValue.Insert;
@@ -71,7 +71,7 @@ codeunit 50101 PayrollProcessing
             DimValue2.Init();
             DimValue2.Validate("Dimension Code", GenLegSetup."Branch Dimension Code");
             DimValue2.Validate(Code, DimValL2);
-            DimValue2.Validate("Global Dimension No.", 2);
+            DimValue2.Validate("Global Dimension No.", 3);
             DimValue2.Validate(Name, DimValL2);
             DimValue2.Validate("Dimension Value Type", DimValue2."Dimension Value Type"::Standard);
             DimValue2.Insert;

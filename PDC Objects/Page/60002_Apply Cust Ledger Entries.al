@@ -29,7 +29,7 @@ page 60002 "Apply Cust. Ledger Entries"
                     Caption = 'Document Type';
                     Editable = false;
                     ApplicationArea = All;
-                    OptionCaption = ' ,Payment,Invoice,Credit Memo,Finance Charge Memo,Reminder,Refund';
+                    //OptionCaption = ' ,Payment,Invoice,Credit Memo,Finance Charge Memo,Reminder,Refund';
                 }
                 field("ApplyingCustLedgEntry.""Document No."""; ApplyingCustLedgEntry."Document No.")
                 {

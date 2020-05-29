@@ -4,7 +4,7 @@ report 50160 "Update Shared SOGS/COGS"
     //ApplicationArea = All;
     UseRequestPage = false;
     ProcessingOnly = true;
-    Permissions = TableData 50103 = RIMD;
+    Permissions = TableData 50103 = RIMD, TableData 37 = RIMD, TableData 36 = RIMD;
     dataset
     {
     }
@@ -72,9 +72,19 @@ report 50160 "Update Shared SOGS/COGS"
                 SHeader.Modify();
             until SHeader.Next() = 0;
         end;
+        //To update UE Sales Field
+        Clear(RecSalesLine);
+        RecSalesLine.SetRange("Document Type", RecSalesLine."Document Type"::Order);
+        RecSalesLine.SetFilter("Document No.", '<>%1', '');
+        if RecSalesLine.FindSet() then begin
+            repeat
+                RecSalesLine.UpdateAEDAmounts();
+                RecSalesLine.Modify();
+            until RecSalesLine.Next() = 0;
+        end;
     end;
 
 
     var
-        myInt: Integer;
+        RecSalesLine: Record "Sales Line";
 }

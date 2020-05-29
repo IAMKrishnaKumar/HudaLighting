@@ -1,4 +1,4 @@
-codeunit 50113 "Item Availability"
+/*codeunit 50113 "Item Availability"
 {
 
     trigger OnRun()
@@ -11,7 +11,7 @@ codeunit 50113 "Item Availability"
         SalesPriceCalcMgt: Codeunit 7000;
         AvailableToPromise: Codeunit 5790;
 
-     
+
     procedure CalcAvailability(No: code[20]): Decimal
     var
         GrossRequirement: Decimal;
@@ -41,7 +41,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcAvailabilityDate(var SalesLine: Record 37): Date
     begin
         IF SalesLine."Shipment Date" <> 0D THEN
@@ -50,7 +50,7 @@ codeunit 50113 "Item Availability"
         EXIT(WORKDATE);
     end;
 
-     
+
     procedure CalcAvailableInventory(No: Code[20]): Decimal
     var
         RecItem: Record Item;
@@ -63,7 +63,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcScheduledReceipt(No: code[20]): Decimal
     var
         RecItem: Record Item;
@@ -76,7 +76,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcGrossRequirements(No: Code[20]): Decimal
     var
         RecItem: Record Item;
@@ -89,7 +89,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcReservedRequirements(No: Code[20]): Decimal
     var
         RecItem: Record Item;
@@ -102,7 +102,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcReservedDemand(No: code[20]): Decimal
     var
         RecItem: Record Item;
@@ -115,7 +115,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcNoOfSubstitutions(var SalesLine: Record 37): Integer
     begin
         IF GetItem(SalesLine) THEN BEGIN
@@ -124,7 +124,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcNoOfSalesPrices(var SalesLine: Record 37): Integer
     begin
         IF GetItem(SalesLine) THEN BEGIN
@@ -133,7 +133,7 @@ codeunit 50113 "Item Availability"
         END;
     end;
 
-     
+
     procedure CalcNoOfSalesLineDisc(var SalesLine: Record 37): Integer
     begin
         IF GetItem(SalesLine) THEN BEGIN
@@ -149,7 +149,7 @@ codeunit 50113 "Item Availability"
         EXIT(ROUND(Qty / PerUoMQty, 0.00001));
     end;
 
-     
+
     procedure LookupItem(var SalesLine: Record 37)
     begin
         SalesLine.TESTFIELD(Type, SalesLine.Type::Item);
@@ -193,4 +193,5 @@ codeunit 50113 "Item Availability"
     begin
     end;
 }
+*/
 

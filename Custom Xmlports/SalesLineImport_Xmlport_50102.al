@@ -112,8 +112,10 @@ xmlport 50102 SalesLineImport
         lcuSalesLineReserve: Codeunit "Sales Line-Reserve";
     BEGIN
         lcuReservationManagement.SetSalesLine(pioSalesLine);
+        //Method 'SetSalesLine' is marked for removal. Reason: Replaced by SetReservSource procedure.
         lcuReservationManagement.AutoReserve(DoFullReserve, pioSalesLine.Description, WORKDATE, pioSalesLine."Outstanding Quantity", pioSalesLine."Outstanding Qty. (Base)");
         lcuSalesLineReserve.FilterReservFor(lReservationEntry, pioSalesLine);
+        //Method 'FilterReservFor' is marked for removal. Reason: Replaced by SalesLine.SetReservationFilters(FilterReservEntry)
 
         IF lReservationEntry.FINDSET THEN
             REPEAT

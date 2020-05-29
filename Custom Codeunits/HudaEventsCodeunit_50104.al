@@ -209,7 +209,10 @@ codeunit 50104 HudaEvents
                 RecPm.SetRange("Line No.", RecPm2."Line No.");
                 if not RecPm.FindSet() then begin
                     RecPm.Init();
-                    RecPm."Document Type" := SalesLine."Document Type";
+                    if SalesLine."Document Type" = SalesLine."Document Type"::Order then
+                        RecPm."Document Type" := RecPm."Document Type"::Order
+                    else
+                        RecPm."Document Type" := RecPm."Document Type"::Invoice;
                     RecPm."Document No." := SalesLine."Document No.";
                     RecPm.Validate("Document Date", Sheader."Document Date");
                     RecPm.Validate("Posting Type", RecPm2."Posting Type");
@@ -547,6 +550,10 @@ codeunit 50104 HudaEvents
     procedure ModifyPaymentMileStone(VAR SalesHeader: Record "Sales Header"; VAR SalesInvoiceHeader: Record "Sales Invoice Header"; VAR SalesCrMemoHeader: Record "Sales Cr.Memo Header"; VAR SkipDelete: Boolean)
     var
         RecPm: Record "Payment Milestone";
+        EmailAlertLog: Record "Email Alert Log";
+        EntryNo: Integer;
+        InvoicePostingAlert: Codeunit "Sales Invoice Posting Alert";
+        RecCompanyInfo: Record "Company Information";
     begin
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice then begin
             Clear(RecPm);
@@ -559,6 +566,32 @@ codeunit 50104 HudaEvents
                 until RecPm.Next() = 0;
             end;
         end;
+
+        //Email Notification on Posting Sales Invoice with Proforma PDF
+
+        RecCompanyInfo.GET;
+        if NOT RecCompanyInfo."Sales Invoice Posting" then
+            exit;
+        Clear(EmailAlertLog);
+        if EmailAlertLog.FindLast() then
+            EntryNo := EmailAlertLog."Entry No." + 1
+        else
+            EntryNo := 1;
+        EmailAlertLog.Init();
+        EmailAlertLog."Entry No." := EntryNo;
+        EmailAlertLog."Document No." := SalesHeader."No.";
+        EmailAlertLog."Email For Record" := SalesHeader.RecordId;
+        EmailAlertLog."Email Alert Type" := EmailAlertLog."Email Alert Type"::"Invoice Posting Alert";
+        ClearLastError();
+        InvoicePostingAlert.SetSalesOrderNumber(SalesHeader."No.");
+        InvoicePostingAlert.SetPostedSalesInvoiceNo(SalesInvoiceHeader."No.");
+        Commit();
+        if InvoicePostingAlert.RUN() then
+            EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Sent
+        else
+            EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
+        EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
+        EmailAlertLog.Insert(true);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"TransferOrder-Post Shipment", 'OnBeforeInsertTransShptLine', '', false, false)]
@@ -655,6 +688,10 @@ codeunit 50104 HudaEvents
                     Sheader.Modify();
                 end;
             end;
+        end;
+        //To update UE Sales 
+        if (Rec."Document Type" = Rec."Document Type"::Order) then begin
+            Rec.UpdateAEDAmounts();
         end;
     end;
 
@@ -761,8 +798,6 @@ codeunit 50104 HudaEvents
     begin
         GenLedSetup.GET;
         if GenLedSetup."Gen. Jln. Post & Print" then begin
-            // COMMIT;
-            // COMMIT;
             Clear(GenJlnBatch);
             IF GenJlnBatch.GET(GenJournalLine."Journal Template Name", GenJournalLine."Journal Batch Name") then begin
                 clear(NOSeriesLine);
@@ -793,6 +828,93 @@ codeunit 50104 HudaEvents
         end;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnAfterReleaseSalesDoc', '', false, false)]
+    procedure OnAfterReleaseSalesDoc(VAR SalesHeader: Record "Sales Header"; PreviewMode: Boolean; VAR LinesWereModified: Boolean)
+    Var
+        EmailAlertLog: Record "Email Alert Log";
+        EntryNo: Integer;
+        SendOAAlert: Codeunit "OA Approval Alert";
+        RecCompanyInfo: Record "Company Information";
+    begin
+        RecCompanyInfo.GET;
+        if NOT RecCompanyInfo."OA Approval" then
+            exit;
+        Clear(EmailAlertLog);
+        if EmailAlertLog.FindLast() then
+            EntryNo := EmailAlertLog."Entry No." + 1
+        else
+            EntryNo := 1;
+        EmailAlertLog.Init();
+        EmailAlertLog."Entry No." := EntryNo;
+        EmailAlertLog."Document No." := SalesHeader."No.";
+        EmailAlertLog."Email For Record" := SalesHeader.RecordId;
+        EmailAlertLog."Email Alert Type" := EmailAlertLog."Email Alert Type"::"OA Approval Alert";
+        ClearLastError();
+        SendOAAlert.SetSalesOrderNumber(SalesHeader."No.");
+        Commit();
+        if SendOAAlert.RUN() then
+            EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Sent
+        else
+            EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
+        EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
+        EmailAlertLog.Insert(true);
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnAfterCode', '', false, false)]
+    local procedure OnAfterCode(VAR WarehouseReceiptHeader: Record "Warehouse Receipt Header")
+    begin
+        SendNotificationToPurchaser(WarehouseReceiptHeader);
+    end;
+
+    local procedure SendNotificationToPurchaser(VAR WarehouseReceiptHeader: Record "Warehouse Receipt Header")
+    var
+        RecPostedWhseRcpLine: Record "Posted Whse. Receipt Line";
+        MaterialReceivedAlert: Codeunit "Material Received Alert";
+        EmailAlertLog: Record "Email Alert Log";
+        EntryNo: Integer;
+        RecCompanyInfo: Record "Company Information";
+        CheckList: List of [Text];
+        RecPurchRcptHdr: Record "Purch. Rcpt. Header";
+    begin
+        RecCompanyInfo.GET;
+        if NOT RecCompanyInfo."Materials Received by Whse." then
+            exit;
+        Clear(RecPostedWhseRcpLine);
+        RecPostedWhseRcpLine.SetRange("No.", WarehouseReceiptHeader."Receiving No.");
+        if RecPostedWhseRcpLine.FindSet() then begin
+            repeat
+                if RecPostedWhseRcpLine."Posted Source Document" = RecPostedWhseRcpLine."Posted Source Document"::"Posted Receipt" then begin
+                    if not CheckList.Contains(RecPostedWhseRcpLine."Posted Source No.") then begin
+                        CheckList.Add(RecPostedWhseRcpLine."Posted Source No.");
+                        Clear(RecPurchRcptHdr);
+                        if RecPurchRcptHdr.GET(RecPostedWhseRcpLine."Posted Source No.") then begin
+                            Clear(EmailAlertLog);
+                            if EmailAlertLog.FindLast() then
+                                EntryNo := EmailAlertLog."Entry No." + 1
+                            else
+                                EntryNo := 1;
+                            EmailAlertLog.Init();
+                            EmailAlertLog."Entry No." := EntryNo;
+                            EmailAlertLog."Document No." := WarehouseReceiptHeader."Receiving No.";
+                            EmailAlertLog."Email For Record" := WarehouseReceiptHeader.RecordId;
+                            EmailAlertLog."Email Alert Type" := EmailAlertLog."Email Alert Type"::"Materials Received by the Whse. Alert";
+                            ClearLastError();
+                            Clear(MaterialReceivedAlert);
+                            MaterialReceivedAlert.SetPurchRcptHeader(RecPurchRcptHdr."No.");
+                            Commit();
+                            if MaterialReceivedAlert.RUN() then
+                                EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Sent
+                            else
+                                EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
+                            EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
+                            EmailAlertLog.Insert(true);
+                        end;
+                    end;
+                end;
+            until RecPostedWhseRcpLine.Next() = 0;
+        end;
+    end;
 
     var
         JlnBatchName: Text;

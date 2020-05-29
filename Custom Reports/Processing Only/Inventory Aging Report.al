@@ -13,132 +13,11 @@ report 50137 "Inventory Aging"
             DataItemTableView = SORTING("No.")
                                 WHERE(Type = CONST(Inventory));
             RequestFilterFields = "No.", "Inventory Posting Group", "Statistics Group", "Location Filter";
+
             column(TodayFormatted; FORMAT(TODAY, 0, 4))
             {
             }
-            column(CompanyName; COMPANYPROPERTY.DISPLAYNAME)
-            {
-            }
-            column(ItemTableCaptItemFilter; TABLECAPTION + ': ' + ItemFilter)
-            {
-            }
-            column(ItemFilter; ItemFilter)
-            {
-            }
-            column(PeriodStartDate21; FORMAT(PeriodStartDate[2] + 1))
-            {
-            }
-            column(PeriodStartDate3; FORMAT(PeriodStartDate[3]))
-            {
-            }
-            column(PeriodStartDate31; FORMAT(PeriodStartDate[3] + 1))
-            {
-            }
-            column(PeriodStartDate4; FORMAT(PeriodStartDate[4]))
-            {
-            }
-            column(PeriodStartDate41; FORMAT(PeriodStartDate[4] + 1))
-            {
-            }
-            column(PeriodStartDate5; FORMAT(PeriodStartDate[5]))
-            {
-            }
-            //QTY - fields 
-            column(InvtQty1_ItemLedgEntry; InvtQty[1])
-            {
-                DecimalPlaces = 0 : 2;
-            }
-            column(InvtQty2_ItemLedgEntry; InvtQty[2])
-            {
-                DecimalPlaces = 0 : 2;
-            }
-            column(InvtQty3_ItemLedgEntry; InvtQty[3])
-            {
-                DecimalPlaces = 0 : 2;
-            }
-            column(InvtQty4_ItemLedgEntry; InvtQty[4])
-            {
-                DecimalPlaces = 0 : 2;
-            }
-            column(InvtQty5_ItemLedgEntry; InvtQty[5])
-            {
-                DecimalPlaces = 0 : 2;
-            }
-            column(TotalInTotalInvtQty; TotalInvtQty)
-            {
-                DecimalPlaces = 0 : 2;
-            }
 
-            //QTY-fields - END
-            column(PrintLine; PrintLine)
-            {
-            }
-            column(InvtValueRTC1; InvtValueRTC[1])
-            {
-            }
-            column(InvtValueRTC2; InvtValueRTC[2])
-            {
-            }
-            column(InvtValueRTC5; InvtValueRTC[5])
-            {
-            }
-            column(InvtValueRTC4; InvtValueRTC[4])
-            {
-            }
-            column(InvtValueRTC3; InvtValueRTC[3])
-            {
-            }
-            column(TotalInvtValueRTC; TotalInvtValueRTC)
-            {
-            }
-            column(InvtValue1_Item; InvtValue[1])
-            {
-                AutoFormatType = 1;
-            }
-            column(InvtValue2_Item; InvtValue[2])
-            {
-                AutoFormatType = 1;
-            }
-            column(InvtValue3_Item; InvtValue[3])
-            {
-                AutoFormatType = 1;
-            }
-            column(InvtValue4_Item; InvtValue[4])
-            {
-                AutoFormatType = 1;
-            }
-            column(InvtValue5_Item; InvtValue[5])
-            {
-                AutoFormatType = 1;
-            }
-            column(TotalInvtValue_Item; TotalInvtValue_Item)
-            {
-                AutoFormatType = 1;
-            }
-            column(ItemAgeCompositionValueCaption; ItemAgeCompositionValueCaptionLbl)
-            {
-            }
-            column(CurrReportPageNoCaption; CurrReportPageNoCaptionLbl)
-            {
-            }
-            column(AfterCaption; AfterCaptionLbl)
-            {
-            }
-            column(BeforeCaption; BeforeCaptionLbl)
-            {
-            }
-            column(InventoryValueCaption; InventoryValueCaptionLbl)
-            {
-            }
-            column(ItemDescriptionCaption; ItemDescriptionCaptionLbl)
-            {
-            }
-            column(ItemNoCaption; ItemNoCaptionLbl)
-            {
-            }
-            column(TotalCaption; TotalCaptionLbl)
-            {
-            }
             dataitem("Item Ledger Entry"; "Item Ledger Entry")
             {
                 DataItemLink = "Item No." = FIELD("No."),
@@ -154,22 +33,20 @@ report 50137 "Inventory Aging"
                         CurrReport.SKIP;
                     PrintLine := TRUE;
                     CalcRemainingQty;
-                    RemainingQty += TotalInvtQty;
+                    RemainingQty += TotalInvtQtyForValue;
 
-                    /* IF Item."Costing Method" = Item."Costing Method"::Average THEN BEGIN
-                         InvtValue[i] += AverageCost[i] * InvtQty[i];
-                         InvtValueRTC[i] += AverageCost[i] * InvtQty[i];
-                     END ELSE BEGIN
-                         */
-                    CalcUnitCost;
-                    TotalInvtValue_Item += UnitCost * ABS(TotalInvtQty);
-                    InvtValue[i] += UnitCost * ABS(InvtQty[i]);
+                    IF Item."Costing Method" = Item."Costing Method"::Average THEN BEGIN
+                        InvtValue[i] += AverageCost[i] * InvtQtyForValue[i];
+                        InvtValueRTC[i] += AverageCost[i] * InvtQtyForValue[i];
+                    END ELSE BEGIN
 
-                    TotalInvtValueRTC += UnitCost * ABS(TotalInvtQty);
-                    InvtValueRTC[i] += UnitCost * ABS(InvtQty[i]);
-                    //END;
+                        CalcUnitCost;
+                        TotalInvtValue_Item += UnitCost * ABS(TotalInvtQtyForValue);
+                        InvtValue[i] += UnitCost * ABS(InvtQtyForValue[i]);
 
-                    // MakeExcelDataBody;//------------------------
+                        TotalInvtValueRTC += UnitCost * ABS(TotalInvtQtyForValue);
+                        InvtValueRTC[i] += UnitCost * ABS(InvtQtyForValue[i]);
+                    END;
                 end;
 
                 trigger OnPostDataItem()
@@ -201,38 +78,14 @@ report 50137 "Inventory Aging"
                 {
                     AutoFormatType = 1;
                 }
-                column(InvtValue5_ItemLedgEntry; InvtValue[5])
-                {
-                    AutoFormatType = 1;
-                }
-                column(InvtValue4_ItemLedgEntry; InvtValue[4])
-                {
-                    AutoFormatType = 1;
-                }
-                column(InvtValue3_ItemLedgEntry; InvtValue[3])
-                {
-                    AutoFormatType = 1;
-                }
-                column(InvtValue2_ItemLedgEntry; InvtValue[2])
-                {
-                    AutoFormatType = 1;
-                }
-                column(InvtValue1_ItemLedgEntry; InvtValue[1])
-                {
-                    AutoFormatType = 1;
-                }
-                column(Description_Item; Item.Description + Item."Description 2" + Item."Description 3")
-                {
-                }
-                column(No_Item; Item."No.")
-                {
-                }
                 trigger OnAfterGetRecord()
                 var
                     myInt: Integer;
                 begin
                     MakeExcelDataBody();
                 end;
+
+
             }
 
             trigger OnAfterGetRecord()
@@ -240,16 +93,6 @@ report 50137 "Inventory Aging"
                 ItemLedgEntry: Record 32;
                 RecILE: Record 32;
             begin
-                IF "Costing Method" = "Costing Method"::Average THEN BEGIN
-                    FOR i := 2 TO 5 DO BEGIN
-                        SETRANGE("Date Filter", PeriodStartDate[i] + 1, PeriodStartDate[i + 1]);
-                        ItemCostMgt.CalculateAverageCost(Item, AverageCost[i], AverageCostACY[i]);
-                    END;
-
-                    SETRANGE("Date Filter", 0D, PeriodStartDate[2]);
-                    ItemCostMgt.CalculateAverageCost(Item, AverageCost[1], AverageCostACY[1]);
-                END;
-
                 PrintLine := FALSE;
                 TotalInvtQty := 0;
                 FOR i := 1 TO 5 DO
@@ -260,16 +103,34 @@ report 50137 "Inventory Aging"
                     REPEAT
                         PrintLine := TRUE;
                         TotalInvtQty := TotalInvtQty + ItemLedgEntry."Remaining Quantity";
-                        FOR i := 1 TO 5 DO
-                            IF (ItemLedgEntry."Posting Date" > PeriodStartDate[i]) AND (ItemLedgEntry."Posting Date" <= PeriodStartDate[i + 1]) THEN
+                        FOR i := 1 TO 5 DO begin
+                            IF (ItemLedgEntry."Posting Date" > PeriodStartDate[i]) AND (ItemLedgEntry."Posting Date" <= PeriodStartDate[i + 1]) THEN begin
                                 InvtQtyForQ[i] := InvtQtyForQ[i] + ItemLedgEntry."Remaining Quantity";
+                                TotalInvtQtyForQ[i] += ItemLedgEntry."Remaining Quantity";//To calculate Total Qty
+                            end;
+                        end;//for total
                     UNTIL ItemLedgEntry.NEXT = 0;
+
+                IF "Costing Method" = "Costing Method"::Average THEN BEGIN
+                    FOR i := 2 TO 5 DO BEGIN
+                        SETRANGE("Date Filter", PeriodStartDate[i] + 1, PeriodStartDate[i + 1]);
+                        ItemCostMgt.CalculateAverageCost(Item, AverageCost[i], AverageCostACY[i]);
+                    END;
+
+                    SETRANGE("Date Filter", 0D, PeriodStartDate[2]);
+                    ItemCostMgt.CalculateAverageCost(Item, AverageCost[1], AverageCostACY[1]);
+                END;
+
+
+
+                ///MakeExcelDataBody();//testing/?Wrong
             end;
 
             trigger OnPreDataItem()
             begin
                 CLEAR(InvtValue);
                 CLEAR(TotalInvtValue_Item);
+                Clear(TotalInvtQtyForQ);//custom
             end;
         }
     }
@@ -346,9 +207,16 @@ report 50137 "Inventory Aging"
         MakeExcelInfo;
     end;
 
+    trigger OnInitReport()
+    var
+        myInt: Integer;
+    begin
+
+    end;
+
     var
         Text002: Label 'Enter the ending date';
-        ItemCostMgt: Codeunit 5804;
+        ItemCostMgt: Codeunit ItemCostManagement;
         ItemFilter: Text;
         InvtValue: array[6] of Decimal;
 
@@ -356,16 +224,18 @@ report 50137 "Inventory Aging"
 
         InvtQty: array[6] of Decimal;
 
+        TotalInvtQtyForQ: array[6] of Decimal;
         InvtQtyForQ: array[6] of Decimal;
         UnitCost: Decimal;
-        ExcelBuf: Record 370 temporary;
+        ExcelBuf: Record "Excel Buffer" Temporary;
         PeriodStartDate: array[6] of Date;
         PeriodLength: DateFormula;
         i: Integer;
         TotalInvtValue_Item: Decimal;
         TotalInvtValueRTC: Decimal;
         TotalInvtQty: Decimal;
-
+        InvtQtyForValue: array[6] of Decimal;
+        TotalInvtQtyForValue: Decimal;
         PrintLine: Boolean;
         AverageCost: array[5] of Decimal;
         AverageCostACY: array[5] of Decimal;
@@ -398,15 +268,15 @@ report 50137 "Inventory Aging"
     begin
         WITH "Item Ledger Entry" DO BEGIN
             FOR i := 1 TO 5 DO
-                InvtQty[i] := 0;
+                InvtQtyForValue[i] := 0;
 
-            TotalInvtQty := "Remaining Quantity";
+            TotalInvtQtyForValue := "Remaining Quantity";
             FOR i := 1 TO 5 DO
                 IF ("Posting Date" > PeriodStartDate[i]) AND
                    ("Posting Date" <= PeriodStartDate[i + 1])
                 THEN
                     IF "Remaining Quantity" <> 0 THEN BEGIN
-                        InvtQty[i] := "Remaining Quantity";
+                        InvtQtyForValue[i] := "Remaining Quantity";
                         EXIT;
                     END;
         END;
@@ -414,7 +284,7 @@ report 50137 "Inventory Aging"
 
     local procedure CalcUnitCost()
     var
-        ValueEntry: Record 5802;
+        ValueEntry: Record "Value Entry";
     begin
         WITH ValueEntry DO BEGIN
             SETRANGE("Item Ledger Entry No.", "Item Ledger Entry"."Entry No.");
@@ -426,24 +296,6 @@ report 50137 "Inventory Aging"
                         SumUnitCost(UnitCost, "Cost Amount (Actual)" + "Cost Amount (Expected)", "Valued Quantity")
                     ELSE
                         SumUnitCost(UnitCost, "Cost Amount (Actual)" + "Cost Amount (Expected)", "Item Ledger Entry".Quantity);
-                UNTIL NEXT = 0;
-        END;
-    end;
-
-    local procedure CalcUnitCost_L(Rec: Record "Item Ledger Entry")
-    var
-        ValueEntry: Record 5802;
-    begin
-        WITH ValueEntry DO BEGIN
-            SETRANGE("Item Ledger Entry No.", Rec."Entry No.");
-            UnitCost := 0;
-
-            IF FIND('-') THEN
-                REPEAT
-                    IF "Partial Revaluation" THEN
-                        SumUnitCost(UnitCost, "Cost Amount (Actual)" + "Cost Amount (Expected)", "Valued Quantity")
-                    ELSE
-                        SumUnitCost(UnitCost, "Cost Amount (Actual)" + "Cost Amount (Expected)", Rec.Quantity);
                 UNTIL NEXT = 0;
         END;
     end;
@@ -462,6 +314,7 @@ report 50137 "Inventory Aging"
 
     trigger OnPostReport()
     begin
+        AddTotalRow();
         CreateExcelbook;
     end;
 
@@ -583,8 +436,11 @@ report 50137 "Inventory Aging"
             ExcelBuf.AddColumn(Item.Inventory, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(Item.Inventory - Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Item."Unit Cost", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round((Item.Inventory * Item."Unit Cost"), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            //ExcelBuf.AddColumn(Item."Unit Cost", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round((TotalInvtValue_Item / Item.Inventory), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            //ExcelBuf.AddColumn(Round((Item.Inventory * Item."Unit Cost"), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn(Round((TotalInvtValue_Item), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
             /*
                if Item.Picture.Count > 0 then begin
                    IF TenantMedia.GET(Item.Picture.Item(1)) THEN BEGIN
@@ -592,10 +448,9 @@ report 50137 "Inventory Aging"
                        TenantMedia.Content.CREATEOUTSTREAM(OutStr);
                        OutStr.WRITE(BStr);
                    END;
-
                end;
                ExcelBuf.AddColumn(BStr, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-       */
+            */
             ExcelBuf.AddColumn(InvtQtyForQ[1], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(Round(InvtValue[1], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
             ExcelBuf.AddColumn(InvtQtyForQ[2], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
@@ -643,6 +498,35 @@ report 50137 "Inventory Aging"
         ExcelBuf.CloseBook();
         ExcelBuf.OpenExcel();
         // ExcelBuf.CreateBookAndOpenExcel('', Text101, Text102, COMPANYNAME, USERID);
+    end;
+
+
+    local procedure AddTotalRow()
+    begin
+        ExcelBuf.NewRow;
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn('TOTAL', FALSE, '', true, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn(Round(TotalInvtValueRTC, 0.01, '='), FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
+        ExcelBuf.AddColumn(TotalInvtQtyForQ[1], FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValueRTC[1], 0.01, '='), FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(TotalInvtQtyForQ[2], FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValueRTC[2], 0.01, '='), FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(TotalInvtQtyForQ[3], FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValueRTC[3], 0.01, '='), FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(TotalInvtQtyForQ[4], FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValueRTC[4], 0.01, '='), FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(TotalInvtQtyForQ[5], FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValueRTC[5], 0.01, '='), FALSE, '', TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
     end;
 }
 

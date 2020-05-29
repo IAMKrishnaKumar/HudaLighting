@@ -1,8 +1,8 @@
-page 50119 "Item Availability FactBox"
+/*page 50119 "Item Availability FactBox"
 {
     Caption = 'Item Availability Details';
     PageType = CardPart;
-    SourceTable = 27;
+    SourceTable = Item;
 
     layout
     {
@@ -121,7 +121,7 @@ page 50119 "Item Availability FactBox"
                     end;
                 }
             }
-            */
+            *//*
         }
     }
 
@@ -141,7 +141,7 @@ page 50119 "Item Availability FactBox"
 
     var
         SalesHeader: Record 36;
-        SalesPriceCalcMgt: Codeunit 7000;
+        //SalesPriceCalcMgt: Codeunit 7000;
         SalesInfoPaneMgt: Codeunit 50113;
         ItemAvailFormsMgt: Codeunit 353;
 
@@ -164,6 +164,6 @@ page 50119 "Item Availability FactBox"
          IF Type <> Type::Item THEN
              EXIT('');
          EXIT("No.");
-     end;*/
-}
+     end;
+}*/
 

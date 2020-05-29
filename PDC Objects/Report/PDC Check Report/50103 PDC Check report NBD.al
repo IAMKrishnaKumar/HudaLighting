@@ -574,7 +574,7 @@ report 50103 "PDC NBD BANK CHECK"
         OnesText: array[20] of Text[30];
         TensText: array[10] of Text[30];
         ExponentText: array[5] of Text[30];
-        BalancingType: Option "G/L Account",Customer,Vendor,"Bank Account";
+        BalancingType: Enum "Gen. Journal Account Type";//Option "G/L Account",Customer,Vendor,"Bank Account";
         BalancingNo: Code[20];
         ContactText: Text[30];
         CheckNoText: Text[30];

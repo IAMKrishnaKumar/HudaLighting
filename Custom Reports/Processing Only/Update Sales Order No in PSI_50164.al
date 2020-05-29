@@ -1,7 +1,7 @@
 report 50164 "Update Sales Order No."
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
+    //UsageCategory = Administration;
+    //ApplicationArea = All;
     ProcessingOnly = true;
     Permissions = TableData 113 = RIMD;
     dataset

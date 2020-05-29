@@ -1,8 +1,9 @@
-report 50141 "General Project Status"
+report 50141 "General Project Status TEST"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
-    ProcessingOnly = true;
+    //UsageCategory = Administration;
+    //ApplicationArea = All;
+    //ProcessingOnly = true;
+
 
     dataset
     {
@@ -186,6 +187,14 @@ report 50141 "General Project Status"
                     Clear(OATotal);
                 end;
             }
+
+        }
+    }
+    requestpage
+    {
+        SaveValues = true;
+        layout
+        {
 
         }
     }

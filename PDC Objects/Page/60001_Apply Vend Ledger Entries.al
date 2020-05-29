@@ -29,7 +29,7 @@ page 60001 "Apply Vendor Ledger Entries"
                     Caption = 'Document Type';
                     Editable = false;
                     ApplicationArea = All;
-                    OptionCaption = ' ,Payment,Invoice,Credit Memo,Finance Charge Memo,Reminder,Refund';
+                    //OptionCaption = ' ,Payment,Invoice,Credit Memo,Finance Charge Memo,Reminder,Refund';
                 }
                 field("ApplyingVendLedgEntry.""Document No."""; ApplyingVendLedgEntry."Document No.")
                 {
@@ -107,7 +107,7 @@ page 60001 "Apply Vendor Ledger Entries"
                 field("Vendor No."; "Vendor No.")
                 {
                     Editable = false;
-                    ApplicationArea=All;
+                    ApplicationArea = All;
                 }
                 field(Description; Description)
                 {
@@ -649,6 +649,7 @@ page 60001 "Apply Vendor Ledger Entries"
         PDCLineApply: Boolean;
         GenJnlLine: Record "Gen. Journal Line";
         GenJnlLine2: Record "Gen. Journal Line";
+        GenJnlAccTypeEnum: Enum "Gen. Journal Document Type";
         OKPressed: Boolean;
         [InDataSet]
         "Applies-to IDVisible": Boolean;

@@ -375,10 +375,10 @@ pageextension 50118 ItemCard extends "Item Card"
         {
             Enabled = FieldEnable;
         }
-        modify(SpecialPricesAndDiscountsTxt)
+        /*modify(SpecialPricesAndDiscountsTxt)
         {
             Enabled = FieldEnable;
-        }
+        }*/
         modify("Cost is Posted to G/L")
         {
             Enabled = FieldEnable;

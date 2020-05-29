@@ -1,7 +1,7 @@
 report 50139 "PO Backlog Report"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
     ProcessingOnly = true;
     dataset
     {

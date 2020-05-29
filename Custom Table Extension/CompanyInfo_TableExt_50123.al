@@ -41,6 +41,50 @@ tableextension 50123 CompanyInfo extends "Company Information"
         {
             DataClassification = ToBeClassified;
         }
+        //email Alert
+        field(50009; "OA Approval"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50010; "Materials Received by Whse."; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50011; "Sales Invoice Posting"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50012; "Pick Materials"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50013; "General Project Status"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        //Teams Email Ids
+
+        field(50014; "OA Approval Email"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50015; "Materials Rec. by Whse. Email"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50016; "Sales Invoice Posting Email"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50017; "Pick Materials Email"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50018; "General Project Status Email"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     var

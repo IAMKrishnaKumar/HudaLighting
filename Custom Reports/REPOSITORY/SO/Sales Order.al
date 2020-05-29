@@ -791,7 +791,6 @@ report 50127 "Sales Order report"
         AmountText1: Text;
         TotalAmount1: Decimal;
         Amount3: Decimal;
-
         Amount2: Decimal;
         CurrCode: Code[10];
         Currency_Rec: Record 4;

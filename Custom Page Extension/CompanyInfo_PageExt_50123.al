@@ -58,6 +58,65 @@ pageextension 50123 companyInfo extends "Company Information"
                 ApplicationArea = All;
             }
         }
+        addlast(content)
+        {
+            //OptionMembers = ,"OA Approval Alert","Materials Received by the Whse. Alert","Invoice Posting Alert","Pick Materials Alert","Scheduled Gen. Proj. Status Report";
+            group("Email Alerts")
+            {
+                field("OA Approval"; "OA Approval")
+                {
+                    ApplicationArea = All;
+                }
+                field("Materials Received by Whse."; "Materials Received by Whse.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sales Invoice Posting"; "Sales Invoice Posting")
+                {
+                    ApplicationArea = All;
+                }
+                field("Pick Materials"; "Pick Materials")
+                {
+                    ApplicationArea = All;
+                }
+                field("General Project Status"; "General Project Status")
+                {
+                    ApplicationArea = All;
+                }
+            }
+            group("Teams Email Ids")
+            {
+                field("OA Approval Email"; "OA Approval Email")
+                {
+                    ApplicationArea = All;
+                    Caption = 'OA Approval - Teams Email Id';
+                    Visible = false;
+                }
+                field("Materials Rec. by Whse. Email"; "Materials Rec. by Whse. Email")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Materials Received - Teams Email Id';
+                    Visible = false;
+                }
+                field("Sales Invoice Posting Email"; "Sales Invoice Posting Email")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Sales Invoice Posting - Teams Email Id';
+                    Visible = false;
+                }
+                field("Pick Materials Email"; "Pick Materials Email")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Pick Materials - Teams Email Id';
+                }
+                field("General Project Status Email"; "General Project Status Email")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    Caption = 'General Project Status - Teams  Email Id';
+                }
+            }
+        }
     }
 
     actions

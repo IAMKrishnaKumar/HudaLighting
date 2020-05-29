@@ -1,7 +1,7 @@
 report 50140 "OA Backlog Report"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
     ProcessingOnly = true;
     dataset
     {
