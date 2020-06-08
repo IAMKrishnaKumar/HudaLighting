@@ -627,10 +627,6 @@ page 50144 "Sales header"
                 {
                     ApplicationArea = All;
                 }
-                field("Location Filter"; "Location Filter")
-                {
-                    ApplicationArea = All;
-                }
                 field(Shipped; Shipped)
                 {
                     ApplicationArea = All;

@@ -141,6 +141,10 @@ table 50116 "Sales Order Split"
         {
             DataClassification = ToBeClassified;
         }
+        field(34; Closed; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys
@@ -151,8 +155,6 @@ table 50116 "Sales Order Split"
         }
     }
 
-    var
-        myInt: Integer;
 
     trigger OnInsert()
     begin

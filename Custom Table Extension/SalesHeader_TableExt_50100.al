@@ -134,7 +134,7 @@ tableextension 50100 SalesHeader extends "Sales Header"
         field(50031; "G/L Invoiced"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum ("Sales Invoice Line"."Amount" where(Type = const("G/L Account"), "Sales Order No." = field("No."), "No." = filter('<>201610|103350')));
+            CalcFormula = sum ("Sales Invoice Line"."Amount" where(Type = const("G/L Account"), "Sales Order No." = field("No."), "No." = filter('<>201610&<>103350&<>201950')));
         }
         field(50032; "UE Sales"; Decimal)
         {

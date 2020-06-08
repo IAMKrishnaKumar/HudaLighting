@@ -92,6 +92,7 @@ report 50161 "Update Sales Order Split"
                                     RecSalesSplit."Amount Shipped not Inv. (ACY)" := "Sales Header"."Amount Shipped Not Inv. (ACY)";
                                     RecSalesSplit."Shared Amt. Shp. Not Inv.(LCY)" := Round("Sales Header"."Amt. Ship. Not Inv. (LCY)" * RecSoSplit."Share %" / 100, 0.01, '=');
                                     RecSalesSplit."Shared Amt. Shp. Not Inv.(ACY)" := Round("Sales Header"."Amount Shipped Not Inv. (ACY)" * RecSoSplit."Share %" / 100, 0.01, '=');
+                                    RecSalesSplit.Closed := "Sales Header".Closed;
                                     RecSalesSplit.Modify();
                                 end;
                                 LoopCount += 1;
@@ -141,7 +142,7 @@ report 50161 "Update Sales Order Split"
                                 RecSalesSplit."Amount Shipped not Inv. (ACY)" := "Sales Header"."Amount Shipped Not Inv. (ACY)";
                                 RecSalesSplit."Shared Amt. Shp. Not Inv.(LCY)" := Round("Sales Header"."Amt. Ship. Not Inv. (LCY)" * RecSoSplit."Share %" / 100, 0.01, '=');
                                 RecSalesSplit."Shared Amt. Shp. Not Inv.(ACY)" := Round("Sales Header"."Amount Shipped Not Inv. (ACY)" * RecSoSplit."Share %" / 100, 0.01, '=');
-
+                                RecSalesSplit.Closed := "Sales Header".Closed;
                                 RecSalesSplit.Insert();
                             until RecSoSplit.Next() = 0;
                         end;
@@ -189,6 +190,7 @@ report 50161 "Update Sales Order Split"
                             RecSalesSplit."Amount Shipped not Inv. (ACY)" := "Sales Header"."Amount Shipped Not Inv. (ACY)";
                             RecSalesSplit."Shared Amt. Shp. Not Inv.(LCY)" := Round("Sales Header"."Amt. Ship. Not Inv. (LCY)" * RecSoSplit."Share %" / 100, 0.01, '=');
                             RecSalesSplit."Shared Amt. Shp. Not Inv.(ACY)" := Round("Sales Header"."Amount Shipped Not Inv. (ACY)" * RecSoSplit."Share %" / 100, 0.01, '=');
+                            RecSalesSplit.Closed := "Sales Header".Closed;
                             RecSalesSplit.Insert();
                         until RecSoSplit.Next() = 0;
                     end;

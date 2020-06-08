@@ -69,7 +69,8 @@ table 50117 "GL Entry Split"
         field(14; "Project Name"; Text[100])
         {
             FieldClass = FlowField;
-            CalcFormula = lookup ("Dimension Value".Name where("Dimension Code" = field("Shortcut Dimension 1 Code")));
+            //CalcFormula = lookup ("Dimension Value".Name where("Dimension Code" = field("Shortcut Dimension 1 Code")));
+            CalcFormula = lookup ("Dimension Value".Name where(Code = field("Shortcut Dimension 1 Code"), "Global Dimension No." = CONST(1)));
         }
         field(15; "G/L Entry No."; Integer)
         {

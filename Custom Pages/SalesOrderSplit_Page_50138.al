@@ -48,6 +48,10 @@ page 50142 "Sales Order Split"
                 {
                     ApplicationArea = All;
                 }
+                field(Closed; Closed)
+                {
+                    ApplicationArea = All;
+                }
                 field("Invoiced GL (LCY)"; "Invoiced GL (LCY)")
                 {
                     ApplicationArea = All;
