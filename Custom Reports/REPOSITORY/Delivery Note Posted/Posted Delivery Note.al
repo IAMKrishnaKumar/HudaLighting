@@ -1,7 +1,7 @@
 report 50131 "Posted Delivery Note"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = 'Custom Reports\REPOSITORY\Delivery Note Posted\Delivery Note Posted.rdlc';
+    RDLCLayout = 'Custom Reports\REPOSITORY\Delivery Note Posted\Delivery Note Posted.rdl';
     Caption = 'Delivery Note';
     PreviewMode = PrintLayout;
     ApplicationArea = All;
@@ -75,7 +75,7 @@ report 50131 "Posted Delivery Note"
             column(Cust_VatTegNo; Customer_Rec."VAT Registration No.")
             {
             }
-            column(PreDNNumber; PreDNNumber)
+            column(PreDNNumber; "Pre DN No.")// PreDNNumber)
             {
 
             }
@@ -334,6 +334,7 @@ report 50131 "Posted Delivery Note"
                 Sheader: Record "Sales Header";
                 RecWhLine: Record "Posted Whse. Shipment Line";
             begin
+                CalcFields("Pre DN No.");
                 Customer_Rec.RESET;
                 IF Customer_Rec.GET("Sales Header"."Sell-to Customer No.") THEN
                     IF "Sales Header"."Currency Code" = '' THEN
@@ -369,15 +370,23 @@ report 50131 "Posted Delivery Note"
                     POReference := Sheader."PO Reference";
                 end;
 
-
+                /*Clear(PreDNNumber);
                 Clear(RecWhLine);
                 Clear(PreDNNumber);
-                RecWhLine.SetRange("Source Document", RecWhLine."Source Document"::"Sales Order");
-                RecWhLine.SetRange("Source No.", "Order No.");
+             
+
+                RecWhLine.SetRange("Posted Source Document", RecWhLine."Posted Source Document"::"Posted Shipment");
+                RecWhLine.SetRange("Posted Source No.", "No.");
                 if RecWhLine.FindFirst() then
                     PreDNNumber := RecWhLine."Whse. Shipment No."
                 else
-                    PreDNNumber := '';
+                    PreDNNumber := '';*/
+                /* RecWhLine.SetRange("Source Document", RecWhLine."Source Document"::"Sales Order");
+                 RecWhLine.SetRange("Source No.", "Order No.");
+                 if RecWhLine.FindFirst() then
+                     PreDNNumber := RecWhLine."Whse. Shipment No."
+                 else
+                     PreDNNumber := '';*/
 
 
             end;

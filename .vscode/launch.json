@@ -2,16 +2,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Publish: Microsoft cloud sandbox",
             "type": "al",
             "request": "launch",
-            "name": "Microsoft cloud sandbox",
             "startupObjectId": 22,
-            "startupObjectType": "Page",
             "breakOnError": true,
+            "breakOnRecordWrite": false,
             "launchBrowser": true,
-            "enableLongRunningSqlStatements": true,
+            "tenant": "7fc74c11-715a-4e8c-9df2-e54436fdc08d",
             "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "Synchronize"
+            "debugServer": 4711,
+            "enableLongRunningSqlStatements": true,
+            "longRunningSqlStatementsThreshold": 500,
+            "numberOfSqlStatements": 10,
+            "schemaUpdateMode": "ForceSync"
         }
     ]
 }

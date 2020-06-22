@@ -9,6 +9,11 @@ pageextension 50192 PostedSalesShipmentPage extends "Posted Sales Shipments"
             {
                 ApplicationArea = All;
             }
+            field("Pre DN No."; "Pre DN No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Pre DN No.';
+            }
             field(CompletelyInvoiced; CompletelyInvoiced)
             {
                 ApplicationArea = All;
@@ -24,24 +29,27 @@ pageextension 50192 PostedSalesShipmentPage extends "Posted Sales Shipments"
 
     trigger OnAfterGetRecord()
     var
-        RecPurcRcpLine: Record "Sales Shipment Line";
+        RecSalesShipmentLine: Record "Sales Shipment Line";
         TotalInvoiced: Decimal;
     begin
-        Clear(RecPurcRcpLine);
+        Clear(RecSalesShipmentLine);
         Clear(TotalInvoiced);
         Clear(CompletelyInvoiced);
-        RecPurcRcpLine.SetRange("Document No.", Rec."No.");
-        if RecPurcRcpLine.FindSet() then begin
-            repeat
-                TotalInvoiced += RecPurcRcpLine."Qty. Shipped Not Invoiced";
-            until RecPurcRcpLine.Next() = 0;
+        RecSalesShipmentLine.SetRange("Document No.", Rec."No.");
+        if RecSalesShipmentLine.FindSet() then begin
+            RecSalesShipmentLine.CalcSums("Qty. Shipped Not Invoiced");
+            TotalInvoiced := RecSalesShipmentLine."Qty. Shipped Not Invoiced";
         end;
         if TotalInvoiced = 0 then
             CompletelyInvoiced := true
         else
             CompletelyInvoiced := false;
+
+
+
     end;
 
     var
         CompletelyInvoiced: Boolean;
+
 }

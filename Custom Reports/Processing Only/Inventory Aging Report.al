@@ -55,7 +55,7 @@ report 50137 "Inventory Aging"
                     AvgCostCurrLCY: Decimal;
                 begin
                     IF Item."Costing Method" = Item."Costing Method"::Average THEN BEGIN
-                        Item.SETRANGE("Date Filter");
+                        Item.SETRANGE("Date Filter");//defualt
                         ItemCostMgt.CalculateAverageCost(Item, AvgCostCurr, AvgCostCurrLCY);
                         TotalInvtValue_Item := AvgCostCurr * RemainingQty;
                         TotalInvtValueRTC += TotalInvtValue_Item;
@@ -120,10 +120,6 @@ report 50137 "Inventory Aging"
                     SETRANGE("Date Filter", 0D, PeriodStartDate[2]);
                     ItemCostMgt.CalculateAverageCost(Item, AverageCost[1], AverageCostACY[1]);
                 END;
-
-
-
-                ///MakeExcelDataBody();//testing/?Wrong
             end;
 
             trigger OnPreDataItem()
@@ -409,84 +405,87 @@ report 50137 "Inventory Aging"
         CurrencyCodeToPrint: Code[20];
     begin
         Item.CalcFields(Inventory);
-        if Item.Inventory <> 0 then begin
-            ExcelBuf.NewRow;
-            ExcelBuf.AddColumn(Item."No.", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-            ExcelBuf.AddColumn(Item."Vendor Article No", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-            ExcelBuf.AddColumn(Item.Brand, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-            Clear(Itemcat);
-            Itemcat.SetRange(Code, Item."Item Category Code");
-            if Itemcat.FindFirst() then begin
-                if Itemcat."Parent Category" = '' then begin
-                    ExcelBuf.AddColumn(Itemcat.Code, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                    ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                end else begin
-                    ExcelBuf.AddColumn(Itemcat."Parent Category", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                    ExcelBuf.AddColumn(Itemcat.Code, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                end;
+        //if Item.Inventory <> 0 then begin//19JUne2020
+        ExcelBuf.NewRow;
+        ExcelBuf.AddColumn(Item."No.", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn(Item."Vendor Article No", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        ExcelBuf.AddColumn(Item.Brand, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        Clear(Itemcat);
+        Itemcat.SetRange(Code, Item."Item Category Code");
+        if Itemcat.FindFirst() then begin
+            if Itemcat."Parent Category" = '' then begin
+                ExcelBuf.AddColumn(Itemcat.Code, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
             end else begin
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                ExcelBuf.AddColumn(Itemcat."Parent Category", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                ExcelBuf.AddColumn(Itemcat.Code, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
             end;
-            Clear(DescText);
-            DescText := Item.Description + Item."Description 2" + Item."Description 3";
-            ExcelBuf.AddColumn(CopyStr(DescText, 1, 249), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-
-            Item.CalcFields(Inventory, "Reserved Qty. on Inventory");
-            ExcelBuf.AddColumn(Item.Inventory, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Item.Inventory - Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            //ExcelBuf.AddColumn(Item."Unit Cost", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round((TotalInvtValue_Item / Item.Inventory), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            //ExcelBuf.AddColumn(Round((Item.Inventory * Item."Unit Cost"), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round((TotalInvtValue_Item), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-
-            /*
-               if Item.Picture.Count > 0 then begin
-                   IF TenantMedia.GET(Item.Picture.Item(1)) THEN BEGIN
-                       TenantMedia.CALCFIELDS(Content);
-                       TenantMedia.Content.CREATEOUTSTREAM(OutStr);
-                       OutStr.WRITE(BStr);
-                   END;
-               end;
-               ExcelBuf.AddColumn(BStr, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-            */
-            ExcelBuf.AddColumn(InvtQtyForQ[1], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round(InvtValue[1], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtQtyForQ[2], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round(InvtValue[2], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtQtyForQ[3], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round(InvtValue[3], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtQtyForQ[4], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round(InvtValue[4], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(InvtQtyForQ[5], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            ExcelBuf.AddColumn(Round(InvtValue[5], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-
-            if (StrLen(DescText) > 249) then begin
-                ExcelBuf.NewRow();
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn(CopyStr(DescText, 250, StrLen(DescText) - 1), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-                ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-            end;
+        end else begin
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
         end;
+        Clear(DescText);
+        DescText := Item.Description + Item."Description 2" + Item."Description 3";
+        ExcelBuf.AddColumn(CopyStr(DescText, 1, 249), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+
+        Item.CalcFields(Inventory, "Reserved Qty. on Inventory");
+        ExcelBuf.AddColumn(Item.Inventory, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Item.Inventory - Item."Reserved Qty. on Inventory", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        //ExcelBuf.AddColumn(Item."Unit Cost", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        if Item.Inventory <> 0 then
+            ExcelBuf.AddColumn(Round((TotalInvtValue_Item / Item.Inventory), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number)
+        else
+            ExcelBuf.AddColumn(0, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        //ExcelBuf.AddColumn(Round((Item.Inventory * Item."Unit Cost"), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round((TotalInvtValue_Item), 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
+        /*
+           if Item.Picture.Count > 0 then begin
+               IF TenantMedia.GET(Item.Picture.Item(1)) THEN BEGIN
+                   TenantMedia.CALCFIELDS(Content);
+                   TenantMedia.Content.CREATEOUTSTREAM(OutStr);
+                   OutStr.WRITE(BStr);
+               END;
+           end;
+           ExcelBuf.AddColumn(BStr, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+        */
+        ExcelBuf.AddColumn(InvtQtyForQ[1], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValue[1], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(InvtQtyForQ[2], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValue[2], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(InvtQtyForQ[3], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValue[3], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(InvtQtyForQ[4], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValue[4], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(InvtQtyForQ[5], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddColumn(Round(InvtValue[5], 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+
+        if (StrLen(DescText) > 249) then begin
+            ExcelBuf.NewRow();
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn(CopyStr(DescText, 250, StrLen(DescText) - 1), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+            ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        end;
+        //end;
     END;
 
 

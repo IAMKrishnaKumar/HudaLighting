@@ -45,6 +45,17 @@ pageextension 50127 ItemPageList extends "Item List"
                 Caption = 'Item Image';
             }
         }
+
+        addafter("Power BI Report FactBox")
+        {
+            /*part("Item Availability"; "Item Availability FactBox")
+            {
+                SubPageLink = "No." = field("No.");
+                ApplicationArea = Basic, Suite;
+                Caption = 'Item Details';
+                Visible = false;
+            }*/
+        }
     }
 
     actions

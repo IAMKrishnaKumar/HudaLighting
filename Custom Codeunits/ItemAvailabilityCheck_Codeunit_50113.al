@@ -192,6 +192,5 @@
     local procedure OnAfterSetItemFilter(var Item: Record 27; SalesLine: Record 37)
     begin
     end;
-}
-*/
+}*/
 

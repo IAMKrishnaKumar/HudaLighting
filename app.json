@@ -2,7 +2,7 @@
   "id": "4d4be545-8b6a-4c68-b3e0-54a63a367b6e",
   "name": "Huda lighting",
   "publisher": "Levtech",
-    "version": "1.0.1.930061",
+    "version": "1.0.1.930115",
     "brief": "",
     "description": "",
     "privacyStatement": "",
@@ -13,19 +13,19 @@
     "dependencies": [
       {
         "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f",
-        "publisher": "Microsoft",
         "name": "System Application",
-        "version": "16.1.12629.12805"
+        "version": "16.2.13509.13666",
+        "publisher": "Microsoft"
       },
       {
         "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
-        "publisher": "Microsoft",
         "name": "Base Application",
-        "version": "16.1.12629.13057"
+        "version": "16.2.13509.13812",
+        "publisher": "Microsoft"
       }
     ],
     "screenshots": [],
-    "platform": "15.0.0.0",
+    "platform": "16.0.0.0",
     "idRanges": [
       {
         "from": 50100,

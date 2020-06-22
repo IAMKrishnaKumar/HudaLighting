@@ -19,6 +19,7 @@ report 50166 "Update SO In Posted Sales Line"
                 {
                     field(SalesOrderNo; SalesOrderNo)
                     {
+                        ApplicationArea = All;
                         Caption = 'Sales Order No.';
                         TableRelation = "Sales Header"."No." where("Document Type" = const(Order));
                     }

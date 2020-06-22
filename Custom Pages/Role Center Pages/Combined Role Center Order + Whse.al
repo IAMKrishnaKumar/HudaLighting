@@ -1493,7 +1493,8 @@ page 50123 "Combined Order Processor+Whse"
                     ApplicationArea = Basic, Suite;
                     Caption = '&Prices';
                     Image = SalesPrices;
-                    RunObject = Page 7002;
+                    //RunObject = Page 7002;
+                    Visible = false;
                     ToolTip = 'Set up different prices for items that you sell to the customer. An item price is automatically granted on invoice lines when the specified criteria are met, such as customer, quantity, or ending date.';
                 }
                 action("&Line Discounts")
@@ -1501,7 +1502,8 @@ page 50123 "Combined Order Processor+Whse"
                     ApplicationArea = Basic, Suite;
                     Caption = '&Line Discounts';
                     Image = SalesLineDisc;
-                    RunObject = Page 7004;
+                    Visible = false;
+                    //RunObject = Page 7004;
                     ToolTip = 'Set up different discounts for items that you sell to the customer. An item discount is automatically granted on invoice lines when the specified criteria are met, such as customer, quantity, or ending date.';
                 }
                 // action("Credit Management")

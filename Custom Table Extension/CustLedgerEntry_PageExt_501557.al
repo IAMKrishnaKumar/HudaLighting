@@ -32,6 +32,25 @@ tableextension 50157 CustLedEntry extends "Cust. Ledger Entry"
             DataClassification = ToBeClassified;
             Caption = 'PDC Amt to Apply';
         }
+        field(50903; "Advance Paid To Customer Bool"; Boolean)
+        {
+            Caption = 'Advance';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = Exist ("G/L Entry" WHERE("G/L Account No." = FILTER('201610'), "Document No." = FIELD("Document No."), "Source Type" = FILTER(Customer), "Source No." = FIELD("Customer No."), "Posting Date" = field("Date Filter")));
+
+            //CalcFormula = Exist ("G/L Entry" WHERE("G/L Account No." = FILTER('201610'), "Document No." = FIELD("Document No."), "Source No." = FIELD("Customer No."), "Source Type" = FILTER(Customer)));
+        }
+
+        field(50904; "Advance Paid To Customer"; Decimal)
+        {
+            Caption = 'Advance received Amount (LCY)';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum ("G/L Entry".Amount WHERE("G/L Account No." = FILTER('201610'), "Document No." = FIELD("Document No."), "Source Type" = FILTER(Customer), "Source No." = FIELD("Customer No."), "Posting Date" = field("Date Filter")));
+
+            //CalcFormula = Exist ("G/L Entry" WHERE("G/L Account No." = FILTER('201610'), "Document No." = FIELD("Document No."), "Source No." = FIELD("Customer No."), "Source Type" = FILTER(Customer)));
+        }
     }
 
     var

@@ -6,6 +6,7 @@ page 50141 "Update Sales Invoice"
     SourceTable = "Sales Invoice Header";
     InsertAllowed = false;
     DeleteAllowed = false;
+    SourceTableTemporary = True;
     Permissions = tabledata 112 = RIMD;
     layout
     {
@@ -47,6 +48,40 @@ page 50141 "Update Sales Invoice"
             }
         }
     }
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    begin
+        if (CloseAction = ACTION::LookupOK) then begin
+            if RecordChanged() then
+                SaveRecord();
+        end;
+    end;
+
+    local procedure RecordChanged(): Boolean
+    var
+        xPostedSalesInv: Record "Sales Invoice Header";
+    begin
+        xPostedSalesInv.GET(Rec."No.");
+        exit((Rec."Project Name" <> xPostedSalesInv."Project Name") OR
+        (Rec."Project Reference" <> xPostedSalesInv."Project Reference") OR
+        (Rec."Amount (In Arabic)" <> xPostedSalesInv."Amount (In Arabic)"));
+    end;
+
+    procedure SetRec(SalesInvHeader: Record "Sales Invoice Header")
+    begin
+        Rec := SalesInvHeader;
+        Insert;
+    end;
+
+    local procedure SaveRecord()
+    var
+        RecSalesInvHeader: Record "Sales Invoice Header";
+    begin
+        RecSalesInvHeader.GET(Rec."No.");
+        RecSalesInvHeader."Project Name" := Rec."Project Name";
+        RecSalesInvHeader."Project Reference" := Rec."Project Reference";
+        RecSalesInvHeader."Amount (In Arabic)" := Rec."Amount (In Arabic)";
+        RecSalesInvHeader.Modify();
+    end;
 
     var
         myInt: Integer;

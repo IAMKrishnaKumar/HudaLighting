@@ -33,6 +33,20 @@ pageextension 50158 CustLed extends "Customer Ledger Entries"
                 ApplicationArea = All;
             }
         }
+        addafter("Amount (LCY)")
+        {
+            field("Advance Paid To Customer"; "Advance Paid To Customer")
+            {
+                ApplicationArea = All;
+            }
+        }
+        addafter(Open)
+        {
+            field("Advance Paid To Customer Bool"; "Advance Paid To Customer Bool")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
 
     actions

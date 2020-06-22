@@ -906,7 +906,7 @@ page 60002 "Apply Cust. Ledger Entries"
     begin
         if ApplyingCustLedgEntry."Entry No." <> 0 then
             PDCReceiptApply.NewCheckAgainstApplnCurrency(
-                ApplnCurrencyCode, "Currency Code", GenJnlLine."Account Type"::Customer, true);
+                ApplnCurrencyCode, "Currency Code", GenJnlLine."Account Type"::Customer.AsInteger(), true);
 
         CustLedgEntry.Copy(Rec);
         CurrPage.SetSelectionFilter(CustLedgEntry);

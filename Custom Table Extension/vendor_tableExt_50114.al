@@ -33,6 +33,14 @@ tableextension 50114 vendor extends Vendor
         {
             DataClassification = ToBeClassified;
         }
+        field(50901; "Advance Paid To Vendor"; Decimal)
+        {
+            Caption = 'Advance Paid (LCY)';
+            FieldClass = FlowField;
+            //CalcFormula = Sum (""G/L Entry"."Amount (LCY)"" WHERE("Ledger Entry Amount" = CONST(true), "Vendor No." = FIELD("No."), "Posting Date" = FIELD("Date Filter"), "Advance Paid To Vendor" = CONST(true)));
+            //CalcFormula = Sum ("G/L Entry".Amount WHERE("Posting Date" = FIELD("Date Filter"), "G/L Account No." = filter('103370'), "Source Type" = filter(Vendor), "Source No." = field("No.")));
+            CalcFormula = Sum ("G/L Entry".Amount WHERE("Posting Date" = FIELD("Date Filter"), "G/L Account No." = filter('103340'), "Source Type" = filter(Vendor), "Source No." = field("No.")));
+        }
     }
     trigger OnBeforeInsert()
     var

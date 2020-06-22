@@ -75,9 +75,6 @@ report 50159 "General Project Status"
                     ExcelBuf.AddColumn("Vendor Article No", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
                     ExcelBuf.AddColumn(Quantity, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
-                    //CalcFields("Reserved Quantity");
-                    //ExcelBuf.AddColumn("Reserved Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
-
                     //Comment to received Qty- Now get from purch line.
                     Clear(SourceFilter);
                     Clear(RecReservEntry);
@@ -91,16 +88,6 @@ report 50159 "General Project Status"
                             POReservationQty += Abs(RecReservEntry.Quantity);
                         until RecReservEntry.Next() = 0;
                     end;
-                    /*if SourceFilter <> '' then begin
-                        SourceFilter := CopyStr(SourceFilter, 1, StrLen(SourceFilter) - 1);
-                        Clear(RecReservEntry);
-                        RecReservEntry.SetRange("Source Type", 32);
-                        RecReservEntry.SetFilter("Entry No.", SourceFilter);
-                        if RecReservEntry.FindSet() then begin
-                            RecReservEntry.CalcSums(Quantity);
-                            ReceivedQty := Round(RecReservEntry.Quantity, 0.01, '=');
-                        end;
-                    end;*/
 
                     ExcelBuf.AddColumn(POReservationQty, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
@@ -149,15 +136,6 @@ report 50159 "General Project Status"
                     ExcelBuf.AddColumn(ROUND(("Unit Price" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
                     ExcelBuf.AddColumn(ROUND((("Line Amount" - "Inv. Discount Amount") / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
-                    /*Clear(RecPurchLine);
-                    RecPurchLine.SetRange("Document Type", "Document Type"::Order);
-                    RecPurchLine.SetRange("Document No.", "HL_Purchase Order No.");
-                    RecPurchLine.SetRange("HL Sales Line No.", "Line No.");
-                    RecPurchLine.SetRange("HL Sales Order No.", "Document No.");
-                    if RecPurchLine.FindFirst() then
-                        ExcelBuf.AddColumn(RecPurchLine."Outstanding Quantity", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number)
-                    else
-                        ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);*/
                     Clear(RecItem);
                     if RecItem.GET("No.") then begin
                         if RecItem.Type = RecItem.Type::"Non-Inventory" then begin
@@ -186,11 +164,6 @@ report 50159 "General Project Status"
                                 PoNo := PoNo + RecPurchLine."Document No." + ',';
                                 PoValue += RecPurchLine."Line Amount" - RecPurchLine."Inv. Discount Amount";
 
-                                /*Clear(RecPurchHeader);
-                                RecPurchHeader.SetRange("Document Type", "Document Type"::Order);
-                                RecPurchHeader.SetRange("No.", RecPurchLine."Document No.");
-                                RecPurchHeader.CalcFields("Amount Including VAT");
-                                PoValue += RecPurchHeader."Amount Including VAT";*/
                             end;
                         until RecPurchLine.Next() = 0;
                     end;
@@ -216,7 +189,8 @@ report 50159 "General Project Status"
                                 ToIndex := StrLen(PoNo);
                         end;
                     end else
-                        ExcelBuf.AddColumn(PoNo, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//
+                        ExcelBuf.AddColumn(PoNo, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
+                    //
                     ExcelBuf.AddColumn(PoValue, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
 
                     Clear(RecSalesShipmentLine);
@@ -287,29 +261,8 @@ report 50159 "General Project Status"
 
                     Clear(LandedCost);
                     Clear(TotalLandedCost);
-                    // Clear(RecSalesShipmentLine);
-                    // RecSalesShipmentLine.SetFilter("Document No.", DNNoFilterText);
-                    // if RecSalesShipmentLine.FindSet() then begin
-                    // repeat
-                    /*Clear(RecItemLedgerEntry);
-                    RecItemLedgerEntry.SetFilter("Document No.", DNNoFilterText);//RecSalesInvHeader."Pre-Assigned No.");
-                    RecItemLedgerEntry.SetRange("Document Type", RecItemLedgerEntry."Document Type"::"Sales Shipment");
-                    RecItemLedgerEntry.SetRange("Entry Type", RecItemLedgerEntry."Entry Type"::Sale);
-                    RecItemLedgerEntry.SetRange("Item No.", "Sales Line"."No.");
-                    if RecItemLedgerEntry.FindSet() then begin
-                        RecItemLedgerEntry.CalcFields("Cost Amount (Actual)");
-                        if RecItemLedgerEntry.Quantity <> 0 then
-                            LandedCost := RecItemLedgerEntry."Cost Amount (Actual)" / RecItemLedgerEntry.Quantity;
-                        if LandedCost < 0 then
-                            LandedCost := LandedCost * -1;
-                        TotalLandedCost := RecItemLedgerEntry."Cost Amount (Actual)";
-                        if TotalLandedCost < 0 then
-                            TotalLandedCost := TotalLandedCost * -1;
-                    end;*/
-                    // until RecSalesShipmentLine.Next() = 0;
-
-                    //
                     Clear(RecItem);
+
                     If (Type = Type::Item) AND (RecItem.GET("No.")) then begin
                         LandedCost := RecItem."Unit Cost";
                     end;

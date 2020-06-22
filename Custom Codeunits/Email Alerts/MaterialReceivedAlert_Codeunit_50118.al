@@ -11,6 +11,7 @@ codeunit 50118 "Material Received Alert"
         RecPurchHeader: Record "Purchase Header";
         CheckList: List of [Text];
     begin
+        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Materials Received by Whse." THEN
             EXIT;

@@ -33,6 +33,20 @@ pageextension 50159 VendorLedger extends "Vendor Ledger Entries"
                 ApplicationArea = All;
             }
         }
+        addafter(Open)
+        {
+            field("Advance Paid To Vendor Bool"; "Advance Paid To Vendor Bool")
+            {
+                ApplicationArea = All;
+            }
+        }
+        addafter("Amount (LCY)")
+        {
+            field("Advance Paid To Vendor"; "Advance Paid To Vendor")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
 
     actions

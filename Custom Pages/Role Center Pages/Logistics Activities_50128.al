@@ -388,7 +388,8 @@ page 50128 "Logistics Activities"
                 ApplicationArea = Basic, Suite;
                 Caption = 'Purchase &Line Discounts';
                 Image = LineDiscount;
-                RunObject = Page 7014;
+                ///RunObject = Page 7014;
+                Visible = false;
                 ToolTip = 'View or set up different discounts for items that you buy from the vendor. An item discount is automatically granted on invoice lines when the specified criteria are met, such as vendor, quantity, or ending date.';
             }
             separator(History)

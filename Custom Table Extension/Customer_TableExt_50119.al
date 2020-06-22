@@ -51,8 +51,16 @@ tableextension 50119 CutsomerExt extends Customer
                 end;
             end;
         }
+        field(50901; "Advance Paid To Customer"; Decimal)
+        {
+            Caption = 'Advance received (LCY)';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = Sum ("G/L Entry".Amount WHERE("Posting Date" = FIELD("Date Filter"), "Source Type" = filter(Customer), "Source No." = field("No."), "G/L Account No." = filter('201610')));
+        }
     }
 
     var
         myInt: Integer;
+
 }

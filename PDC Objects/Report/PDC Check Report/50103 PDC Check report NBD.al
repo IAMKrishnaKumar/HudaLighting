@@ -574,7 +574,7 @@ report 50103 "PDC NBD BANK CHECK"
         OnesText: array[20] of Text[30];
         TensText: array[10] of Text[30];
         ExponentText: array[5] of Text[30];
-        BalancingType: Enum "Gen. Journal Account Type";//Option "G/L Account",Customer,Vendor,"Bank Account";
+        BalancingType: Enum "Gen. Journal Account Type"; //Option "G/L Account",Customer,Vendor,"Bank Account";
         BalancingNo: Code[20];
         ContactText: Text[30];
         CheckNoText: Text[30];
@@ -641,7 +641,7 @@ report 50103 "PDC NBD BANK CHECK"
         VendorName: Text;
         User: Record 2000000120;
 
-    local procedure AddToNoText(var NoText: array[2] of Text[250]; var NoTextIndex: Integer; var PrintExponent: Boolean; AddText: Text[30])
+        local procedure AddToNoText(var NoText: array[2] of Text[250]; var NoTextIndex: Integer; var PrintExponent: Boolean; AddText: Text[30])
     begin
 
         PrintExponent := TRUE;

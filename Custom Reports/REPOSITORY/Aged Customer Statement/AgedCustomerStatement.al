@@ -2,9 +2,9 @@ report 50163 "Aged Customer Statement"
 {
     DefaultLayout = RDLC;
     RDLCLayout = 'Custom Reports\REPOSITORY\Aged Customer Statement\Aged Accounts Receivable.rdlc';
-    ApplicationArea = All;//Basic, Suite;
+    //ApplicationArea = All;//Basic, Suite;
     Caption = 'Aged Customer Statement';
-    UsageCategory = ReportsAndAnalysis;
+    //UsageCategory = ReportsAndAnalysis;
 
     dataset
     {

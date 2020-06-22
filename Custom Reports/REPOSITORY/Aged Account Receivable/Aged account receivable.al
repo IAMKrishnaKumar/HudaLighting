@@ -1,10 +1,10 @@
 report 50136 "Aged Accounts Rec. HL"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = 'Custom Reports\REPOSITORY\Aged Account Receivable\Aged Accounts Receivable.rdlc';
-    ApplicationArea = All;//Basic, Suite;
-    Caption = 'Aged Accounts Receivable HL';
-    UsageCategory = ReportsAndAnalysis;
+    RDLCLayout = 'Custom Reports\REPOSITORY\Aged Account Receivable\Aged Accounts Receivable.rdl';
+    //ApplicationArea = All;//Basic, Suite;
+    Caption = 'Aged Accounts Receivable';
+    //UsageCategory = ReportsAndAnalysis;
 
     dataset
     {
@@ -12,6 +12,7 @@ report 50136 "Aged Accounts Rec. HL"
         {
             DataItemTableView = SORTING(Number)
                                 WHERE(Number = CONST(1));
+
             column(TodayFormatted; TodayFormatted)
             {
             }
@@ -172,6 +173,10 @@ report 50136 "Aged Accounts Rec. HL"
             {
                 AutoFormatType = 1;
             }
+            column(SOAndPPojectRefCaption; SOAndPPojectRefCaption)
+            {
+
+            }
             dataitem(Customer; 18)
             {
                 RequestFilterFields = "No.";
@@ -208,6 +213,13 @@ report 50136 "Aged Accounts Rec. HL"
                                 InsertTemp(CustLedgEntry);
                             UNTIL CustLedgEntry.NEXT = 0;
                         CurrReport.SKIP;
+                        Clear(SalesInvLine);
+                        if "Cust. Ledger Entry"."Document Type" = "Cust. Ledger Entry"."Document Type"::Invoice then begin
+                            SalesInvLine.SetRange("Document No.", "Cust. Ledger Entry"."Document No.");
+                            SalesInvLine.SetFilter("Sales Order No.", '<>%1', '');
+                            if SalesInvLine.FindSet() then;
+                        end;
+
                     end;
 
                     trigger OnPreDataItem()
@@ -315,6 +327,17 @@ report 50136 "Aged Accounts Rec. HL"
                         {
 
                         }
+                        column(AdditionalProjectReference; AdditionalProjectReference)
+                        {
+                        }
+                        column(ProjRefG; ProjRefG)
+                        {
+                        }
+                        column(SoNoOrProjectRef; SoNoOrProjectRef)
+                        {
+
+                        }
+
                         //Levtech-End
                         column(CLEPostingDate; FORMAT(CustLedgEntryEndingDate."Posting Date"))
                         {
@@ -417,6 +440,7 @@ report 50136 "Aged Accounts Rec. HL"
                         trigger OnAfterGetRecord()
                         var
                             PeriodIndex: Integer;
+                            SalesInvLine: Record "Sales Invoice Line";
                         begin
                             IF Number = 1 THEN BEGIN
                                 IF NOT TempCustLedgEntry.FINDSET(FALSE, FALSE) THEN
@@ -439,6 +463,15 @@ report 50136 "Aged Accounts Rec. HL"
                                     SalesPerson := SalesInvHeader."Salesperson Code";
                                     ProjectName := SalesInvHeader."Project Name";
                                     ProjectReference := SalesInvHeader."Project Reference";
+                                    if AdditionalProjectReference then
+                                        SoNoOrProjectRef := SalesInvHeader."Project Reference"
+                                    else begin
+                                        Clear(SalesInvLine);
+                                        SalesInvLine.SetRange("Document No.", SalesInvHeader."No.");
+                                        SalesInvLine.SetFilter("Sales Order No.", '<>%1', '');
+                                        if SalesInvLine.FindFirst() then
+                                            SoNoOrProjectRef := SalesInvLine."Sales Order No.";
+                                    end;
                                 end;
                             end;
                             //Levtech-End
@@ -729,6 +762,18 @@ report 50136 "Aged Accounts Rec. HL"
                         Caption = 'New Page per Customer';
                         ToolTip = 'Specifies if each customer''s information is printed on a new page if you have chosen two or more customers to be included in the report.';
                     }
+                    field(AdditionalProjectReference; AdditionalProjectReference)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Project Reference';
+                        trigger OnValidate()
+                        begin
+                            if AdditionalProjectReference then
+                                SOAndPPojectRefCaption := 'Project Reference'
+                            else
+                                SOAndPPojectRefCaption := 'Sales Order No.';
+                        end;
+                    }
                 }
             }
         }
@@ -743,6 +788,7 @@ report 50136 "Aged Accounts Rec. HL"
                 EndingDate := WORKDATE;
             IF FORMAT(PeriodLength) = '' THEN
                 EVALUATE(PeriodLength, '<1M>');
+
         end;
     }
 
@@ -750,6 +796,10 @@ report 50136 "Aged Accounts Rec. HL"
     {
         BalanceCaption = 'Balance';
     }
+    trigger OnInitReport()
+    begin
+        SOAndPPojectRefCaption := 'Sales Order No.';
+    end;
 
     trigger OnPreReport()
     var
@@ -769,16 +819,21 @@ report 50136 "Aged Accounts Rec. HL"
 
         TodayFormatted := TypeHelper.GetFormattedCurrentDateTimeInUserTimeZone('f');
         CompanyDisplayName := COMPANYPROPERTY.DISPLAYNAME;
+
     end;
 
     var
         //Levtech
+        ProjRefG: Text;
         SalesInvHeader: Record "Sales Invoice Header";
+        SalesInvLine: Record "Sales Invoice Line";
         OpportunityNo: Text;
         SalesPerson: Text;
         ProjectName: Text;
         ProjectReference: Text;
         CustomersWithLedgerEntriesListL: List of [Text];
+        SOAndPPojectRefCaption: Text;
+        SoNoOrProjectRef: Text;
         //Lebtech-End;
         GLSetup: Record 98;
         CustLedgEntryAll: Record 21;
@@ -795,6 +850,7 @@ report 50136 "Aged Accounts Rec. HL"
         //CustomersWithLedgerEntriesList: DotNet List_Of_T;
         CustFilter: Text;
         PrintAmountInLCY: Boolean;
+        AdditionalProjectReference: Boolean;
         EndingDate: Date;
         AgingBy: Option "Due Date","Posting Date","Document Date";
         PeriodLength: DateFormula;

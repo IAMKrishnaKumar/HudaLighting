@@ -649,7 +649,6 @@ page 60001 "Apply Vendor Ledger Entries"
         PDCLineApply: Boolean;
         GenJnlLine: Record "Gen. Journal Line";
         GenJnlLine2: Record "Gen. Journal Line";
-        GenJnlAccTypeEnum: Enum "Gen. Journal Document Type";
         OKPressed: Boolean;
         [InDataSet]
         "Applies-to IDVisible": Boolean;
@@ -789,7 +788,7 @@ page 60001 "Apply Vendor Ledger Entries"
     begin
         if ApplyingVendLedgEntry."Entry No." <> 0 then
             GenJnlApply.CheckAgainstApplnCurrency(
-              ApplnCurrencyCode, "Currency Code", GenJnlLine."Account Type"::Vendor, true);
+              ApplnCurrencyCode, "Currency Code", GenJnlLine."Account Type"::Vendor.AsInteger(), true);
 
         VendLedgEntry.Copy(Rec);
         CurrPage.SetSelectionFilter(VendLedgEntry);

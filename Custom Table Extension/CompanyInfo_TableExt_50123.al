@@ -85,6 +85,11 @@ tableextension 50123 CompanyInfo extends "Company Information"
         {
             DataClassification = ToBeClassified;
         }
+        //**********************************Daily Activity*********************
+        field(50105; "Daily Activity"; Boolean)
+        {
+        	DataClassification = ToBeClassified;
+        }        
     }
 
     var

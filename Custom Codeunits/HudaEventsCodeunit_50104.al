@@ -212,7 +212,8 @@ codeunit 50104 HudaEvents
                     if SalesLine."Document Type" = SalesLine."Document Type"::Order then
                         RecPm."Document Type" := RecPm."Document Type"::Order
                     else
-                        RecPm."Document Type" := RecPm."Document Type"::Invoice;
+                        if SalesLine."Document Type" = SalesLine."Document Type"::Invoice then
+                            RecPm."Document Type" := RecPm."Document Type"::Invoice;
                     RecPm."Document No." := SalesLine."Document No.";
                     RecPm.Validate("Document Date", Sheader."Document Date");
                     RecPm.Validate("Posting Type", RecPm2."Posting Type");
@@ -566,9 +567,8 @@ codeunit 50104 HudaEvents
                 until RecPm.Next() = 0;
             end;
         end;
-
         //Email Notification on Posting Sales Invoice with Proforma PDF
-
+        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."Sales Invoice Posting" then
             exit;
@@ -798,6 +798,8 @@ codeunit 50104 HudaEvents
     begin
         GenLedSetup.GET;
         if GenLedSetup."Gen. Jln. Post & Print" then begin
+            // COMMIT;
+            // COMMIT;
             Clear(GenJlnBatch);
             IF GenJlnBatch.GET(GenJournalLine."Journal Template Name", GenJournalLine."Journal Batch Name") then begin
                 clear(NOSeriesLine);
@@ -828,6 +830,21 @@ codeunit 50104 HudaEvents
         end;
     end;
 
+    //To run customized Standard report
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ReportManagement, 'OnAfterSubstituteReport', '', false, false)]
+    local procedure RunCustomizedReport(ReportId: Integer; Var NewReportId: Integer)
+    begin
+        if ReportId = Report::"Aged Accounts Receivable" then
+            NewReportId := Report::"Aged Accounts Rec. HL"
+        else
+            if ReportId = Report::"Customer Statement" then
+                NewReportId := Report::"Customer Statement Details"
+            else
+                if ReportId = Report::"Inventory Valuation" then
+                    NewReportId := Report::"Inventory Valuation Report";
+    end;
+
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnAfterReleaseSalesDoc', '', false, false)]
     procedure OnAfterReleaseSalesDoc(VAR SalesHeader: Record "Sales Header"; PreviewMode: Boolean; VAR LinesWereModified: Boolean)
     Var
@@ -836,6 +853,7 @@ codeunit 50104 HudaEvents
         SendOAAlert: Codeunit "OA Approval Alert";
         RecCompanyInfo: Record "Company Information";
     begin
+        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."OA Approval" then
             exit;
@@ -877,6 +895,7 @@ codeunit 50104 HudaEvents
         CheckList: List of [Text];
         RecPurchRcptHdr: Record "Purch. Rcpt. Header";
     begin
+        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."Materials Received by Whse." then
             exit;
@@ -916,6 +935,52 @@ codeunit 50104 HudaEvents
         end;
     end;
 
+    //**********************************Daily Activity*********************
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', false, false)]
+    procedure OnAfterInsertEventSalesHeader(var Rec: Record "Sales Header")
+    begin
+        Rec."Created User" := UserId;
+        Rec."Creation Date" := WorkDate();
+        Rec."Creation Time" := Time;
+        Rec.Modify();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterInsertEvent', '', false, false)]
+    procedure OnAfterInsertEventPurchaseHeader(var Rec: Record "Purchase Header")
+    begin
+        Rec."Created User" := UserId;
+        Rec."Creation Date" := WorkDate();
+        Rec."Creation Time" := Time;
+        Rec.Modify();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Warehouse Receipt Header", 'OnAfterInsertEvent', '', false, false)]
+    procedure OnAfterInsertEventWhseRecHeader(var Rec: Record "Warehouse Receipt Header")
+    begin
+        Rec."Created User" := UserId;
+        Rec."Creation Date" := WorkDate();
+        Rec."Creation Time" := Time;
+        Rec.Modify();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterInsertEvent', '', false, false)]
+    procedure OnAfterInsertEventGenJnlLine(var Rec: Record "Gen. Journal Line")
+    begin
+        Rec."Created User" := UserId;
+        Rec."Creation Date" := WorkDate();
+        Rec."Creation Time" := Time;
+        Rec.Modify();
+	end;
+		
+    [EventSubscriber(ObjectType::Table, Database::"Warehouse Shipment Header", 'OnAfterInsertEvent', '', false, false)]
+    procedure OnAfterInsertEventWhseShipHeader(var Rec: Record "Warehouse Shipment Header")
+    begin
+        Rec."Created User" := UserId;
+        Rec."Creation Date" := WorkDate();
+        Rec."Creation Time" := Time;
+        Rec.Modify();
+    end;
+	    
     var
         JlnBatchName: Text;
         JlnTemplateName: Text;

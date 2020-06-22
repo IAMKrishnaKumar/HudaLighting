@@ -1,7 +1,7 @@
 page 50155 "Posted Sales Invoice Line"
 {
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = History;
     PageType = List;
     SourceTable = "Sales Invoice Line";
     Editable = false;

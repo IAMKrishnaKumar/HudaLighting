@@ -9,6 +9,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         AttachmentName: Text;
         ReportID: Integer;
     begin
+        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Sales Invoice Posting" THEN
             EXIT;

@@ -42,6 +42,22 @@ tableextension 50158 VendorLedgEntry extends "Vendor Ledger Entry"
             DataClassification = ToBeClassified;
             Caption = 'LC No.';
         }
+        field(50900; "Advance Paid To Vendor Bool"; Boolean)
+        {
+            Caption = 'Advance';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = Exist ("G/L Entry" WHERE("G/L Account No." = FILTER('103340'), "Document No." = FIELD("Document No."), "Source Type" = FILTER(Vendor), "Source No." = FIELD("Vendor No."), "Posting Date" = field("Date Filter")));
+        }
+
+        field(50901; "Advance Paid To Vendor"; Decimal)
+        {
+            Caption = 'Advance Paid Amount (LCY)';
+            Editable = false;
+            FieldClass = FlowField;
+            //CalcFormula = sum ("G/L Entry".Amount WHERE("G/L Account No." = FILTER('103370'), "Document No." = FIELD("Document No."), "Source Type" = FILTER(Vendor), "Source No." = FIELD("Vendor No."), "Posting Date" = field("Date Filter")));
+            CalcFormula = sum ("G/L Entry".Amount WHERE("G/L Account No." = FILTER('103340'), "Document No." = FIELD("Document No."), "Source Type" = FILTER(Vendor), "Source No." = FIELD("Vendor No."), "Posting Date" = field("Date Filter")));
+        }
     }
 
     var

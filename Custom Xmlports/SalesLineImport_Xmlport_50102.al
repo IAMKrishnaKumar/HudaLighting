@@ -101,7 +101,7 @@ xmlport 50102 SalesLineImport
         RowNumber := 0;
     end;
 
-    PROCEDURE SalesOrderLineReserve(VAR pioSalesLine: Record 37)//piItem: Record 27);
+    PROCEDURE SalesOrderLineReserve(VAR pioSalesLine: Record "Sales Line")//piItem: Record 27);
     VAR
         lReservationEntry: Record "Reservation Entry";
         lReservEntryILE: Record "Reservation Entry";
@@ -111,11 +111,11 @@ xmlport 50102 SalesLineImport
         DoFullReserve: Boolean;
         lcuSalesLineReserve: Codeunit "Sales Line-Reserve";
     BEGIN
-        lcuReservationManagement.SetSalesLine(pioSalesLine);
-        //Method 'SetSalesLine' is marked for removal. Reason: Replaced by SetReservSource procedure.
+        //lcuReservationManagement.SetSalesLine(pioSalesLine);
+        lcuReservationManagement.SetReservSource(pioSalesLine);
         lcuReservationManagement.AutoReserve(DoFullReserve, pioSalesLine.Description, WORKDATE, pioSalesLine."Outstanding Quantity", pioSalesLine."Outstanding Qty. (Base)");
-        lcuSalesLineReserve.FilterReservFor(lReservationEntry, pioSalesLine);
-        //Method 'FilterReservFor' is marked for removal. Reason: Replaced by SalesLine.SetReservationFilters(FilterReservEntry)
+        //lcuSalesLineReserve.FilterReservFor(lReservationEntry, pioSalesLine);
+        pioSalesLine.SetReservationFilters(lReservationEntry);
 
         IF lReservationEntry.FINDSET THEN
             REPEAT

@@ -83,7 +83,7 @@ tableextension 50110 PurchaseLine extends "Purchase Line"
             FieldClass = FlowField;
             CalcFormula = lookup (Customer.Blocked where("No." = field("Sell To Customer No.")));
         }
-        field(50017; "Header Status"; Enum "Purchase Document Status")
+        field(50017; "Header Status"; Enum "Purchase Document Status")//Option)
         {
             //OptionMembers = Open,Released,"Pending Approval","Pending Prepayment";
             FieldClass = FlowField;

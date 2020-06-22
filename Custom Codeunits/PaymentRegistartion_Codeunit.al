@@ -195,7 +195,7 @@ codeunit 50115 "Payment Reg. mgmt Custom"
                 REPEAT
                     SalesHeader.CALCFIELDS(Amount, "Amount Including VAT");
                     IF IsWithinTolerance(SalesHeader."Amount Including VAT", AmountFilter, AmountTolerancePerc) THEN
-                        InsertDocSearchResult(TempDocumentSearchResult, SalesHeader."No.", SalesHeader."Document Type", DATABASE::"Sales Header",
+                        InsertDocSearchResult(TempDocumentSearchResult, SalesHeader."No.", SalesHeader."Document Type".AsInteger(), DATABASE::"Sales Header",
                           GetSalesHeaderDescription(SalesHeader), SalesHeader."Amount Including VAT");
                 UNTIL SalesHeader.NEXT = 0;
         END;
@@ -217,7 +217,7 @@ codeunit 50115 "Payment Reg. mgmt Custom"
                     ServiceLine.CALCSUMS("Amount Including VAT");
                     IF IsWithinTolerance(ServiceLine."Amount Including VAT", AmountFilter, AmountTolerancePerc) THEN
                         InsertDocSearchResult(
-                          TempDocumentSearchResult, ServiceHeader."No.", ServiceHeader."Document Type", DATABASE::"Service Header",
+                          TempDocumentSearchResult, ServiceHeader."No.", ServiceHeader."Document Type".AsInteger(), DATABASE::"Service Header",
                           GetServiceHeaderDescription(ServiceHeader), ServiceLine."Amount Including VAT");
                 UNTIL ServiceHeader.NEXT = 0;
         END;
@@ -294,17 +294,17 @@ codeunit 50115 "Payment Reg. mgmt Custom"
         SalesHeader.SETRANGE("No.", TempDocumentSearchResult."Doc. No.");
 
         CASE TempDocumentSearchResult."Doc. Type" OF
-            SalesHeader."Document Type"::Quote:
+            SalesHeader."Document Type"::Quote.AsInteger():
                 PAGE.RUN(PAGE::"Sales Quote", SalesHeader);
-            SalesHeader."Document Type"::"Blanket Order":
+            SalesHeader."Document Type"::"Blanket Order".AsInteger():
                 PAGE.RUN(PAGE::"Blanket Sales Order", SalesHeader);
-            SalesHeader."Document Type"::Order:
+            SalesHeader."Document Type"::Order.AsInteger():
                 PAGE.RUN(PAGE::"Sales Order", SalesHeader);
-            SalesHeader."Document Type"::Invoice:
+            SalesHeader."Document Type"::Invoice.AsInteger():
                 PAGE.RUN(PAGE::"Sales Invoice", SalesHeader);
-            SalesHeader."Document Type"::"Return Order":
+            SalesHeader."Document Type"::"Return Order".AsInteger():
                 PAGE.RUN(PAGE::"Sales Return Order", SalesHeader);
-            SalesHeader."Document Type"::"Credit Memo":
+            SalesHeader."Document Type"::"Credit Memo".AsInteger():
                 PAGE.RUN(PAGE::"Sales Credit Memo", SalesHeader);
             ELSE
                 PAGE.RUN(0, SalesHeader);
@@ -320,13 +320,13 @@ codeunit 50115 "Payment Reg. mgmt Custom"
         ServiceHeader.SETRANGE("No.", TempDocumentSearchResult."Doc. No.");
 
         CASE TempDocumentSearchResult."Doc. Type" OF
-            ServiceHeader."Document Type"::Quote:
+            ServiceHeader."Document Type"::Quote.AsInteger():
                 PAGE.RUN(PAGE::"Service Quote", ServiceHeader);
-            ServiceHeader."Document Type"::Order:
+            ServiceHeader."Document Type"::Order.AsInteger():
                 PAGE.RUN(PAGE::"Service Order", ServiceHeader);
-            ServiceHeader."Document Type"::Invoice:
+            ServiceHeader."Document Type"::Invoice.AsInteger():
                 PAGE.RUN(PAGE::"Service Invoice", ServiceHeader);
-            ServiceHeader."Document Type"::"Credit Memo":
+            ServiceHeader."Document Type"::"Credit Memo".AsInteger():
                 PAGE.RUN(PAGE::"Service Credit Memo", ServiceHeader);
             ELSE
                 PAGE.RUN(0, ServiceHeader);

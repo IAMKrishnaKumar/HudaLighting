@@ -1,7 +1,7 @@
 report 50130 "Delivery Note LT"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = 'Custom Reports\REPOSITORY\Delivery Note\Delivery Note.rdlc';
+    RDLCLayout = 'Custom Reports\REPOSITORY\Delivery Note\Delivery Note.rdl';
     Caption = 'Delivery Note';
     PreviewMode = PrintLayout;
     ApplicationArea = All;

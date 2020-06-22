@@ -69,6 +69,37 @@ pageextension 50117 VendorCradExt extends "Vendor Card"
             Visible = false;
             //Vendor picture card- Disabled
         }
+        addafter("Balance (LCY)")
+        {
+            field("Advance Paid To Vendor"; "Advance Paid To Vendor")
+            {
+                Caption = 'Advance Paid (LCY)';
+                ApplicationArea = All;
+                Editable = false;
+                trigger OnDrillDown()
+                begin
+                    VendorLedgEntryRec.RESET;
+                    VendorLedgEntryRec.SETRANGE("Vendor No.", "No.");
+                    VendorLedgEntryRec.SetRange("Advance Paid To Vendor Bool", true);
+                    IF GETFILTER("Date Filter") <> '' THEN
+                        VendorLedgEntryRec.SETFILTER("Posting Date", '<=%1', GETRANGEMAX("Date Filter"));
+                    // IF VendorLedgEntryRec.FINDSET THEN
+                    //     REPEAT
+                    //         GLEntryRecG.RESET;
+                    //         GLEntryRecG.SETRANGE("G/L Account No.", '103370');
+                    //         GLEntryRecG.SETRANGE("Document No.", VendorLedgEntryRec."Document No.");
+                    //         GLEntryRecG.SETRANGE("Source Type", GLEntryRecG."Source Type"::Vendor);
+                    //         GLEntryRecG.SETRANGE("Source No.", "No.");
+                    //         IF GLEntryRecG.FINDFIRST THEN BEGIN
+                    //             VendorLedgEntryRec.MARK(TRUE);
+                    //         END;
+                    //     UNTIL VendorLedgEntryRec.NEXT = 0;
+                    // VendorLedgEntryRec.MARKEDONLY(TRUE);
+                    PAGE.RUN(0, VendorLedgEntryRec);
+                end;
+
+            }
+        }
     }
 
 
@@ -178,5 +209,29 @@ pageextension 50117 VendorCradExt extends "Vendor Card"
     }
 
     var
-        myInt: Integer;
+        VendorLedgEntryRec: Record "Vendor Ledger Entry";
+        GLEntryRecG: Record "G/L Entry";
+        AdvancePaidLCYG: Decimal;
+
+
+    // trigger OnAfterGetRecord()
+    // begin
+    //     AdvancePaidLCYG := 0;
+    //     VendorLedgEntryRec.RESET;
+    //     VendorLedgEntryRec.SETRANGE("Vendor No.", "No.");
+    //     IF GETFILTER("Date Filter") <> '' THEN
+    //         VendorLedgEntryRec.SETFILTER("Posting Date", '<=%1', GETRANGEMAX("Date Filter"));
+    //     IF VendorLedgEntryRec.FINDSET THEN
+    //         REPEAT
+    //             GLEntryRecG.RESET;
+    //             GLEntryRecG.SETRANGE("G/L Account No.", '103370');
+    //             GLEntryRecG.SETRANGE("Document No.", VendorLedgEntryRec."Document No.");
+    //             GLEntryRecG.SETRANGE("Source Type", GLEntryRecG."Source Type"::Vendor);
+    //             GLEntryRecG.SETRANGE("Source No.", "No.");
+    //             IF GLEntryRecG.FINDFIRST THEN BEGIN
+    //                 VendorLedgEntryRec.CALCFIELDS("Amount (LCY)");
+    //                 AdvancePaidLCYG += VendorLedgEntryRec."Amount (LCY)";
+    //             END;
+    //         UNTIL VendorLedgEntryRec.NEXT = 0;
+    // end;
 }

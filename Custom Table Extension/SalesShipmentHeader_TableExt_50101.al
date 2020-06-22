@@ -107,6 +107,11 @@ tableextension 50101 SalesShipmentHeader extends "Sales Shipment Header"
             DataClassification = ToBeClassified;
 
         }
+        field(60005; "Pre DN No."; Code[20])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup ("Posted Whse. Shipment Line"."Whse. Shipment No." where("Posted Source Document" = const("Posted Shipment"), "Posted Source No." = field("No.")));
+        }
     }
 
     var

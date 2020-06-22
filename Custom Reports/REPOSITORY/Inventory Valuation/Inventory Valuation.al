@@ -2,10 +2,10 @@ report 50157 "Inventory Valuation Report"
 {
     DefaultLayout = RDLC;
     RDLCLayout = 'Custom Reports\REPOSITORY\Inventory Valuation\InventoryValuation.rdlc';
-    ApplicationArea = Basic, Suite;
-    Caption = 'Inventory Valuation Report';
+    //ApplicationArea = Basic, Suite;
+    Caption = 'Inventory Valuation';
     EnableHyperlinks = true;
-    UsageCategory = ReportsAndAnalysis;
+    //UsageCategory = ReportsAndAnalysis;
 
     dataset
     {

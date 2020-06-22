@@ -1,11 +1,12 @@
-report 50104 "Standard Statement HL"
+report 50104 "Standard Statement With SP"
 {
     RDLCLayout = 'Custom Reports\REPOSITORY\Customer Statement\Standard Statement.rdlc';
-    WordLayout = 'Custom Reports\REPOSITORY\Customer Statement\Standard Statement.docx';
+    WordLayout = 'Custom Reports\REPOSITORY\Customer Statement\Standard Statement_By Krishna.docx';
+    //Standard Statement.docx';
     Caption = 'Standard Statements';
     DefaultLayout = Word;
-    ApplicationArea = All;
-    UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
 
     dataset
     {
@@ -17,11 +18,13 @@ report 50104 "Standard Statement HL"
             column(No_Cust; "No.")
             {
             }
+
             dataitem(Integer; Integer)
             {
                 DataItemTableView = SORTING(Number)
                                     WHERE(Number = CONST(1));
                 PrintOnlyIfDetail = true;
+
                 column(CompanyPicture; CompanyInfo.Picture)
                 {
                 }
@@ -157,6 +160,9 @@ report 50104 "Standard Statement HL"
                 column(Desc_CustLedgEntry2Caption; CustLedgEntry2.FIELDCAPTION(Description))
                 {
                 }
+                column(Narr_CustLedgEntry2Caption; CustLedgEntry2.FIELDCAPTION(Narration))
+                {
+                }
                 column(DueDate_CustLedgEntry2Caption; DueDate_CustLedgEntry2CaptionLbl)
                 {
                 }
@@ -284,7 +290,13 @@ report 50104 "Standard Statement HL"
                             }
                             column(Narration; Narration)
                             {
+                            }
+                            column(AdditionalSalesPerson; AdditionalSalesPerson)
+                            {
 
+                            }
+                            column(DescNarration; DescNarration)
+                            {
                             }
                             column(SoNo; SoNo)
                             {
@@ -312,13 +324,18 @@ report 50104 "Standard Statement HL"
                                 Clear(LPORef);
                                 Clear(ProjectReference);
                                 Clear(CustLedgerEntryG);
+                                Clear(DescNarration);
                                 if CustLedgerEntryG.GET("Cust. Ledger Entry No.") then begin
+
                                     if CustLedgerEntryG."Document Type" = CustLedgerEntryG."Document Type"::Invoice then begin
                                         Clear(SalesInvHeader);
                                         SalesInvHeader.SetRange("No.", CustLedgerEntryG."Document No.");
                                         if SalesInvHeader.FindFirst() then begin
                                             // OpportunityNo := SalesInvHeader."Shortcut Dimension 1 Code";
-                                            SalesPerson := SalesInvHeader."Salesperson Code";
+                                            If AdditionalSalesPerson then
+                                                SalesPerson := ''
+                                            else
+                                                SalesPerson := SalesInvHeader."Salesperson Code";
                                             ProjectName := SalesInvHeader."Project Name";
                                             ProjectReference := SalesInvHeader."Project Reference";
                                             Clear(SILine);
@@ -386,7 +403,6 @@ report 50104 "Standard Statement HL"
                                             DueDate := 0D;
                                         END;
                                 END;
-
                                 CustBalance := CustBalance + Amount;
                                 IsNewCustCurrencyGroup := IsFirstPrintLine;
                                 IsFirstPrintLine := FALSE;
@@ -441,6 +457,9 @@ report 50104 "Standard Statement HL"
                         {
                         }
                         column(Desc_CustLedgEntry2Caption2; CustLedgEntry2.FIELDCAPTION(Description))
+                        {
+                        }
+                        column(Narr_CustLedgEntry2Caption2; CustLedgEntry2.FIELDCAPTION(Narration))
                         {
                         }
                         column(DueDate_CustLedgEntry2Caption2; DueDate_CustLedgEntry2CaptionLbl)
@@ -548,6 +567,7 @@ report 50104 "Standard Statement HL"
                                     CurrReport.SKIP;
                                 CustBalance2 := CustBalance2 + CustLedgEntry."Remaining Amount";
 
+
                                 //Levtech-Start1
                                 Clear(opportunity2);
                                 Clear(SalesPerson2);
@@ -559,7 +579,10 @@ report 50104 "Standard Statement HL"
                                     SalesInvHeader.SetRange("No.", CustLedgEntry2."Document No.");
                                     if SalesInvHeader.FindFirst() then begin
                                         //opportunity2 := SalesInvHeader."Shortcut Dimension 1 Code";
-                                        SalesPerson2 := SalesInvHeader."Salesperson Code";
+                                        If AdditionalSalesPerson then
+                                            SalesPerson2 := ''
+                                        else
+                                            SalesPerson2 := SalesInvHeader."Salesperson Code";
                                         ProjectName2 := SalesInvHeader."Project Name";
                                         ProjectRef2 := SalesInvHeader."Project Reference";
                                         Clear(SILine);
@@ -592,6 +615,7 @@ report 50104 "Standard Statement HL"
                             column(OverdueBalance; CustBalance2)
                             {
                             }
+
                         }
 
                         trigger OnPreDataItem()
@@ -674,6 +698,25 @@ report 50104 "Standard Statement HL"
                     {
                         DataItemTableView = SORTING(Number)
                                             WHERE(Number = FILTER(1 ..));
+
+                        column(HeaderText6; HeaderText[6])
+                        {
+                        }
+                        column(HeaderText5; HeaderText[5])
+                        {
+                        }
+                        column(HeaderText4; HeaderText[4])
+                        {
+                        }
+                        column(HeaderText3; HeaderText[3])
+                        {
+                        }
+                        column(HeaderText2; HeaderText[2])
+                        {
+                        }
+                        column(HeaderText1; HeaderText[1])
+                        {
+                        }
                         column(AgingDate1; FORMAT(AgingDate[1] + 1))
                         {
                         }
@@ -722,6 +765,11 @@ report 50104 "Standard Statement HL"
                             AutoFormatType = 1;
                         }
                         column(AgingBandBufCol5Amt; TempAgingBandBuf."Column 5 Amt.")
+                        {
+                            AutoFormatExpression = TempAgingBandBuf."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(OverdueBalance1; TempAgingBandBuf."Column 1 Amt." + TempAgingBandBuf."Column 2 Amt." + TempAgingBandBuf."Column 3 Amt." + TempAgingBandBuf."Column 4 Amt." + TempAgingBandBuf."Column 5 Amt.")
                         {
                             AutoFormatExpression = TempAgingBandBuf."Currency Code";
                             AutoFormatType = 1;
@@ -938,6 +986,12 @@ report 50104 "Standard Statement HL"
                             OptionCaption = 'Due Date,Posting Date';
                             ToolTip = 'Specifies if the aging band will be calculated from the due date or from the posting date.';
                         }
+                        field(AdditionalSalesPerson; AdditionalSalesPerson)
+                        {
+                            ApplicationArea = All;
+                            Caption = 'Sales Person';
+                            Visible = false;
+                        }
                     }
                     field(LogInteraction; LogInteraction)
                     {
@@ -1067,6 +1121,7 @@ report 50104 "Standard Statement HL"
         ExtDocNo: Text;
         Narration: Text;
         SalesPerson: Text;
+        AdditionalSalesPerson: Boolean;
         ProjectName: Text;
         ProjectReference: Text;
         SalesSetup: Record 311;
@@ -1097,6 +1152,7 @@ report 50104 "Standard Statement HL"
         CustAddr: array[8] of Text[100];
         CompanyAddr: array[8] of Text[100];
         Description: Text[100];
+        DescNarration: Text;
         StartBalance: Decimal;
         CustBalance: Decimal;
         RemainingAmount: Decimal;
@@ -1156,6 +1212,7 @@ report 50104 "Standard Statement HL"
         [InDataSet]
         ShowPrintRemaining: Boolean;
         CustBalance2: Decimal;
+        CustBalance3: Decimal;
         GreetingLbl: Label 'Hello';
         ClosingLbl: Label 'Sincerely';
         BodyLbl: Label 'Thank you for your business. Your statement is attached to this message.';
@@ -1168,6 +1225,15 @@ report 50104 "Standard Statement HL"
         SoNo2: Text;
         LPORef: Text;
         LPORef2: Text;
+        PeriodStartDate: array[6] of Date;
+        PeriodEndDate: array[6] of Date;
+        HeaderText: array[6] of Text[30];
+
+        Text010: Label 'The Date Formula %1 cannot be used. Try to restate it. E.g. 1M+CM instead of CM+1M.';
+        Text000: Label 'Not Due';
+        Text001: Label 'Before';
+        Text002: Label 'days';
+        Text003: Label 'More than';
 
     local procedure GetDate(PostingDate: Date; DueDate: Date): Date
     begin
@@ -1178,6 +1244,8 @@ report 50104 "Standard Statement HL"
     end;
 
     local procedure CalcAgingBandDates()
+    var
+        i: Integer;
     begin
         IF NOT IncludeAgingBand THEN
             EXIT;
@@ -1185,7 +1253,9 @@ report 50104 "Standard Statement HL"
             ERROR(AgingBandEndErr);
         IF FORMAT(PeriodLength) = '' THEN
             ERROR(AgingBandPeriodErr);
+        // EVALUATE(PeriodLength, '<30D>');
         EVALUATE(PeriodLength2, STRSUBSTNO(PeriodSeparatorLbl, PeriodLength));
+
         AgingDate[5] := AgingBandEndingDate;
         AgingDate[4] := CALCDATE(PeriodLength2, AgingDate[5]);
         AgingDate[3] := CALCDATE(PeriodLength2, AgingDate[4]);
@@ -1198,6 +1268,47 @@ report 50104 "Standard Statement HL"
         AgingDateHeader2 := FORMAT(AgingDate[2] + 1) + ' - ' + FORMAT(AgingDate[3]);
         AgingDateHeader3 := FORMAT(AgingDate[3] + 1) + ' - ' + FORMAT(AgingDate[4]);
         AgingDateHeader4 := FORMAT(AgingDate[4] + 1);
+        //Krishna- to calculate agin days
+
+        HeaderText[2] := StrSubstNo('1-%1 Days', FORMAT(AgingDate[5] - (AgingDate[4] + 1 - 1)));
+
+        HeaderText[3] := StrSubstNo('%1-%2 Days', FORMAT(AgingDate[5] + 1 - (AgingDate[4] + 1 - 1)), FORMAT(AgingDate[5] - (AgingDate[3] + 1 - 1)));
+        HeaderText[4] := StrSubstNo('%1-%2 Days', FORMAT(AgingDate[5] + 1 - (AgingDate[3] + 1 - 1)), FORMAT(AgingDate[5] - (AgingDate[2] + 1 - 1)));
+        HeaderText[5] := StrSubstNo('%1-%2 Days', FORMAT(AgingDate[5] + 1 - (AgingDate[2] + 1 - 1)), FORMAT(AgingDate[5] - (AgingDate[1] + 1 - 1)));
+        HeaderText[6] := StrSubstNo('More than %1 Days', FORMAT(AgingDate[5] + 1 - (AgingDate[1] + 1 - 1)));
+        //Krishna-End
+
+
+
+
+
+
+
+        /*  //Start Ramesh 8/6/2020
+          PeriodEndDate[1] := DMY2Date(31, 12, 9999);
+          PeriodStartDate[1] := EndDate + 1;
+
+          for i := 2 to ArrayLen(PeriodEndDate) do begin
+              PeriodEndDate[i] := PeriodStartDate[i - 1] - 1;
+              PeriodStartDate[i] := CalcDate(PeriodLength2, PeriodEndDate[i] + 1);
+          end;
+          PeriodStartDate[i] := 0D;
+
+          for i := 1 to ArrayLen(PeriodEndDate) do
+              if PeriodEndDate[i] < PeriodStartDate[i] then
+                  Error(Text010, PeriodLength);
+
+
+          HeaderText[1] := Text000;
+          i := 2;
+
+          while i < ArrayLen(PeriodEndDate) do begin
+              HeaderText[i] := StrSubstNo('%1 - %2 %3', EndDate - PeriodEndDate[i] + 1, EndDate - PeriodStartDate[i] + 1, Text002);//added i-1 in bracket//k
+              i := i + 1;
+          end;
+          HeaderText[i] := StrSubstNo('%1 \%2 %3', Text003, EndDate - PeriodStartDate[i - 1] + 1, Text002);
+
+          //End Ramesh 8/6/2020*/
     end;
 
     local procedure UpdateBuffer(CurrencyCode: Code[10]; Date: Date; Amount: Decimal)

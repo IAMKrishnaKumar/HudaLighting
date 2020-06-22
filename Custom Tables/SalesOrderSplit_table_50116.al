@@ -155,6 +155,8 @@ table 50116 "Sales Order Split"
         }
     }
 
+    var
+        myInt: Integer;
 
     trigger OnInsert()
     begin

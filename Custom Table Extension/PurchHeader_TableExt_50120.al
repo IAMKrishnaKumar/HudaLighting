@@ -47,6 +47,21 @@ tableextension 50120 POHeader extends "Purchase Header"
             DataClassification = ToBeClassified;
         }
 
+        //**********************************Daily Activity*********************
+        field(50101; "Creation Date"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50102; "Creation Time"; Time)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50103; "Created User"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+
+        }
+        
         //****************************PDC****************
         field(60000; "Applies-to ID for PDC"; Code[20])
         {

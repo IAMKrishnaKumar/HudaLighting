@@ -634,7 +634,7 @@ report 60011 "Check Report NBD"
                             GenJnlLine3."Account Type" := GenJnlLine3."Account Type"::"Bank Account";
                             GenJnlLine3.VALIDATE("Account No.", BankAcc2."No.");
                             IF BalancingType <> BalancingType::"G/L Account" THEN
-                                GenJnlLine3.Description := STRSUBSTNO(Text014, SELECTSTR(BalancingType + 1, Text062), BalancingNo);
+                                GenJnlLine3.Description := STRSUBSTNO(Text014, SELECTSTR(BalancingType.AsInteger() + 1, Text062), BalancingNo);
                             GenJnlLine3.VALIDATE(Amount, -TotalLineAmount);
                             GenJnlLine3."Bank Payment Type" := GenJnlLine3."Bank Payment Type"::"Computer Check";
                             GenJnlLine3."Check Printed" := TRUE;
@@ -995,7 +995,7 @@ report 60011 "Check Report NBD"
         OnesText: array[20] of Text[30];
         TensText: array[10] of Text[30];
         ExponentText: array[5] of Text[30];
-        BalancingType: Option "G/L Account",Customer,Vendor,"Bank Account",,,Employee;
+        BalancingType: Enum "Gen. Journal Account Type"; //Option "G/L Account",Customer,Vendor,"Bank Account",,,Employee;
         BalancingNo: Code[20];
         CheckNoText: Text[30];
         CheckDateText: Text[30];
