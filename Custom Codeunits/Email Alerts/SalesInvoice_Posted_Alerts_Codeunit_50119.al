@@ -8,8 +8,8 @@ codeunit 50119 "Sales Invoice Posting Alert"
         TxtAttachmentName: TextConst ENG = 'PSI - %1.pdf';
         AttachmentName: Text;
         ReportID: Integer;
+        Subject: Text;
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Sales Invoice Posting" THEN
             EXIT;
@@ -28,8 +28,9 @@ codeunit 50119 "Sales Invoice Posting Alert"
         if RecCompanyInfo."Sales Invoice Posting Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."Sales Invoice Posting Email");
         end;
+        Subject := 'Posted Sales Invoice: IN - ' + RecSalesHeader."No." + ' - ' + RecSalesHeader."Sell-to Customer Name" + ' - ' + RecSalesHeader."Project Name" + ' - ' + RecSalesHeader."PO Reference";
         SMTPSetup.GET;
-        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, 'Sales Invoice Posted Alert', '');
+        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, Subject, '');
         AppendHTMLBody();
         Clear(RecReportSelection);
         Clear(ReportID);
@@ -73,7 +74,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
             RecOAheader.SetRange("No.", RecSalesLine."Sales Order No.");
             if RecOAheader.FindFirst() then;
         end;
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson.Name + '</b>! Invoice <b>' + RecSalesHeader."No." + '</b> against your OA <b>' + RecOAheader."No." + '</b> has been posted on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! Invoice <b>' + RecSalesHeader."No." + '</b> against your OA <b>' + RecOAheader."No." + '</b> has been posted on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Summary of your Invoice <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Opportunity Reference: ' + RecSalesHeader."Shortcut Dimension 1 Code" + '<o:p></o:p></span> </p>');

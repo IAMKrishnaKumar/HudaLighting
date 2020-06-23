@@ -198,7 +198,10 @@ pageextension 50128 SalesInv extends "Sales Invoice"
             {
                 ApplicationArea = All;
                 Image = SendMail;
-                Visible = false;
+                PromotedCategory = Category7;
+                Promoted = true;
+                PromotedOnly = true;
+                //Visible = false;
                 trigger OnAction()
                 VAR
                     SendEmailAlert: Codeunit "Pick Material Alert";
@@ -206,7 +209,6 @@ pageextension 50128 SalesInv extends "Sales Invoice"
                     RecCompanyInfo: Record "Company Information";
                     EmailAlertLog: Record "Email Alert Log";
                 begin
-                    exit;///using exit as this functionality is not confirmed yet from client 
                     RecCompanyInfo.GET;
                     RecCompanyInfo.TestField("Pick Materials", TRUE);
                     RecCompanyInfo.TestField("Pick Materials Email");

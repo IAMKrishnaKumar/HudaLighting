@@ -568,7 +568,6 @@ codeunit 50104 HudaEvents
             end;
         end;
         //Email Notification on Posting Sales Invoice with Proforma PDF
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."Sales Invoice Posting" then
             exit;
@@ -853,7 +852,6 @@ codeunit 50104 HudaEvents
         SendOAAlert: Codeunit "OA Approval Alert";
         RecCompanyInfo: Record "Company Information";
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."OA Approval" then
             exit;
@@ -895,7 +893,6 @@ codeunit 50104 HudaEvents
         CheckList: List of [Text];
         RecPurchRcptHdr: Record "Purch. Rcpt. Header";
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."Materials Received by Whse." then
             exit;

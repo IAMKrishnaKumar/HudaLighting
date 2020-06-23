@@ -10,8 +10,8 @@ codeunit 50118 "Material Received Alert"
         ReportID: Integer;
         RecPurchHeader: Record "Purchase Header";
         CheckList: List of [Text];
+        Subject: Text;
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Materials Received by Whse." THEN
             EXIT;
@@ -30,9 +30,9 @@ codeunit 50118 "Material Received Alert"
             ToEmailList.Add(RecSalesPerson."E-Mail");
         if RecSalesPerson."E-Mail 2" <> '' then
             ToEmailList.Add(RecSalesPerson."E-Mail 2");
-
+        Subject := 'Material Received: ' + PurchRcptHeaderG."No." + ' - ' + PurchRcptHeaderG."Buy-from Vendor Name" + ' - ' + RecPurchHeader."No." + ' - ' + RecSalesheader."No." + ' - ' + RecSalesheader."Project Name";//RecPurchaseHeader
         SMTPSetup.GET;
-        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, 'Material Received By Warehouse Alert', '');
+        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, Subject, '');
 
         AppendHTMLBody();
         Clear(RecReportSelection);
@@ -63,7 +63,7 @@ codeunit 50118 "Material Received Alert"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson.Name + '</b> Good news! Materials against your OA <b>' + RecSalesHeader."No." + '</b> has been received at the Warehouse on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b> Good news! Materials against your OA <b>' + RecSalesHeader."No." + '</b> has been received at the Warehouse on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Summary of your Shipment: <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Opportunity Reference: ' + RecPurchaseHeader."Shortcut Dimension 1 Code" + '<o:p></o:p></span> </p>');

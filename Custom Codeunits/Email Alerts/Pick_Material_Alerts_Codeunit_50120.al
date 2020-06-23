@@ -9,7 +9,6 @@ codeunit 50120 "Pick Material Alert"
         AttachmentName: Text;
         ReportID: Integer;
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Pick Materials" THEN
             EXIT;

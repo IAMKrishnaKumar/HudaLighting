@@ -8,8 +8,8 @@ codeunit 50117 "OA Approval Alert"
         TxtAttachmentName: TextConst ENG = 'OA - %1.pdf';
         AttachmentName: Text;
         ReportID: Integer;
+        Subject: Text;
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."OA Approval" THEN
             EXIT;
@@ -27,8 +27,9 @@ codeunit 50117 "OA Approval Alert"
         if RecCompanyInfo."OA Approval Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."OA Approval Email");
         end;
+        Subject := 'OA Approval: ' + RecSalesHeader."No." + ' - ' + RecSalesHeader."Sell-to Customer Name" + ' - ' + RecSalesHeader."Project Name" + ' - ' + RecSalesHeader."PO Reference";
         SMTPSetup.GET;
-        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, 'OA Approval Alert', '');
+        SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, Subject, '');
         AppendHTMLBody();
         Clear(RecReportSelection);
         Clear(ReportID);
@@ -58,7 +59,7 @@ codeunit 50117 "OA Approval Alert"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson.Name + '</b>! Congratulations, your OA <b>' + RecSalesHeader."No." + '</b> has been approved on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. Here is a copy of the OA for your perusal.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! Congratulations, your OA <b>' + RecSalesHeader."No." + '</b> has been approved on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. Here is a copy of the OA for your perusal.<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Summary of your OA<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Opportunity Reference: ' + RecSalesHeader."Shortcut Dimension 1 Code" + '<o:p></o:p></span> </p>');

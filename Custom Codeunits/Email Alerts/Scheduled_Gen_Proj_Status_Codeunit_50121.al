@@ -12,7 +12,6 @@ codeunit 50121 "Scheduled Gen. Project Status"
         GeneralProjectStatusReport: Report "General Project Status";
         SalesHeader: Record "Sales Header";
     begin
-        exit;///using exit as this functionality is not confirmed yet from client 
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."General Project Status" THEN
             EXIT;
@@ -62,7 +61,7 @@ codeunit 50121 "Scheduled Gen. Project Status"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson.Name + '</b>! Please find the attached General Project Status Report as of ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. <o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! Please find the attached General Project Status Report as of ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
 
 
