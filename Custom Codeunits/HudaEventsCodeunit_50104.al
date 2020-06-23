@@ -970,8 +970,8 @@ codeunit 50104 HudaEvents
         Rec."Creation Date" := WorkDate();
         Rec."Creation Time" := Time;
         Rec.Modify();
-	end;
-		
+    end;
+
     [EventSubscriber(ObjectType::Table, Database::"Warehouse Shipment Header", 'OnAfterInsertEvent', '', false, false)]
     procedure OnAfterInsertEventWhseShipHeader(var Rec: Record "Warehouse Shipment Header")
     begin
@@ -980,7 +980,7 @@ codeunit 50104 HudaEvents
         Rec."Creation Time" := Time;
         Rec.Modify();
     end;
-	    
+
     var
         JlnBatchName: Text;
         JlnTemplateName: Text;

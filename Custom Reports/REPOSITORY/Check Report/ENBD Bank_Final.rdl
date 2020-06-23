@@ -53,7 +53,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox2</rd:DefaultName>
             <Top>2.52575cm</Top>
-            <Left>5.19593cm</Left>
+            <Left>4.75143cm</Left>
             <Height>8.32583cm</Height>
             <Width>0.71536cm</Width>
             <ZIndex>1</ZIndex>
@@ -94,7 +94,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox5</rd:DefaultName>
             <Top>1.62617cm</Top>
-            <Left>3.28828cm</Left>
+            <Left>2.84378cm</Left>
             <Height>8.40521cm</Height>
             <Width>1.4509cm</Width>
             <ZIndex>2</ZIndex>
@@ -227,7 +227,7 @@
         </PageFooter>
         <PageHeight>7.6in</PageHeight>
         <PageWidth>6.8in</PageWidth>
-        <LeftMargin>3in</LeftMargin>
+        <LeftMargin>2.3in</LeftMargin>
         <Style />
       </Page>
     </ReportSection>

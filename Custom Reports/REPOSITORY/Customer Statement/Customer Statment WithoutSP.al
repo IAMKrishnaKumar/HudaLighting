@@ -989,6 +989,7 @@ report 50109 "Customer Statement Without SP"
                         {
                             ApplicationArea = All;
                             Caption = 'Sales Person';
+                            Visible = false;
 
                         }
                     }
