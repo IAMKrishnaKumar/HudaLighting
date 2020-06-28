@@ -12,7 +12,7 @@ codeunit 50120 "Pick Material Alert"
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Pick Materials" THEN
             EXIT;
-        RecSalesHeader.FindFirst();//if it will throw error then error will be saved in log.
+        InitializeRecords();
         Clear(ToEmailList);
         if RecCompanyInfo."Pick Materials Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."Pick Materials Email");
@@ -57,9 +57,16 @@ codeunit 50120 "Pick Material Alert"
 
     procedure SetSalesOrderNumber(NoL: Code[20])
     begin
+        Clear(NoG);
+        NoG := NoL;
+    end;
+
+    local procedure InitializeRecords()
+    begin
         Clear(RecSalesHeader);
         RecSalesHeader.SetRange("Document Type", RecSalesHeader."Document Type"::Invoice);
-        RecSalesHeader.SetRange("No.", NoL);
+        RecSalesHeader.SetRange("No.", NoG);
+        RecSalesHeader.FindFirst();
     end;
 
     local procedure AddItemDetail()
@@ -102,7 +109,7 @@ codeunit 50120 "Pick Material Alert"
         SMTPSetup: Record "SMTP Mail Setup";
         SMTPMail: Codeunit "SMTP Mail";
         RecSalesHeader: Record "Sales Header";
-
+        NoG: Code[20];
 
 
     local procedure Addstyle()

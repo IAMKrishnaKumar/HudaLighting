@@ -15,7 +15,7 @@ codeunit 50118 "Material Received Alert"
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Materials Received by Whse." THEN
             EXIT;
-
+        InitializeRecords();
         Clear(ToEmailList);
         if RecCompanyInfo."Materials Rec. by Whse. Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."Materials Rec. by Whse. Email");
@@ -117,17 +117,23 @@ codeunit 50118 "Material Received Alert"
 
     procedure SetPurchRcptHeader(NoL: Code[20])
     begin
+        Clear(NoG);
+        NoG := NoL;
+    end;
+
+    local procedure InitializeRecords()
+    begin
         Clear(PurchRcptHeaderG);
-        PurchRcptHeaderG.SetRange("No.", NoL);
+        PurchRcptHeaderG.SetRange("No.", NoG);
         PurchRcptHeaderG.FindFirst();
         Clear(RecPurchRcptLine);
-        RecPurchRcptLine.SetRange("Document No.", NoL);
+        RecPurchRcptLine.SetRange("Document No.", PurchRcptHeaderG."No.");
         RecPurchRcptLine.SetFilter("HL Sales Order No.", '<>%1', '');
         RecPurchRcptLine.FindFirst();
         Clear(RecSalesheader);
         RecSalesheader.SetRange("Document Type", RecSalesheader."Document Type"::Order);
         RecSalesheader.SetRange("No.", RecPurchRcptLine."HL Sales Order No.");
-        RecSalesheader.FindFirst();
+        if RecSalesheader.FindFirst() then;
         Clear(RecPurchaseHeader);
         RecPurchaseHeader.SetRange("Document Type", RecPurchaseHeader."Document Type"::Order);
         RecPurchaseHeader.SetRange("No.", PurchRcptHeaderG."Order No.");
@@ -171,6 +177,7 @@ codeunit 50118 "Material Received Alert"
     var
         RecCompanyInfo: Record "Company Information";
         PostedWhseRcptNoG: Code[20];
+        NoG: Code[20];
         ToEmailList, CCEmailList, BccEmailList : List of [Text];
         RecSalesPerson: Record "Salesperson/Purchaser";
         RecReportSelection: Record "Report Selections";

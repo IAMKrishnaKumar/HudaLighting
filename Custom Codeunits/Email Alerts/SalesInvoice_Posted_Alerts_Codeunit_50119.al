@@ -13,7 +13,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Sales Invoice Posting" THEN
             EXIT;
-        RecSalesHeader.FindFirst();//if it will throw error then error will be saved in log.
+        InitializeRecord();
         RecSalesInvHeader.FindFirst();///////////////For posted sales invoice
         RecSalesHeader.TestField("Salesperson Code");
         Clear(RecSalesPerson);
@@ -143,9 +143,16 @@ codeunit 50119 "Sales Invoice Posting Alert"
 
     procedure SetSalesOrderNumber(NoL: Code[20])
     begin
+        Clear(NoG);
+        NoG := NoL;
+    end;
+
+    local procedure InitializeRecord()
+    begin
         Clear(RecSalesHeader);
         RecSalesHeader.SetRange("Document Type", RecSalesHeader."Document Type"::Invoice);
-        RecSalesHeader.SetRange("No.", NoL);
+        RecSalesHeader.SetRange("No.", NoG);
+        RecSalesHeader.FindFirst();
     end;
 
     procedure SetPostedSalesInvoiceNo(NoL: Code[20])
@@ -157,6 +164,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
     var
         RecCompanyInfo: Record "Company Information";
         ToEmailList: List of [Text];
+        NoG: Code[20];
         RecSalesInvHeader: Record "Sales Invoice Header";
         CCEmailList: List of [Text];
         BccEmailList: List of [Text];

@@ -69,7 +69,7 @@ pageextension 50123 companyInfo extends "Company Information"
             //OptionMembers = ,"OA Approval Alert","Materials Received by the Whse. Alert","Invoice Posting Alert","Pick Materials Alert","Scheduled Gen. Proj. Status Report";
             group("Email Alerts")
             {
-                Visible = false;
+                //Visible = false;
                 field("OA Approval"; "OA Approval")
                 {
                     ApplicationArea = All;
@@ -98,24 +98,24 @@ pageextension 50123 companyInfo extends "Company Information"
             }
             group("Teams Email Ids")
             {
-                Visible = false;
+                //Visible = false;
                 field("OA Approval Email"; "OA Approval Email")
                 {
                     ApplicationArea = All;
                     Caption = 'OA Approval - Teams Email Id';
-                    //Visible = false;
+                    Visible = false;
                 }
                 field("Materials Rec. by Whse. Email"; "Materials Rec. by Whse. Email")
                 {
                     ApplicationArea = All;
                     Caption = 'Materials Received - Teams Email Id';
-                    //Visible = false;
+                    Visible = false;
                 }
                 field("Sales Invoice Posting Email"; "Sales Invoice Posting Email")
                 {
                     ApplicationArea = All;
                     Caption = 'Sales Invoice Posting - Teams Email Id';
-                    //Visible = false;
+                    Visible = false;
                 }
                 field("Pick Materials Email"; "Pick Materials Email")
                 {
@@ -126,7 +126,7 @@ pageextension 50123 companyInfo extends "Company Information"
                 field("General Project Status Email"; "General Project Status Email")
                 {
                     ApplicationArea = All;
-                    //Visible = false;
+                    Visible = false;
                     Caption = 'General Project Status - Teams  Email Id';
                 }
             }

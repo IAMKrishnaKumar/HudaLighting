@@ -25,10 +25,12 @@ report 50168 "Scheduled General Proj. Report"
                 if not CheckList.Contains("Salesperson Code") then begin
                     CheckList.Add("Salesperson Code");
                     Clear(RecSalesPerson);
-                    RecSalesPerson.GET("Salesperson Code");
-                    if (RecSalesPerson."E-Mail" = '') AND (RecSalesPerson."E-Mail 2" = '') then
+                    if RecSalesPerson.GET("Salesperson Code") then begin
+                        if (RecSalesPerson."E-Mail" = '') AND (RecSalesPerson."E-Mail 2" = '') then
+                            CurrReport.Skip();
+                    end
+                    else
                         CurrReport.Skip();
-
                     Clear(EmailAlertLog);
                     if EmailAlertLog.FindLast() then
                         EntryNo := EmailAlertLog."Entry No." + 1

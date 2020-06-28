@@ -13,6 +13,7 @@ codeunit 50117 "OA Approval Alert"
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."OA Approval" THEN
             EXIT;
+        InitializeRecords();
         RecSalesHeader.FindFirst();//if it will throw error then error will be saved in log.
         RecSalesHeader.TestField("Salesperson Code");
         Clear(RecSalesPerson);
@@ -112,14 +113,21 @@ codeunit 50117 "OA Approval Alert"
 
     procedure SetSalesOrderNumber(NoL: Code[20])
     begin
+        Clear(NoG);
+        NoG := NoL;
+    end;
+
+    local procedure InitializeRecords()
+    begin
         Clear(RecSalesHeader);
         RecSalesHeader.SetRange("Document Type", RecSalesHeader."Document Type"::Order);
-        RecSalesHeader.SetRange("No.", NoL);
+        RecSalesHeader.SetRange("No.", NoG);
     end;
 
     var
         RecCompanyInfo: Record "Company Information";
         ToEmailList: List of [Text];
+        NoG: Code[20];
         CCEmailList: List of [Text];
         BccEmailList: List of [Text];
         RecSalesPerson: Record "Salesperson/Purchaser";

@@ -201,7 +201,7 @@ pageextension 50128 SalesInv extends "Sales Invoice"
                 PromotedCategory = Category7;
                 Promoted = true;
                 PromotedOnly = true;
-                //Visible = false;
+                Visible = false;
                 trigger OnAction()
                 VAR
                     SendEmailAlert: Codeunit "Pick Material Alert";
