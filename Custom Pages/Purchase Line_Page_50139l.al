@@ -838,6 +838,20 @@ page 50139 "Purchase Line Subform"
 
     actions
     {
+        area(Processing)
+        {
+            action("Update VAT Prod Pos. Grp For NonInventory")
+            {
+                ApplicationArea = All;
+                Image = UpdateUnitCost;
+                trigger OnAction()
+                var
+                    UpdateVATReport: Report "Update VAT Prod. Group PL";
+                begin
+                    UpdateVATReport.Run();
+                end;
+            }
+        }
     }
 }
 

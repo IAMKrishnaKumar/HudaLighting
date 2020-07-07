@@ -18,6 +18,10 @@ pageextension 50123 companyInfo extends "Company Information"
             {
                 ApplicationArea = All;
             }
+            field("VAT Note"; "VAT Note")
+            {
+                ApplicationArea = All;
+            }
 
         }
         addafter("System Indicator")
@@ -122,6 +126,10 @@ pageextension 50123 companyInfo extends "Company Information"
                     ApplicationArea = All;
                     Caption = 'Pick Materials - Teams Email Id';
                     //Visible = false;
+                }
+                field("GPS Sharepoint Link"; "GPS Sharepoint Link")
+                {
+                    ApplicationArea = All;
                 }
                 field("General Project Status Email"; "General Project Status Email")
                 {

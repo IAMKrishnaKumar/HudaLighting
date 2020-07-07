@@ -1423,7 +1423,6 @@
                         <Style>
                           <FontFamily>Segoe UI</FontFamily>
                           <FontSize>8pt</FontSize>
-                          <FontWeight>Normal</FontWeight>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -9745,6 +9744,9 @@ Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de69791
         </Field>
         <Field Name="WithholdingTaxFormat">
           <DataField>WithholdingTaxFormat</DataField>
+        </Field>
+        <Field Name="VATNote">
+          <DataField>VATNote</DataField>
         </Field>
         <Field Name="Project_Name">
           <DataField>Project_Name</DataField>

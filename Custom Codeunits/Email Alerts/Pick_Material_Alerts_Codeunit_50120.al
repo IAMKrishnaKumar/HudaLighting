@@ -33,7 +33,9 @@ codeunit 50120 "Pick Material Alert"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi! We need your help to pick and prepare the materials against Sales Invoice  <b>' + RecSalesHeader."No." + '</b> dated ' + FORMAT(RecSalesHeader."Document Date", 0, '<day,2>/<month,2>/<year4>') + '. Here is what we need.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi!<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">We need your help to pick and prepare the materials against Sales Invoice  <b>' + RecSalesHeader."No." + '</b> dated ' + FORMAT(RecSalesHeader."Document Date", 0, '<day,2>/<month,2>/<year4>') + '. Here is what we need.<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
 
         AddItemDetail();

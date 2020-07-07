@@ -105,7 +105,7 @@ pageextension 50121 PurchInvCard extends "Purchase Invoice"
             action("Update VAT Bus. Posting Group")
             {
                 ApplicationArea = All;
-
+                Image = UpdateDescription;
                 trigger OnAction()
                 VAR
                     PLines: Record "Purchase Line";
@@ -114,6 +114,20 @@ pageextension 50121 PurchInvCard extends "Purchase Invoice"
                     UpdatePosGrp.SetInvoiceNo("No.");
                     UpdatePosGrp.RunModal();
                     Message('Process completed.');
+                end;
+            }
+
+            action("Update VAT Prod Posting Group")
+            {
+                ApplicationArea = All;
+                Image = UpdateDescription;
+                trigger OnAction()
+                VAR
+                    UpdatePosGrp: Report "Update VAT Prod. Group For PI";
+                begin
+                    Clear(UpdatePosGrp);
+                    UpdatePosGrp.SetDocumentNo("No.");
+                    UpdatePosGrp.RunModal();
                 end;
             }
         }

@@ -642,7 +642,7 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox55</rd:DefaultName>
-                <Top>2.76252cm</Top>
+                <Top>3.14352cm</Top>
                 <Left>0.0247cm</Left>
                 <Height>0.76329cm</Height>
                 <Width>19.09211cm</Width>
@@ -742,7 +742,7 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox56</rd:DefaultName>
-                <Top>0.93269cm</Top>
+                <Top>1.37719cm</Top>
                 <Left>0.02469cm</Left>
                 <Height>0.4cm</Height>
                 <Width>3.42604cm</Width>
@@ -925,7 +925,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet_Result</DataSetName>
-                <Top>1.38208cm</Top>
+                <Top>1.82658cm</Top>
                 <Left>0.61969cm</Left>
                 <Height>1.2cm</Height>
                 <Width>18.49712cm</Width>
@@ -937,7 +937,7 @@
                 </Style>
               </Tablix>
               <Line Name="Line1">
-                <Top>1.08899in</Top>
+                <Top>1.22649in</Top>
                 <Height>0in</Height>
                 <Width>7.53602in</Width>
                 <ZIndex>5</ZIndex>
@@ -1008,9 +1008,9 @@
                 </Paragraphs>
                 <rd:DefaultName>Textbox56</rd:DefaultName>
                 <Top>0.46703cm</Top>
-                <Left>0.03175cm</Left>
+                <Left>0.00617cm</Left>
                 <Height>0.4cm</Height>
-                <Width>15.40592cm</Width>
+                <Width>15.4315cm</Width>
                 <ZIndex>7</ZIndex>
                 <Visibility>
                   <Hidden>=IIF(Fields!IsArabic.Value, False, True)</Hidden>
@@ -1172,6 +1172,78 @@ Mobile No.      _______________________</Value>
                 <Height>1.97717cm</Height>
                 <Width>6.13712cm</Width>
                 <ZIndex>9</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="Textbox201">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=Fields!VATNote.Value</Value>
+                        <Style>
+                          <FontFamily>Segoe UI</FontFamily>
+                          <FontSize>8pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox56</rd:DefaultName>
+                <Top>0.90663cm</Top>
+                <Left>3.50583cm</Left>
+                <Height>0.4cm</Height>
+                <Width>15.58494cm</Width>
+                <ZIndex>10</ZIndex>
+                <Visibility>
+                  <Hidden>=IIF(First(Fields!ShowVATNote.Value, "DataSet_Result"), False, True)</Hidden>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="Textbox217">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>="Note: "</Value>
+                        <Style>
+                          <FontFamily>Segoe UI</FontFamily>
+                          <FontSize>8pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox56</rd:DefaultName>
+                <Top>0.90663cm</Top>
+                <Left>0.0247cm</Left>
+                <Height>0.4cm</Height>
+                <Width>3.42603cm</Width>
+                <ZIndex>11</ZIndex>
+                <Visibility>
+                  <Hidden>=IIF(First(Fields!ShowVATNote.Value, "DataSet_Result"), False, True)</Hidden>
+                </Visibility>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -9892,7 +9964,6 @@ Mobile No.      _______________________</Value>
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>0in</Top>
               <Height>1.7057cm</Height>
               <Width>19.14149cm</Width>
               <Style>
@@ -10172,6 +10243,12 @@ End Function
         </Field>
         <Field Name="CompanyInfo_Name">
           <DataField>CompanyInfo_Name</DataField>
+        </Field>
+        <Field Name="VATNote">
+          <DataField>VATNote</DataField>
+        </Field>
+        <Field Name="ShowVATNote">
+          <DataField>ShowVATNote</DataField>
         </Field>
         <Field Name="CompanyInfo_Name2">
           <DataField>CompanyInfo_Name2</DataField>

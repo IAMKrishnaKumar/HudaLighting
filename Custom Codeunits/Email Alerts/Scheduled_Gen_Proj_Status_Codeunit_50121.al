@@ -61,10 +61,11 @@ codeunit 50121 "Scheduled Gen. Project Status"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! Please find the attached General Project Status Report as of ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. <o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>!<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
-
-
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">We are sharing this week’s General Project Status Report as of  ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + ' with you. The report shows all the open order lines. Once the OA is closed, the lines are removed from the report. If you need help reading the report, please refer to this <a href="' + RecCompanyInfo."GPS Sharepoint Link" + '">Sharepoint Link </a>explaining the document.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">We look forward to receiving your feedback!<o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><i><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">This message is sent by the Huda Lighting ERP</span></i></p>');
     end;

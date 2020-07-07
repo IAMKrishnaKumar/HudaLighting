@@ -93,6 +93,14 @@ report 50121 "Proforma Invoice report"
             {
 
             }
+            column(VATNote; CompanyInfo."VAT Note")
+            {
+
+            }
+            column(ShowVATNote; ShowVATNote)
+            {
+
+            }
             column(Remark2; CompanyInfo."Remark Text 2")
             {
 
@@ -704,6 +712,11 @@ report 50121 "Proforma Invoice report"
                         UserName := UserId;
                 end;
 
+                if CompanyName = 'KSA' THEN
+                    ShowVATNote := true
+                else
+                    ShowVATNote := false;
+
                 Clear(CompanyAddress);
                 Clear(CompanyTelAndFax);
                 if CompanyInfo.Address <> '' then
@@ -728,6 +741,7 @@ report 50121 "Proforma Invoice report"
             end;
         }
     }
+
 
     requestpage
     {
@@ -936,6 +950,7 @@ report 50121 "Proforma Invoice report"
         DecimalDec: Text[250];
         Users: Record User;
         UserName: Text;
+        ShowVATNote: Boolean;
 
 
     procedure FormatNoText(var NoText: array[2] of Text[80]; No: Decimal; CurrencyCode: Code[10])

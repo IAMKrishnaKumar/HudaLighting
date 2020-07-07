@@ -121,6 +121,14 @@ report 50125 "Sales Credit Memo Report"
             column(CompanyInfo_Name; CompanyInfo.Name)
             {
             }
+            column(VATNote; CompanyInfo."VAT Note")
+            {
+
+            }
+            column(ShowVATNote; ShowVATNote)
+            {
+
+            }
             column(CompanyInfo_Name2; CompanyInfo."Name 2")
             {
             }
@@ -665,6 +673,10 @@ report 50125 "Sales Credit Memo Report"
                     else
                         UserName := UserId;
                 end;
+                if CompanyName = 'KSA' THEN
+                    ShowVATNote := true
+                else
+                    ShowVATNote := false;
                 Clear(CompanyAddress);
                 Clear(CompanyTelAndFax);
                 if CompanyInfo.Address <> '' then
@@ -885,6 +897,7 @@ report 50125 "Sales Credit Memo Report"
         DecimalDec: Text[250];
         Users: Record User;
         UserName: Text;
+        ShowVATNote: Boolean;
 
 
     procedure FormatNoText(var NoText: array[2] of Text[80]; No: Decimal; CurrencyCode: Code[10])

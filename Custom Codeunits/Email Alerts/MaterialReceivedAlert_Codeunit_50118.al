@@ -30,7 +30,10 @@ codeunit 50118 "Material Received Alert"
             ToEmailList.Add(RecSalesPerson."E-Mail");
         if RecSalesPerson."E-Mail 2" <> '' then
             ToEmailList.Add(RecSalesPerson."E-Mail 2");
-        Subject := 'Material Received: ' + PurchRcptHeaderG."No." + ' - ' + PurchRcptHeaderG."Buy-from Vendor Name" + ' - ' + RecPurchHeader."No." + ' - ' + RecSalesheader."No." + ' - ' + RecSalesheader."Project Name";//RecPurchaseHeader
+        if IsSalesOrderAvailable then
+            Subject := 'Material Received: ' + PurchRcptHeaderG."No." + ' - ' + PurchRcptHeaderG."Buy-from Vendor Name" + ' - ' + RecPurchHeader."No." + ' - ' + RecSalesheader."No." + ' - ' + RecSalesheader."Project Name"//RecPurchaseHeader
+        else
+            Subject := 'Material Received: ' + PurchRcptHeaderG."No." + ' - ' + PurchRcptHeaderG."Buy-from Vendor Name" + ' - ' + RecPurchHeader."No.";
         SMTPSetup.GET;
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, Subject, '');
 
@@ -63,9 +66,14 @@ codeunit 50118 "Material Received Alert"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b> Good news! Materials against your OA <b>' + RecSalesHeader."No." + '</b> has been received at the Warehouse on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + ' </b>! <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Summary of your Shipment: <o:p></o:p></span></p>');
+        if IsSalesOrderAvailable then
+            SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Good news! Materials against your OA <b>' + RecSalesHeader."No." + '</b> has been received at the Warehouse on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>')
+        else
+            SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Good news! Materials against your OA <b> </b> has been received at the Warehouse on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><b>Summary of your Shipment: </b><o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Opportunity Reference: ' + RecPurchaseHeader."Shortcut Dimension 1 Code" + '<o:p></o:p></span> </p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Project Name: ' + RecPurchaseHeader."Project Name" + '<o:p></o:p></span></p>');
         RecPurchaseHeader.CalcFields("Amount Including VAT");
@@ -81,7 +89,10 @@ codeunit 50118 "Material Received Alert"
         ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(GLSetup."LCY Code");
 
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Order Amount Inc. VAT (' + GLSetup."LCY Code" + '): ' + FORMAT(ROUND((RecPurchaseHeader."Amount Including VAT" / CurrencyFactor) * ExchangeRateAmt, 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + '<o:p></o:p></span> </p>');
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Account Name: ' + RecSalesHeader."Sell-to Customer Name" + '<o:p></o:p></span></p>');
+        if IsSalesOrderAvailable then
+            SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Account Name: ' + RecSalesHeader."Sell-to Customer Name" + '<o:p></o:p></span></p>')
+        else
+            SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Account Name: <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Vendor Name: ' + RecPurchaseHeader."Buy-from Vendor Name" + '<o:p></o:p></span></p>');
         Clear(RecPayTerm);
         if RecPurchaseHeader."Payment Terms Code" <> '' then begin
@@ -119,6 +130,7 @@ codeunit 50118 "Material Received Alert"
     begin
         Clear(NoG);
         NoG := NoL;
+        IsSalesOrderAvailable := false;
     end;
 
     local procedure InitializeRecords()
@@ -129,11 +141,16 @@ codeunit 50118 "Material Received Alert"
         Clear(RecPurchRcptLine);
         RecPurchRcptLine.SetRange("Document No.", PurchRcptHeaderG."No.");
         RecPurchRcptLine.SetFilter("HL Sales Order No.", '<>%1', '');
-        RecPurchRcptLine.FindFirst();
-        Clear(RecSalesheader);
-        RecSalesheader.SetRange("Document Type", RecSalesheader."Document Type"::Order);
-        RecSalesheader.SetRange("No.", RecPurchRcptLine."HL Sales Order No.");
-        if RecSalesheader.FindFirst() then;
+        if RecPurchRcptLine.FindFirst() then begin
+            Clear(RecSalesheader);
+            RecSalesheader.SetRange("Document Type", RecSalesheader."Document Type"::Order);
+            RecSalesheader.SetRange("No.", RecPurchRcptLine."HL Sales Order No.");
+            if RecSalesheader.FindFirst() then
+                IsSalesOrderAvailable := true
+            else
+                IsSalesOrderAvailable := false;
+        end else
+            IsSalesOrderAvailable := false;
         Clear(RecPurchaseHeader);
         RecPurchaseHeader.SetRange("Document Type", RecPurchaseHeader."Document Type"::Order);
         RecPurchaseHeader.SetRange("No.", PurchRcptHeaderG."Order No.");
@@ -188,6 +205,7 @@ codeunit 50118 "Material Received Alert"
         RecSalesheader: Record "Sales Header";
         RecPurchaseHeader: Record "Purchase Header";
         RecPurchLine: Record "Purchase Line";
+        IsSalesOrderAvailable: Boolean;
 
 
 

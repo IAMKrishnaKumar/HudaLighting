@@ -37,6 +37,10 @@ report 50151 "Proforma Invoice Without VAT"
             {
 
             }
+            column(VATNote; CompanyInfo."VAT Note")
+            {
+
+            }
             column(Project_Name; "Sales Header"."Project Name")
             {
             }

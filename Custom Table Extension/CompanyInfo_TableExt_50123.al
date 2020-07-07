@@ -63,6 +63,7 @@ tableextension 50123 CompanyInfo extends "Company Information"
             DataClassification = ToBeClassified;
         }
 
+
         //Teams Email Ids
 
         field(50014; "OA Approval Email"; Text[250])
@@ -85,11 +86,19 @@ tableextension 50123 CompanyInfo extends "Company Information"
         {
             DataClassification = ToBeClassified;
         }
+        field(50019; "GPS Sharepoint Link"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50020; "VAT Note"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
         //**********************************Daily Activity*********************
         field(50105; "Daily Activity"; Boolean)
         {
-        	DataClassification = ToBeClassified;
-        }        
+            DataClassification = ToBeClassified;
+        }
     }
 
     var

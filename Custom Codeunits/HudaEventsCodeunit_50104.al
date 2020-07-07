@@ -16,6 +16,7 @@ codeunit 50104 HudaEvents
         RecPT: Record "Payment Terms";
         RecPaymentMilestone: Record "Payment Milestone";
         TotalPercentage: Decimal;
+        text: Codeunit 550;
     begin
         compInfo.GET;
         GLSetup.GET;
@@ -567,7 +568,7 @@ codeunit 50104 HudaEvents
                 until RecPm.Next() = 0;
             end;
         end;
-        //Email Notification on Posting Sales Invoice with Proforma PDF
+        //Email Notification on Posting Sales Invoice with Posted sales Invoice PDF - Run for both Order and Invoice
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."Sales Invoice Posting" then
             exit;
@@ -582,7 +583,7 @@ codeunit 50104 HudaEvents
         EmailAlertLog."Email For Record" := SalesHeader.RecordId;
         EmailAlertLog."Email Alert Type" := EmailAlertLog."Email Alert Type"::"Invoice Posting Alert";
         ClearLastError();
-        InvoicePostingAlert.SetSalesOrderNumber(SalesHeader."No.");
+        InvoicePostingAlert.SetSalesOrderNumber(SalesHeader."No.", SalesHeader."Document Type");
         InvoicePostingAlert.SetPostedSalesInvoiceNo(SalesInvoiceHeader."No.");
         Commit();
         if InvoicePostingAlert.RUN() then
@@ -852,6 +853,8 @@ codeunit 50104 HudaEvents
         SendOAAlert: Codeunit "OA Approval Alert";
         RecCompanyInfo: Record "Company Information";
     begin
+        if SalesHeader."Document Type" <> SalesHeader."Document Type"::Order then
+            exit;
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."OA Approval" then
             exit;

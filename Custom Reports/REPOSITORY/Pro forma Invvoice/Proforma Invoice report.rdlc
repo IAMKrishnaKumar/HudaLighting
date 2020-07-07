@@ -1039,7 +1039,7 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox56</rd:DefaultName>
-                <Top>3.21869cm</Top>
+                <Top>3.72669cm</Top>
                 <Left>0.02468cm</Left>
                 <Height>0.4cm</Height>
                 <Width>3.40136cm</Width>
@@ -1055,10 +1055,9 @@
                 </Style>
               </Textbox>
               <Line Name="Line1">
-                <Top>1.92649in</Top>
-                <Left>0.00972in</Left>
+                <Top>2.17649in</Top>
                 <Height>0in</Height>
-                <Width>7.53602in</Width>
+                <Width>7.54574in</Width>
                 <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
@@ -1164,7 +1163,7 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox55</rd:DefaultName>
-                <Top>4.94784cm</Top>
+                <Top>5.58284cm</Top>
                 <Left>0.02468cm</Left>
                 <Height>0.55162cm</Height>
                 <Width>19.07409cm</Width>
@@ -1679,7 +1678,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet_Result</DataSetName>
-                <Top>3.62346cm</Top>
+                <Top>4.13146cm</Top>
                 <Left>0.65203cm</Left>
                 <Height>1.2cm</Height>
                 <Width>18.49712cm</Width>
@@ -1690,11 +1689,83 @@
                   </Border>
                 </Style>
               </Tablix>
+              <Textbox Name="Textbox178">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>="Note: "</Value>
+                        <Style>
+                          <FontFamily>Segoe UI</FontFamily>
+                          <FontSize>8pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox56</rd:DefaultName>
+                <Top>3.22449cm</Top>
+                <Left>0.0377cm</Left>
+                <Height>0.4cm</Height>
+                <Width>3.4cm</Width>
+                <ZIndex>18</ZIndex>
+                <Visibility>
+                  <Hidden>=IIF(First(Fields!ShowVATNote.Value, "DataSet_Result"),False,True)</Hidden>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="Textbox179">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=Fields!VATNote.Value</Value>
+                        <Style>
+                          <FontFamily>Segoe UI</FontFamily>
+                          <FontSize>8pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox56</rd:DefaultName>
+                <Top>3.22449cm</Top>
+                <Left>3.54353cm</Left>
+                <Height>0.4cm</Height>
+                <Width>15.58494cm</Width>
+                <ZIndex>19</ZIndex>
+                <Visibility>
+                  <Hidden>=IIF(First(Fields!ShowVATNote.Value, "DataSet_Result"),False,True)</Hidden>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>13.35359cm</Top>
             <Left>0.02744cm</Left>
-            <Height>5.58942cm</Height>
+            <Height>6.21397cm</Height>
             <Width>19.16618cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -2019,7 +2090,7 @@
             <PageBreak>
               <BreakLocation>Start</BreakLocation>
             </PageBreak>
-            <Top>7.52321in</Top>
+            <Top>7.77321in</Top>
             <Left>0.0108in</Left>
             <Height>0.57859in</Height>
             <Width>7.56229in</Width>
@@ -8566,7 +8637,7 @@
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>8.15389in</Height>
+        <Height>8.3518in</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -9435,6 +9506,12 @@ Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de69791
         </Field>
         <Field Name="Remark1">
           <DataField>Remark1</DataField>
+        </Field>
+        <Field Name="VATNote">
+          <DataField>VATNote</DataField>
+        </Field>
+        <Field Name="ShowVATNote">
+          <DataField>ShowVATNote</DataField>
         </Field>
         <Field Name="Remark2">
           <DataField>Remark2</DataField>

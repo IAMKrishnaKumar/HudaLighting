@@ -208,6 +208,14 @@
             {
 
             }
+            column(VATNote; CompanyInfo."VAT Note")
+            {
+
+            }
+            column(ShowVATNote; ShowVATNote)
+            {
+
+            }
             column(Duplicate; Duplicate)
             {
 
@@ -738,7 +746,10 @@
                     else
                         UserName := UserId;
                 end;
-
+                if CompanyName = 'KSA' THEN
+                    ShowVATNote := true
+                else
+                    ShowVATNote := false;
                 Clear(CompanyAddress);
                 Clear(CompanyTelAndFax);
                 if CompanyInfo.Address <> '' then
@@ -894,6 +905,7 @@
         Ins3: Label 'EXCHANGE/RETURN POLICY : Credit will be given for Items returned within 10 days of product puurchase, subject to them being in good condition & in original packing. NO CASH REFUND.';
 
         GLSetup: Record 98;
+        ShowVATNote: Boolean;
         Text026: Label 'ZERO';
         Text027: Label 'HUNDRED';
         Text028: Label 'AND';

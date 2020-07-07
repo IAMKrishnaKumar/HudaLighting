@@ -40,6 +40,7 @@ codeunit 50114 Functions
         end;
     end;
 
+
     var
-        myInt: Integer;
+        test: Codeunit "VAT Rate Change Conversion";
 }

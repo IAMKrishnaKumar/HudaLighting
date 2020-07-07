@@ -28,7 +28,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         if RecCompanyInfo."Sales Invoice Posting Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."Sales Invoice Posting Email");
         end;
-        Subject := 'Posted Sales Invoice: IN - ' + RecSalesHeader."No." + ' - ' + RecSalesHeader."Sell-to Customer Name" + ' - ' + RecSalesHeader."Project Name" + ' - ' + RecSalesHeader."PO Reference";
+        Subject := 'Posted Sales Invoice: IN - ' + RecSalesInvHeader."No." + ' - ' + RecSalesHeader."Sell-to Customer Name" + ' - ' + RecSalesHeader."Project Name" + ' - ' + RecSalesHeader."PO Reference";
         SMTPSetup.GET;
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, Subject, '');
         AppendHTMLBody();
@@ -74,9 +74,11 @@ codeunit 50119 "Sales Invoice Posting Alert"
             RecOAheader.SetRange("No.", RecSalesLine."Sales Order No.");
             if RecOAheader.FindFirst() then;
         end;
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! Invoice <b>' + RecSalesHeader."No." + '</b> against your OA <b>' + RecOAheader."No." + '</b> has been posted on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Summary of your Invoice <o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Invoice <b>' + RecSalesInvHeader."No." + '</b> against your OA <b>' + RecOAheader."No." + '</b> has been posted on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><b>Summary of your Invoice:</b> <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Opportunity Reference: ' + RecSalesHeader."Shortcut Dimension 1 Code" + '<o:p></o:p></span> </p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Project Name: ' + RecSalesHeader."Project Name" + '<o:p></o:p></span></p>');
         RecOAheader.CalcFields("Amount Including VAT");
@@ -114,7 +116,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         Clear(RecCustLedger);
         RecCustLedger.SetRange("Document No.", RecSalesInvHeader."No.");
         if RecCustLedger.FindSet() then begin
-            RecCustLedger.CalcFields("Remaining Amount");
+            RecCustLedger.CalcFields("Remaining Amount", "Remaining Amt. (LCY)");
             SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Outstanding Amount(' + RecCustLedger."Currency Code" + '): ' + FORMAT(ROUND(ABS(RecCustLedger."Remaining Amount"), 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + ' <o:p></o:p></span></p>');
             SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Outstanding Amount(' + GLSetup."LCY Code" + '): ' + FORMAT(ROUND(ABS(RecCustLedger."Remaining Amt. (LCY)"), 0.01, '='), 0, '<Precision,2:2><Standard Format,0>') + ' <o:p></o:p></span></p>');
         end else begin
@@ -141,16 +143,18 @@ codeunit 50119 "Sales Invoice Posting Alert"
             exit(true);
     end;
 
-    procedure SetSalesOrderNumber(NoL: Code[20])
+    procedure SetSalesOrderNumber(NoL: Code[20]; DocTypeL: Enum "Sales Document Type")
     begin
         Clear(NoG);
         NoG := NoL;
+        Clear(SalesDocType);
+        SalesDocType := DocTypeL;
     end;
 
     local procedure InitializeRecord()
     begin
         Clear(RecSalesHeader);
-        RecSalesHeader.SetRange("Document Type", RecSalesHeader."Document Type"::Invoice);
+        RecSalesHeader.SetRange("Document Type", SalesDocType);
         RecSalesHeader.SetRange("No.", NoG);
         RecSalesHeader.FindFirst();
     end;
@@ -174,6 +178,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         SMTPMail: Codeunit "SMTP Mail";
         RecSalesHeader: Record "Sales Header";
         RecCustLedger: Record "Cust. Ledger Entry";
+        SalesDocType: Enum "Sales Document Type";
 
 
     local procedure Addstyle()

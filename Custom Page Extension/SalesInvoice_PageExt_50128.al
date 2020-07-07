@@ -201,7 +201,7 @@ pageextension 50128 SalesInv extends "Sales Invoice"
                 PromotedCategory = Category7;
                 Promoted = true;
                 PromotedOnly = true;
-                Visible = false;
+                //Visible = false;
                 trigger OnAction()
                 VAR
                     SendEmailAlert: Codeunit "Pick Material Alert";
@@ -241,18 +241,36 @@ pageextension 50128 SalesInv extends "Sales Invoice"
             action("Update VAT Bus. Posting Group")
             {
                 ApplicationArea = All;
-                Visible = false;
-
+                Visible = true;
+                Image = UpdateDescription;
                 trigger OnAction()
                 VAR
                     PLines: Record "Purchase Line";
                     UpdatePosGrp: Report 50156;
                 begin
+                    Clear(UpdatePosGrp);
                     UpdatePosGrp.SetInvoiceNo("No.");
                     UpdatePosGrp.RunModal();
                     Message('Process completed.');
                 end;
             }
+
+
+            action("Update VAT Prod. Posting Group")
+            {
+                ApplicationArea = All;
+                Image = UpdateDescription;
+
+                trigger OnAction()
+                VAR
+                    UpdateProdGrp: Report "Update VAT Prod. Group For SI";
+                begin
+                    Clear(UpdateProdGrp);
+                    UpdateProdGrp.SetDocumentNo("No.");
+                    UpdateProdGrp.RunModal();
+                end;
+            }
+
         }
 
         modify(Post)

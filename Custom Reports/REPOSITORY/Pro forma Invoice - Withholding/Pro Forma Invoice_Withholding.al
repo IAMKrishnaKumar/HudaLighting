@@ -41,6 +41,10 @@ report 50146 "Proforma Invoice Withholding"
             column(WithholdingTax; WithholdingTax)
             {
             }
+            column(VATNote; CompanyInfo."VAT Note")
+            {
+
+            }
             column(Project_Name; "Sales Header"."Project Name")
             {
             }

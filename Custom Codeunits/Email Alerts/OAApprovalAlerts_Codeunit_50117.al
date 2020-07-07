@@ -60,9 +60,11 @@ codeunit 50117 "OA Approval Alert"
         RecShipmentMethod: Record "Shipment Method";
     begin
         Addstyle();
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! Congratulations, your OA <b>' + RecSalesHeader."No." + '</b> has been approved on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. Here is a copy of the OA for your perusal.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Hi <b>' + RecSalesPerson."Alias Name" + '</b>! <o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
-        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Summary of your OA<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Congratulations, your OA <b>' + RecSalesHeader."No." + '</b> has been approved on ' + FORMAT(WorkDate(), 0, '<day,2>/<month,2>/<year4>') + '. Here is a copy of the OA for your perusal.<o:p></o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><o:p>&nbsp;</o:p></span></p>');
+        SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black"><b>Summary of your OA:</b><o:p></o:p></span></p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Opportunity Reference: ' + RecSalesHeader."Shortcut Dimension 1 Code" + '<o:p></o:p></span> </p>');
         SMTPMail.AppendBody('<p class=MsoNormal><span style="font-size:12.0pt;font-family:"Times New Roman",serif;color:black">Project Name: ' + RecSalesHeader."Project Name" + '<o:p></o:p></span></p>');
         RecSalesHeader.CalcFields("Amount Including VAT");

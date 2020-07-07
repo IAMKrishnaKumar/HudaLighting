@@ -1,9 +1,9 @@
-report 50128 "Inventory Aging TEST"
+report 50128 "Inventory Aging Report"
 {
     DefaultLayout = RDLC;
     //RDLCLayout = './Item Age Composition - Value.rdlc';
     ApplicationArea = All;
-    Caption = 'Inventory Aging Test';
+    Caption = 'Inventory Aging';//Final One 
     UsageCategory = ReportsAndAnalysis;
     ProcessingOnly = true;
     dataset

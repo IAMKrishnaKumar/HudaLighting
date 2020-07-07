@@ -8267,6 +8267,9 @@ Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de697917r3v3Xuve/de69791
         <Field Name="Ship_to_Country_Region_Code">
           <DataField>Ship_to_Country_Region_Code</DataField>
         </Field>
+        <Field Name="VATNote">
+          <DataField>VATNote</DataField>
+        </Field>
         <Field Name="Project_Name">
           <DataField>Project_Name</DataField>
         </Field>

@@ -815,6 +815,17 @@ page 50137 "Sales Line Subform"
     {
         area(Processing)
         {
+            action("Update VAT Prod Pos. Grp For NonInventory")
+            {
+                ApplicationArea = All;
+                Image = UpdateUnitCost;
+                trigger OnAction()
+                var
+                    UpdateVATReport: Report "Update VAT Prod. Post. Group";
+                begin
+                    UpdateVATReport.Run();
+                end;
+            }
             action("Update ACY Amounts")
             {
                 ApplicationArea = All;

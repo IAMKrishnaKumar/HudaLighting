@@ -2,9 +2,9 @@ report 50137 "Inventory Aging"
 {
     DefaultLayout = RDLC;
     //RDLCLayout = './Item Age Composition - Value.rdlc';
-    ApplicationArea = All;
+    //ApplicationArea = All;//Not in use created another one - 50128
     Caption = 'Inventory Aging';
-    UsageCategory = ReportsAndAnalysis;
+    //UsageCategory = ReportsAndAnalysis;
     ProcessingOnly = true;
     dataset
     {
