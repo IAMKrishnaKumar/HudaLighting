@@ -11,6 +11,14 @@ tableextension 60007 "User Setup Ext" extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(50002; "Cheque Printing"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50003; "Cheque Voiding"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         //PDC
         field(60000; "Reopen Letter of Credit"; Boolean)
         {

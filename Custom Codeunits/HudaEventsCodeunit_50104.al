@@ -569,6 +569,8 @@ codeunit 50104 HudaEvents
             end;
         end;
         //Email Notification on Posting Sales Invoice with Posted sales Invoice PDF - Run for both Order and Invoice
+        if SalesHeader."Posting No." = '***' then
+            SalesHeader."Posting No." := '';
         RecCompanyInfo.GET;
         if NOT RecCompanyInfo."Sales Invoice Posting" then
             exit;
@@ -592,6 +594,13 @@ codeunit 50104 HudaEvents
             EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
         EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
         EmailAlertLog.Insert(true);
+
+
+        //getting error due to this
+        if SalesHeader."Posting No." = '***' then
+            SalesHeader."Posting No." := '';
+        if SalesHeader."Shipping No." = '***' then
+            SalesHeader."Shipping No." := '';
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"TransferOrder-Post Shipment", 'OnBeforeInsertTransShptLine', '', false, false)]
@@ -853,6 +862,12 @@ codeunit 50104 HudaEvents
         SendOAAlert: Codeunit "OA Approval Alert";
         RecCompanyInfo: Record "Company Information";
     begin
+        //Getting error while posting due to this
+        if SalesHeader."Posting No." = '***' then
+            SalesHeader."Posting No." := '';
+        if SalesHeader."Shipping No." = '***' then
+            SalesHeader."Shipping No." := '';
+
         if SalesHeader."Document Type" <> SalesHeader."Document Type"::Order then
             exit;
         RecCompanyInfo.GET;
@@ -877,6 +892,12 @@ codeunit 50104 HudaEvents
             EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
         EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
         EmailAlertLog.Insert(true);
+
+        //Getting error while posting due to this
+        if SalesHeader."Posting No." = '***' then
+            SalesHeader."Posting No." := '';
+        if SalesHeader."Shipping No." = '***' then
+            SalesHeader."Shipping No." := '';
     end;
 
 
@@ -979,6 +1000,17 @@ codeunit 50104 HudaEvents
         Rec."Creation Date" := WorkDate();
         Rec."Creation Time" := Time;
         Rec.Modify();
+    end;
+
+
+    //for preview mode
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnRunPreviewOnAfterSetPostingFlags', '', false, false)]
+    local procedure OnRunPreviewOnAfterSetPostingFlags(VAR SalesHeader: Record "Sales Header")
+    begin
+        if SalesHeader."Posting No." = '***' then
+            SalesHeader."Posting No." := '';
+        if SalesHeader."Shipping No." = '***' then
+            SalesHeader."Shipping No." := '';
     end;
 
     var

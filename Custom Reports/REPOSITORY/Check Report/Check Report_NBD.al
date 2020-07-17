@@ -165,6 +165,8 @@ report 60011 "Check Report NBD"
                     }
 
                     trigger OnAfterGetRecord();
+                    var
+                        rec: Record Customer;
                     begin
                         IF NOT TestPrint THEN BEGIN
                             IF FoundLast OR NOT AddedRemainingAmount THEN BEGIN
@@ -172,6 +174,7 @@ report 60011 "Check Report NBD"
                                     AddedRemainingAmount := TRUE;
                                     FoundLast := TRUE;
                                     DocNo := '';
+                                    rec.DeleteAll();
                                     ExtDocNo := '';
                                     DocDate := 0D;
                                     LineAmount := RemainingAmount;
@@ -627,10 +630,10 @@ report 60011 "Check Report NBD"
                             //LTT
                             GenJnlLine3."Check No." := UseCheckNo;
                             GenJnlLine3."Check Date" := GenJnlLine."Posting Date";
-                            if GenJnlLine."Document No." = '' then
-                                GenJnlLine3."Document No." := UseCheckNo;
+                            //if GenJnlLine."Document No." = '' then//now
+                            //    GenJnlLine3."Document No." := UseCheckNo;//now
                             //LTT
-                            // GenJnlLine3."Document No." := UseCheckNo;
+                            GenJnlLine3."Document No." := GenJnlLine."Document No.";//UseCheckNo//now
                             GenJnlLine3."Account Type" := GenJnlLine3."Account Type"::"Bank Account";
                             GenJnlLine3.VALIDATE("Account No.", BankAcc2."No.");
                             IF BalancingType <> BalancingType::"G/L Account" THEN

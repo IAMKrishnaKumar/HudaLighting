@@ -22,6 +22,10 @@ pageextension 50123 companyInfo extends "Company Information"
             {
                 ApplicationArea = All;
             }
+            field("Show Actions to Print Cheque"; "Show Actions to Print Cheque")
+            {
+                ApplicationArea = All;
+            }
 
         }
         addafter("System Indicator")

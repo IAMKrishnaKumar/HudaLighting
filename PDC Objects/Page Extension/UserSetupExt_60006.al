@@ -21,6 +21,14 @@ pageextension 60006 userSetup extends "User Setup"
             {
                 ApplicationArea = All;
             }
+            field("Cheque Printing"; "Cheque Printing")
+            {
+                ApplicationArea = All;
+            }
+            field("Cheque Voiding"; "Cheque Voiding")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

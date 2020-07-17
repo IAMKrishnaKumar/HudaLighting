@@ -13,7 +13,6 @@ page 60004 "PDC Issue"
     PageType = Card;
     SourceTable = "PDC Issue";
     Caption = 'PDC Payment';
-    //ApplicationArea = All;
     SourceTableView = WHERE(Posted = filter(false), Bounced = filter(false), Returned = filter(false));
 
     layout
@@ -25,8 +24,8 @@ page 60004 "PDC Issue"
                 Caption = 'General';
                 field("Code"; Code)
                 {
-
                     ApplicationArea = All;
+                    Editable = IsEditable;
                     trigger OnAssistEdit()
                     begin
                         IF AssistEdit(xRec) THEN
@@ -35,8 +34,8 @@ page 60004 "PDC Issue"
                 }
                 field("Vendor No."; "Vendor No.")
                 {
-
                     ApplicationArea = All;
+                    Editable = IsEditable;
                     trigger OnValidate()
                     begin
                         //Regal1.0
@@ -46,27 +45,33 @@ page 60004 "PDC Issue"
                 field(Name; Name)
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
 
                 field(Address; Address)
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Address 2"; "Address 2")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Post Code"; "Post Code")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Country Code"; "Country Code")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(City; City)
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(Control1000000016; '')
                 {
@@ -75,49 +80,60 @@ page 60004 "PDC Issue"
                     Style = Strong;
                     StyleExpr = TRUE;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(Bank; Bank)
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Name"; "Bank Name")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Address"; "Bank Address")
                 {
                     Visible = false;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Address 2"; "Bank Address 2")
                 {
                     Visible = false;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Post Code"; "Bank Post Code")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank City"; "Bank City")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Country Code"; "Bank Country Code")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Branch No."; "Bank Branch No.")
                 {
                     Visible = false;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Account No."; "Bank Account No.")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Document Date"; "Document Date")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(Control1000000030; '')
                 {
@@ -126,10 +142,12 @@ page 60004 "PDC Issue"
                     Style = Strong;
                     StyleExpr = TRUE;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Unapplied PDC"; "UnApplied PDC")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                     trigger OnValidate()
                     begin
                         IF "UnApplied PDC" THEN begin
@@ -144,11 +162,12 @@ page 60004 "PDC Issue"
                 {
                     Enabled = UnAppliedEntry;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Applies-to ID"; "Applies-to ID")
                 {
-                    Editable = UnAppliedEntry;
                     ApplicationArea = All;
+                    Editable = IsEditable AND UnAppliedEntry;
                 }
 
                 field(Control1000000104; '')
@@ -158,11 +177,13 @@ page 60004 "PDC Issue"
                     Style = Strong;
                     StyleExpr = TRUE;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Bank Payment Type"; "Bank Payment Type")
                 {
 
                     ApplicationArea = All;
+                    Editable = IsEditable;
                     trigger OnValidate()
                     begin
                         //LT_Check
@@ -176,32 +197,39 @@ page 60004 "PDC Issue"
                 field("Payment Method Code"; "Payment Method Code")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Cheque No."; "Cheque No.")
                 {
-                    Editable = CheckNoEditable;
+                    Editable = CheckNoEditable AND IsEditable;
                     ApplicationArea = All;
+                    //Editable = IsEditable;
                 }
                 field(Payee; Payee)
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Cheque Date"; "Cheque Date")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Deposit Date"; "Deposit Date")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(Amount; Amount)
                 {
                     AutoFormatType = 1;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Currency Code"; "Currency Code")
                 {
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(Control1000000105; '')
                 {
@@ -210,39 +238,46 @@ page 60004 "PDC Issue"
                     Style = Strong;
                     StyleExpr = TRUE;
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field("Amount (LCY)"; "Amount (LCY)")
                 {
                     AutoFormatType = 1;
                     Editable = false;
                     ApplicationArea = All;
+
                 }
                 field(Status; Status)
                 {
                     Caption = 'Status';
                     Editable = false;
                     ApplicationArea = All;
+
                 }
                 field(Remarks; Remarks)
                 {
                     Caption = 'Remarks';
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
                 field(Confirmed; Confirmed)
                 {
                     Editable = false;
                     ApplicationArea = All;
+
                 }
                 field("Check Printed"; "Check Printed")
                 {
-                    Caption = 'Printed';
+                    Caption = 'Cheque Printed';
                     Editable = false;
                     ApplicationArea = All;
+
                 }
                 field(Cleared; Cleared)
                 {
                     Caption = 'Cleared';
                     ApplicationArea = All;
+                    Editable = IsEditable;
                 }
             }
         }
@@ -250,6 +285,7 @@ page 60004 "PDC Issue"
 
     actions
     {
+
         area(navigation)
         {
             group("&PDCs")
@@ -268,7 +304,9 @@ page 60004 "PDC Issue"
                     end;
                 }
             }
+
         }
+
         area(processing)
         {
             group("F&unctions")
@@ -485,7 +523,7 @@ page 60004 "PDC Issue"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ApplicationArea = All;
-
+                    Visible = false;
                     trigger OnAction()
                     var
                         PDCIssue: Record "PDC Issue";
@@ -512,7 +550,7 @@ page 60004 "PDC Issue"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ApplicationArea = All;
-
+                    Visible = false;
                     trigger OnAction()
                     begin
                         IF (Status = Status::Issued) THEN
@@ -710,11 +748,120 @@ page 60004 "PDC Issue"
                     end;
                 }
             }
+            group("Cheque Printing")
+            {
+                action("Print Arab Bank Cheque")
+                {
+                    ApplicationArea = All;
+                    Image = Print;
+                    Visible = ShowChequePrintAction;
+                    trigger OnAction()
+                    var
+                        RecPDCIssue: Record "PDC Issue";
+                        ArabBnkCheck: Report "PDC Cheque Report ARAB";
+                        RecUserSetup: Record "User Setup";
+                    begin
+                        RecUserSetup.GET(UserId);
+                        RecUserSetup.TestField("Cheque Printing");
+                        Rec.TestField("Bank Payment Type", "Bank Payment Type"::"Manual Check");
+                        Rec.TestField(Confirmed, true);
+                        Rec.TestField("Check Printed", false);
+                        Clear(RecPDCIssue);
+                        Clear(RecPDCIssue);
+                        RecPDCIssue.SetRange(Code, Rec.Code);
+                        if RecPDCIssue.FindFirst() then begin
+                            Clear(ArabBnkCheck);
+                            ArabBnkCheck.SetTableView(RecPDCIssue);
+                            ArabBnkCheck.Run();
+                        end;
+                    end;
+                }
+                action("Print Blom Bank Cheque")
+                {
+                    ApplicationArea = All;
+                    Image = Print;
+                    Visible = ShowChequePrintAction;
+                    trigger OnAction()
+                    var
+                        RecPDCIssue: Record "PDC Issue";
+                        BlomBnkCheck: Report "PDC Cheque Report BLOM BANK";
+                        RecUserSetup: Record "User Setup";
+                    begin
+                        RecUserSetup.GET(UserId);
+                        RecUserSetup.TestField("Cheque Printing");
+                        Rec.TestField("Bank Payment Type", "Bank Payment Type"::"Manual Check");
+                        Rec.TestField(Confirmed, true);
+                        Rec.TestField("Check Printed", false);
+                        Clear(RecPDCIssue);
+                        Clear(RecPDCIssue);
+                        RecPDCIssue.SetRange(Code, Rec.Code);
+                        if RecPDCIssue.FindFirst() then begin
+                            Clear(BlomBnkCheck);
+                            BlomBnkCheck.SetTableView(RecPDCIssue);
+                            BlomBnkCheck.Run();
+                        end;
+                    end;
+                }
+                action("Print ENBD Cheque")
+                {
+                    ApplicationArea = All;
+                    Image = Print;
+                    Visible = ShowChequePrintAction;
+                    trigger OnAction()
+                    var
+                        RecPDCIssue: Record "PDC Issue";
+                        NBDBnkCheck: Report "PDC Cheque Report NBD";
+                        RecUserSetup: Record "User Setup";
+                    begin
+                        RecUserSetup.GET(UserId);
+                        RecUserSetup.TestField("Cheque Printing");
+                        Rec.TestField("Bank Payment Type", "Bank Payment Type"::"Manual Check");
+                        Rec.TestField(Confirmed, true);
+                        Rec.TestField("Check Printed", false);
+                        Clear(RecPDCIssue);
+                        RecPDCIssue.SetRange(Code, Rec.Code);
+                        if RecPDCIssue.FindFirst() then begin
+                            Clear(NBDBnkCheck);
+                            NBDBnkCheck.SetTableView(RecPDCIssue);
+                            NBDBnkCheck.Run();
+                        end;
+
+                    end;
+                }
+
+
+                action("Void Cheque")
+                {
+                    ApplicationArea = All;
+                    Image = VoidCheck;
+                    Visible = ShowChequePrintAction;
+                    trigger OnAction()
+                    var
+                        RecPDCIssue: Record "PDC Issue";
+                        RecUserSetup: Record "User Setup";
+                    begin
+                        RecUserSetup.GET(UserId);
+                        RecUserSetup.TestField("Cheque Voiding");
+                        Rec.TestField("Check Printed", true);
+                        Clear(RecPDCIssue);
+                        if RecPDCIssue.GET(Rec.Code) then begin
+                            RecPDCIssue."Check Printed" := false;
+                            RecPDCIssue.Modify();
+                            Message('Cheque has been cancelled.');
+                        end;
+                    end;
+                }
+            }
         }
     }
 
     trigger OnAfterGetRecord()
     begin
+        if Rec."Check Printed" then
+            IsEditable := false
+        else
+            IsEditable := true;
+
         IF "UnApplied PDC" THEN
             UnAppliedEntry := FALSE
         ELSE
@@ -729,7 +876,22 @@ page 60004 "PDC Issue"
     end;
 
     trigger OnOpenPage()
+    var
+        ReccompanyInfo: Record "Company Information";
     begin
+        if Rec."Check Printed" then
+            IsEditable := false
+        else
+            IsEditable := true;
+
+        ReccompanyInfo.GET;
+        if ReccompanyInfo."Show Actions to Print Cheque" then
+            ShowChequePrintAction := true
+        else
+            ShowChequePrintAction := false;
+
+
+
         IF "UnApplied PDC" THEN
             UnAppliedEntry := FALSE
         ELSE
@@ -743,7 +905,10 @@ page 60004 "PDC Issue"
         //LT_Check
     end;
 
+
     var
+        IsEditable: Boolean;
+        ShowChequePrintAction: Boolean;
         VendLedgEntry: Record "Vendor Ledger Entry";
         GenJnlBatch: Record "Gen. Journal Batch";
         GenJnlLine: Record "Gen. Journal Line";
@@ -1902,4 +2067,3 @@ page 60004 "PDC Issue"
     begin
     end;
 }
-

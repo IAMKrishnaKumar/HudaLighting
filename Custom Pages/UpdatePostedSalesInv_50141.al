@@ -1,8 +1,8 @@
 page 50141 "Update Sales Invoice"
 {
     PageType = Card;
-    ApplicationArea = All;
-    UsageCategory = Administration;
+    //ApplicationArea = All;
+    //UsageCategory = Administration;
     SourceTable = "Sales Invoice Header";
     InsertAllowed = false;
     DeleteAllowed = false;

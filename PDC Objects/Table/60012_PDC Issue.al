@@ -600,6 +600,7 @@ table 60012 "PDC Issue"
             TableRelation = "Payment Method";
         }
 
+
     }
 
     keys

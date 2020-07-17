@@ -2,9 +2,9 @@ report 50128 "Inventory Aging Report"
 {
     DefaultLayout = RDLC;
     //RDLCLayout = './Item Age Composition - Value.rdlc';
-    ApplicationArea = All;
+    //ApplicationArea = All;
     Caption = 'Inventory Aging';//Final One 
-    UsageCategory = ReportsAndAnalysis;
+    //UsageCategory = ReportsAndAnalysis;
     ProcessingOnly = true;
     dataset
     {
@@ -277,7 +277,7 @@ report 50128 "Inventory Aging Report"
         ExcelBuf.AddInfoColumn(FORMAT(Text102), FALSE, FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.NewRow;
         ExcelBuf.AddInfoColumn(FORMAT(Text104), FALSE, TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
-        ExcelBuf.AddInfoColumn(REPORT::"Inventory Aging", FALSE, FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
+        ExcelBuf.AddInfoColumn(REPORT::"Inventory Aging Report", FALSE, FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);
         ExcelBuf.NewRow;
         ExcelBuf.AddInfoColumn(FORMAT(Text106), FALSE, TRUE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);
         ExcelBuf.AddInfoColumn(USERID, FALSE, FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);

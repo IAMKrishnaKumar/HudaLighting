@@ -94,6 +94,10 @@ tableextension 50123 CompanyInfo extends "Company Information"
         {
             DataClassification = ToBeClassified;
         }
+        field(50021; "Show Actions to Print Cheque"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         //**********************************Daily Activity*********************
         field(50105; "Daily Activity"; Boolean)
         {

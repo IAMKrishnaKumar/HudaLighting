@@ -107,6 +107,7 @@ report 50107 "OA Daily Report"
                     Clear(Istotal);
                     RecSalesheader.ChangeCompany(RecCompanies.Name);
                     RecSalesheader.SetRange("Document Type", RecSalesheader."Document Type"::Order);
+                    RecSalesheader.SetRange(Status, RecSalesheader.Status::Released);
                     RecSalesheader.SetRange("Order Date", Workdate());//CalcDate('-1D', Workdate()));
                     //RecSalesheader.SetFilter("Order Date", FORMAT(CALCDATE('-1W', WorkDate())) + '..' + Format(WorkDate()));//CalcDate('-1D', Workdate()));
                     if RecSalesheader.FindSet() then begin

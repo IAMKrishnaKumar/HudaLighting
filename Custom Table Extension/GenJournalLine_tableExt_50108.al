@@ -31,6 +31,10 @@ tableextension 50108 GenJournLline extends "Gen. Journal Line"
         {
             DataClassification = ToBeClassified;
         }
+        field(50005; "Cheque Printed"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         //**********************************Daily Activity*********************
         field(50101; "Creation Date"; Date)
         {
@@ -45,7 +49,7 @@ tableextension 50108 GenJournLline extends "Gen. Journal Line"
             DataClassification = ToBeClassified;
 
         }
-        
+
         //*************************PDC**********************
         field(60000; "Non PDC App. Entries"; Boolean)
         {

@@ -626,10 +626,10 @@ report 60012 "Check Report ARAB"
                             //LTT
                             GenJnlLine3."Check No." := UseCheckNo;
                             GenJnlLine3."Check Date" := GenJnlLine."Posting Date";
-                            if GenJnlLine."Document No." = '' then
-                                GenJnlLine3."Document No." := UseCheckNo;
+                            //if GenJnlLine."Document No." = '' then/now
+                            //   GenJnlLine3."Document No." := UseCheckNo;//now
                             //LTT
-                            // GenJnlLine3."Document No." := UseCheckNo;
+                            GenJnlLine3."Document No." := GenJnlLine."Document No.";//UseCheckNo;//now
                             GenJnlLine3."Account Type" := GenJnlLine3."Account Type"::"Bank Account";
                             GenJnlLine3.VALIDATE("Account No.", BankAcc2."No.");
                             IF BalancingType <> BalancingType::"G/L Account" THEN
