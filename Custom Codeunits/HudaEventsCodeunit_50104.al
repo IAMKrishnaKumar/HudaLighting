@@ -807,8 +807,6 @@ codeunit 50104 HudaEvents
     begin
         GenLedSetup.GET;
         if GenLedSetup."Gen. Jln. Post & Print" then begin
-            // COMMIT;
-            // COMMIT;
             Clear(GenJlnBatch);
             IF GenJlnBatch.GET(GenJournalLine."Journal Template Name", GenJournalLine."Journal Batch Name") then begin
                 clear(NOSeriesLine);

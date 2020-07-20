@@ -9,7 +9,7 @@ report 50159 "General Project Status"
         dataitem("Sales Header"; "Sales Header")
         {
             DataItemTableView = SORTING("No.") ORDER(Ascending) where("Document Type" = CONST(Order));
-            RequestFilterFields = "Sell-to Customer No.", "No.", "Project Name", "Salesperson Code", "Shortcut Dimension 1 Code";
+            RequestFilterFields = "Sell-to Customer No.", "No.", "Project Name", "Salesperson Code", "Shortcut Dimension 1 Code", Closed;
             dataitem("Sales Line"; "Sales Line")
             {
                 DataItemLinkReference = "Sales Header";
@@ -47,6 +47,11 @@ report 50159 "General Project Status"
                     RecItem: Record Item;
                     PSILine: Record "Sales Invoice Line";
                 begin
+                    //Skiping open orders in case of notification via email only
+                    if not UseRequestPage then begin
+                        if "Sales Header".Closed then
+                            CurrReport.Skip();
+                    end;
                     RecGLSetup.GET;
                     Clear(ReceivedQty);
                     Clear(DNNoFilterText);
