@@ -1,6 +1,15 @@
 codeunit 50119 "Sales Invoice Posting Alert"
 {//Completed
+
     trigger OnRun()
+    var
+
+    begin
+
+    end;
+
+
+    procedure SendEmail(): Boolean
     var
         TempBlob: Codeunit "Temp Blob";
         ReportInOutStream: OutStream;
@@ -12,14 +21,14 @@ codeunit 50119 "Sales Invoice Posting Alert"
     begin
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Sales Invoice Posting" THEN
-            EXIT;
+            EXIT(false);
         InitializeRecord();
-        RecSalesInvHeader.FindFirst();///////////////For posted sales invoice
-        RecSalesHeader.TestField("Salesperson Code");
+        if RecSalesInvHeader.FindFirst() then;///////////////For posted sales invoice
+        //RecSalesHeader.TestField("Salesperson Code");
         Clear(RecSalesPerson);
-        RecSalesPerson.GET(RecSalesHeader."Salesperson Code");
-        if (RecSalesPerson."E-Mail" = '') AND (RecSalesPerson."E-Mail 2" = '') THEN
-            RecSalesPerson.TestField("E-Mail");
+        if RecSalesPerson.GET(RecSalesHeader."Salesperson Code") then;
+        //if (RecSalesPerson."E-Mail" = '') AND (RecSalesPerson."E-Mail 2" = '') THEN
+        //  RecSalesPerson.TestField("E-Mail");
         Clear(ToEmailList);
         if RecSalesPerson."E-Mail" <> '' then
             ToEmailList.Add(RecSalesPerson."E-Mail");
@@ -28,6 +37,8 @@ codeunit 50119 "Sales Invoice Posting Alert"
         if RecCompanyInfo."Sales Invoice Posting Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."Sales Invoice Posting Email");
         end;
+        if ToEmailList.Count = 0 then
+            exit(false);
         Subject := 'Posted Sales Invoice: IN - ' + RecSalesInvHeader."No." + ' - ' + RecSalesHeader."Sell-to Customer Name" + ' - ' + RecSalesHeader."Project Name" + ' - ' + RecSalesHeader."PO Reference";
         SMTPSetup.GET;
         SMTPMail.CreateMessage('Dynamics Notification', SMTPSetup."User ID", ToEmailList, Subject, '');
@@ -48,7 +59,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         Clear(AttachmentName);
         AttachmentName := StrSubstNo(TxtAttachmentName, RecSalesInvHeader."No.");
         SMTPMail.AddAttachmentStream(ReportInStream, AttachmentName);
-        SMTPMail.Send();
+        exit(SMTPMail.Send());
     end;
 
     procedure AppendHTMLBody()
@@ -156,7 +167,7 @@ codeunit 50119 "Sales Invoice Posting Alert"
         Clear(RecSalesHeader);
         RecSalesHeader.SetRange("Document Type", SalesDocType);
         RecSalesHeader.SetRange("No.", NoG);
-        RecSalesHeader.FindFirst();
+        if RecSalesHeader.FindFirst() then;
     end;
 
     procedure SetPostedSalesInvoiceNo(NoL: Code[20])

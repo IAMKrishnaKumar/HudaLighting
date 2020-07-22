@@ -585,14 +585,20 @@ codeunit 50104 HudaEvents
         EmailAlertLog."Email For Record" := SalesHeader.RecordId;
         EmailAlertLog."Email Alert Type" := EmailAlertLog."Email Alert Type"::"Invoice Posting Alert";
         ClearLastError();
+        Clear(InvoicePostingAlert);
         InvoicePostingAlert.SetSalesOrderNumber(SalesHeader."No.", SalesHeader."Document Type");
         InvoicePostingAlert.SetPostedSalesInvoiceNo(SalesInvoiceHeader."No.");
-        Commit();
-        if InvoicePostingAlert.RUN() then
+        //Commit();
+        //if InvoicePostingAlert.RUN() then
+        if InvoicePostingAlert.SendEmail() then
             EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Sent
-        else
+        else begin
             EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
-        EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
+            if GetLastErrorText <> '' then
+                EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250)
+            else
+                EmailAlertLog."Error Remarks" := 'Something is wrong with the data';
+        end;
         EmailAlertLog.Insert(true);
 
 
@@ -890,12 +896,6 @@ codeunit 50104 HudaEvents
             EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
         EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
         EmailAlertLog.Insert(true);
-
-        //Getting error while posting due to this
-        if SalesHeader."Posting No." = '***' then
-            SalesHeader."Posting No." := '';
-        if SalesHeader."Shipping No." = '***' then
-            SalesHeader."Shipping No." := '';
     end;
 
 
@@ -940,12 +940,17 @@ codeunit 50104 HudaEvents
                             ClearLastError();
                             Clear(MaterialReceivedAlert);
                             MaterialReceivedAlert.SetPurchRcptHeader(RecPurchRcptHdr."No.");
-                            Commit();
-                            if MaterialReceivedAlert.RUN() then
+                            //Commit();
+                            //if MaterialReceivedAlert.RUN() then
+                            if MaterialReceivedAlert.SendEmail() then
                                 EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Sent
-                            else
+                            else begin
                                 EmailAlertLog."Email Status" := EmailAlertLog."Email Status"::Error;
-                            EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250);
+                                if GetLastErrorText <> '' then
+                                    EmailAlertLog."Error Remarks" := CopyStr(GetLastErrorText, 1, 250)
+                                else
+                                    EmailAlertLog."Error Remarks" := 'Something is wrong with the data';
+                            end;
                             EmailAlertLog.Insert(true);
                         end;
                     end;

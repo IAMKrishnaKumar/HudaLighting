@@ -2,6 +2,13 @@ codeunit 50118 "Material Received Alert"
 {
     trigger OnRun()
     var
+
+    begin
+
+    end;
+
+    procedure SendEmail(): Boolean
+    var
         TempBlob: Codeunit "Temp Blob";
         ReportInOutStream: OutStream;
         ReportInStream: InStream;
@@ -14,22 +21,22 @@ codeunit 50118 "Material Received Alert"
     begin
         RecCompanyInfo.GET;
         IF NOT RecCompanyInfo."Materials Received by Whse." THEN
-            EXIT;
+            EXIT(false);
         InitializeRecords();
         Clear(ToEmailList);
         if RecCompanyInfo."Materials Rec. by Whse. Email" <> '' then begin
             ToEmailList.Add(RecCompanyInfo."Materials Rec. by Whse. Email");
         end;
 
-        PurchRcptHeaderG.TestField("Purchaser Code");
+        //PurchRcptHeaderG.TestField("Purchaser Code");
         Clear(RecSalesPerson);
-        RecSalesPerson.Get(PurchRcptHeaderG."Purchaser Code");
-        if (RecSalesPerson."E-Mail" = '') AND (RecSalesPerson."E-Mail 2" = '') then
-            RecSalesPerson.TestField("E-Mail");
+        if RecSalesPerson.Get(PurchRcptHeaderG."Purchaser Code") then;
         if RecSalesPerson."E-Mail" <> '' then
             ToEmailList.Add(RecSalesPerson."E-Mail");
         if RecSalesPerson."E-Mail 2" <> '' then
             ToEmailList.Add(RecSalesPerson."E-Mail 2");
+        if ToEmailList.Count = 0 then
+            exit(false);
         if IsSalesOrderAvailable then
             Subject := 'Material Received: ' + PurchRcptHeaderG."No." + ' - ' + PurchRcptHeaderG."Buy-from Vendor Name" + ' - ' + RecPurchHeader."No." + ' - ' + RecSalesheader."No." + ' - ' + RecSalesheader."Project Name"//RecPurchaseHeader
         else
@@ -53,7 +60,7 @@ codeunit 50118 "Material Received Alert"
         Clear(AttachmentName);
         AttachmentName := StrSubstNo(TxtAttachmentName, PurchRcptHeaderG."No.");
         SMTPMail.AddAttachmentStream(ReportInStream, AttachmentName);
-        SMTPMail.Send();
+        exit(SMTPMail.Send());
     end;
 
     procedure AppendHTMLBody()
@@ -137,7 +144,7 @@ codeunit 50118 "Material Received Alert"
     begin
         Clear(PurchRcptHeaderG);
         PurchRcptHeaderG.SetRange("No.", NoG);
-        PurchRcptHeaderG.FindFirst();
+        if PurchRcptHeaderG.FindFirst() then;
         Clear(RecPurchRcptLine);
         RecPurchRcptLine.SetRange("Document No.", PurchRcptHeaderG."No.");
         RecPurchRcptLine.SetFilter("HL Sales Order No.", '<>%1', '');
@@ -154,7 +161,7 @@ codeunit 50118 "Material Received Alert"
         Clear(RecPurchaseHeader);
         RecPurchaseHeader.SetRange("Document Type", RecPurchaseHeader."Document Type"::Order);
         RecPurchaseHeader.SetRange("No.", PurchRcptHeaderG."Order No.");
-        RecPurchaseHeader.FindFirst();
+        if RecPurchaseHeader.FindFirst() then;
     end;
 
     local procedure AddItemDetail()
