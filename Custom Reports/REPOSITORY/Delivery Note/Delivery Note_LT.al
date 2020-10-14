@@ -10,8 +10,8 @@ report 50130 "Delivery Note LT"
     {
         dataitem("Sales Header"; "Warehouse Shipment Header")
         {
-            DataItemTableView = SORTING("No.")
-                                ORDER(Ascending);
+            DataItemTableView = SORTING("No.") ORDER(Ascending)
+            Where("Location Code" = filter('<>1'));
 
             RequestFilterFields = "No.";
             column(No_SalesHeader; "Sales Header"."No.")

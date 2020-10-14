@@ -263,10 +263,10 @@ pageextension 50147 PaymentJOurnal extends "Payment Journal"
             Editable = IsEditable;
         }
 
-        Modify(Correction)
+        /*Modify(Correction)
         {
             Editable = IsEditable;
-        }
+        }*/
         Modify(Description)
         {
             Editable = IsEditable;

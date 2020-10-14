@@ -9,7 +9,7 @@
             "breakOnError": true,
             "breakOnRecordWrite": false,
             "launchBrowser": true,
-            "tenant": "7fc74c11-715a-4e8c-9df2-e54436fdc08d",
+            //"tenant": "7fc74c11-715a-4e8c-9df2-e54436fdc08d",
             "enableSqlInformationDebugger": true,
             "debugServer": 4711,
             "enableLongRunningSqlStatements": true,

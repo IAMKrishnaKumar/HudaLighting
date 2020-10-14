@@ -2,7 +2,7 @@
   "id": "4d4be545-8b6a-4c68-b3e0-54a63a367b6e",
   "name": "Huda lighting",
   "publisher": "Levtech",
-    "version": "1.0.1.940020",
+    "version": "1.0.1.940026",
     "brief": "",
     "description": "",
     "privacyStatement": "",
@@ -29,7 +29,7 @@
     "idRanges": [
       {
         "from": 50100,
-        "to": 60249
+        "to": 70249
       }
     ],
     "contextSensitiveHelpUrl": "https://Hudalighting.com/help/",
